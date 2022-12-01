@@ -91,4 +91,21 @@ public class SoundApi {
         }
         return true;
     }
+
+    public int getTrebleLevel() {
+        return mFactoryApplication.getAq().getTrebleLevel();
+    }
+
+    public void setTrebleLevel(int bLevel) {
+        mFactoryApplication.getAq().setTrebleLevel(bLevel);
+    }
+
+    public int getBassLevel() {
+        return mFactoryApplication.getAq().getBassLevel();
+    }
+
+    public void setBassLevel(int bLevel) {
+        mFactoryApplication.getAq().setBassLevel(bLevel);
+    }
+
 }

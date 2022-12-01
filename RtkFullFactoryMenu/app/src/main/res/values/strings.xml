@@ -162,6 +162,8 @@
     <string name="sound_mode_cinema">Cinema</string>
     <string name="sound_mode_personal">Personal</string>
     <string name="sound_mode_news">News</string>
+    <string name="sound_treble">Treble</string>
+    <string name="sound_bass">Bass</string>
     <string name="sound_eq_100">100HZ</string>
     <string name="sound_eq_125">125HZ</string>
     <string name="sound_eq_150">150HZ</string>

@@ -11,6 +11,10 @@
         </entry>
     </StatePreference>
 
+    <SeekBarPreference id="@+id/sound_treble" title="@string/sound_treble" minValue="-20" maxValue="20" />
+
+    <SeekBarPreference id="@+id/sound_bass" title="@string/sound_bass" minValue="-20" maxValue="20" />
+
     <SeekBarPreference id="@+id/sound_eq_0" title="@string/sound_eq_125" minValue="-20" maxValue="20" />
 
     <SeekBarPreference id="@+id/sound_eq_1" title="@string/sound_eq_250" minValue="-20" maxValue="20" />
