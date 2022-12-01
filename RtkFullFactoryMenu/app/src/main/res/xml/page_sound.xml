@@ -22,7 +22,7 @@
         <entry name="@string/str_balance_r" index="2" enabled="true" />
     </StatePreference>
 
-    <SumaryPreference id="@+id/balance_default" title="@string/str_balance_cur" />
+    <SumaryPreference id="@+id/balance_default" title="@string/str_balance_cur" visible="false"/>
 
     <SeekBarPreference id="@+id/balance_seekbar" title="@string/str_balance" minValue="-50" maxValue="50" visible="false"/>
 
