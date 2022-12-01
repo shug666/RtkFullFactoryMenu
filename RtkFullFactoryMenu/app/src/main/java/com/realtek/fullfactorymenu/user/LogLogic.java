@@ -25,7 +25,7 @@ public class LogLogic extends LogicInterface {
 
     private StatePreference mLogOptions;
     private StatePreference mLogOnOff;
-    private static final String sLogCatService = "com.toptech.tvfactory/.user.LogCatService";
+    private static final String sLogCatService = "com.realtek.fullfactorymenu/.user.LogCatService";
     private static Context thisContext = null;
     private static final String COMMAND_LOG_LOGCAT = "Logcat";
     private static final String COMMAND_LOG_KERNEL = "Kernel";

@@ -1,8 +1,12 @@
 package com.realtek.fullfactorymenu;
 
-import java.util.Stack;
-import com.realtek.fullfactorymenu.api.impl.PictureApi;
-import com.realtek.fullfactorymenu.preference.SeekBarPreferenceFragment;
+import static com.realtek.fullfactorymenu.api.Constant.SHOW_FRAGMENT_ADC_ADJUST;
+import static com.realtek.fullfactorymenu.api.Constant.SHOW_FRAGMENT_PAGE;
+import static com.realtek.fullfactorymenu.api.Constant.SHOW_FRAGMENT_SW_INFO;
+import static com.realtek.fullfactorymenu.api.Constant.SHOW_FRAGMENT_SYSTEM_INFO;
+import static com.realtek.fullfactorymenu.api.Constant.SHOW_FRAGMENT_WHITE_BALANCE;
+import static com.realtek.fullfactorymenu.api.Constant.SHOW_FRAGMENT_WHITE_PATTERN;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,20 +17,27 @@ import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Toast;
+
+import com.realtek.fullfactorymenu.api.impl.PictureApi;
 import com.realtek.fullfactorymenu.picture.AdcAdjustFragment;
+import com.realtek.fullfactorymenu.picture.WhiteBalanceAdjustFragment;
+import com.realtek.fullfactorymenu.preference.SeekBarPreferenceFragment;
+import com.realtek.fullfactorymenu.swInfo.SwInfoFragment;
 import com.realtek.fullfactorymenu.systemInfo.SystemInfoFragment;
 import com.realtek.fullfactorymenu.utils.AppToast;
-import android.widget.Toast;
-import com.realtek.fullfactorymenu.picture.WhiteBalanceAdjustFragment;
 import com.realtek.fullfactorymenu.utils.TvInputUtils;
 import com.realtek.fullfactorymenu.utils.TvUtils;
 
+import java.util.Stack;
+
 public class FactoryMenuActivity extends FragmentActivity {
+    private static final String TAG = FactoryMenuActivity.class.getSimpleName();
 
     private final Stack<BaseFragment> mFragments = new Stack<BaseFragment>();
-	private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,64 +48,48 @@ public class FactoryMenuActivity extends FragmentActivity {
         IntentFilter intentFilter =new IntentFilter();
         intentFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         registerReceiver(mBroadcastReceiver,intentFilter);
-        ADCFastJump();
-        UpgradeJump();
-        SystemInfoJump();
+
+        Log.d(TAG, "onCreate getIntent:" + getIntent());
+        handleIntent(getIntent());
    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Log.d(TAG, "onNewIntent:" + intent);
+        handleIntent(intent);
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
     }
 
-    private void ADCFastJump(){
-         intent = getIntent();
-         Bundle bundle =intent.getExtras();
-         if (intent.hasExtra("startADC")) {
-             int mstartADC = bundle.getInt("startADC", 0);
-             if(mstartADC==1){
-                 int currentTvInputSource = FactoryApplication.getInstance().getInputSource(TvInputUtils.getCurrentInput(this));
-                 if(TvUtils.isYpbpr(currentTvInputSource) || TvUtils.isVga(currentTvInputSource)){
-                     showMenuPage(AdcAdjustFragment.class,R.string.str_adc_adjust);
-                 }else {
-                     this.finish();
-                     AppToast.showToast(getApplicationContext(), R.string.support_reminder, Toast.LENGTH_SHORT);
-                 }
-             }
-         }else{
-           return;
-         }
+    private void handleIntent(Intent intent) {
+        if (intent == null)
+            return;
+        showFragmentPageByExtras(intent);
     }
 
-    private void UpgradeJump(){
-         intent = getIntent();
-         Bundle bundle = intent.getExtras();
-         if (intent.hasExtra("showUpgrade")) {
-             int mshowUpgrade = bundle.getInt("showUpgrade", 0);
-             if(mshowUpgrade==1){
-                 showMenuPage(SystemInfoFragment.class,R.string.str_upgrade);
-             }
-         }else if(intent.hasExtra("white_pattern")){
-            int iWhite_pattern = bundle.getInt("white_pattern", 0);
-            if(iWhite_pattern==1){
-                PictureApi.getInstance().setVideoTestPattern(1);
+    private void showFragmentPageByExtras(Intent intent) {
+        int page_index = intent.getIntExtra(SHOW_FRAGMENT_PAGE, -1);
+        if (page_index == SHOW_FRAGMENT_SW_INFO) {
+            showMenuPage(SwInfoFragment.class, R.string.str_sw_info);
+        } else if (page_index == SHOW_FRAGMENT_SYSTEM_INFO) {
+            showMenuPage(SystemInfoFragment.class, R.string.str_system_info);
+        } else if (page_index == SHOW_FRAGMENT_WHITE_BALANCE) {
+            showMenuPage(WhiteBalanceAdjustFragment.class, R.string.str_white_balance);
+        } else if (page_index == SHOW_FRAGMENT_WHITE_PATTERN) {
+            PictureApi.getInstance().setVideoTestPattern(1);
+        } else if (page_index == SHOW_FRAGMENT_ADC_ADJUST) {
+            int currentTvInputSource = FactoryApplication.getInstance().getInputSource(TvInputUtils.getCurrentInput(this));
+            if(TvUtils.isYpbpr(currentTvInputSource) || TvUtils.isVga(currentTvInputSource)){
+                showMenuPage(AdcAdjustFragment.class,R.string.str_adc_adjust);
+            }else {
+                this.finish();
+                AppToast.showToast(getApplicationContext(), R.string.support_reminder, Toast.LENGTH_SHORT);
             }
-         }else if(intent.hasExtra("white_banlance")){
-            int iwhite_banlance = bundle.getInt("white_banlance", 0);
-            if(iwhite_banlance==1){
-                     showMenuPage(WhiteBalanceAdjustFragment.class,R.string.str_white_balance);
-             }
-         }
-    }
-
-    public void SystemInfoJump() {
-        intent = getIntent();
-        Bundle bundle =intent.getExtras();
-        if (intent.hasExtra("showSystemInfo")) {
-             int mshowUpgrade = bundle.getInt("showSystemInfo", 0);
-             if(mshowUpgrade==1){
-                showMenuPage(SystemInfoFragment.class,R.string.str_system_info);
-             }
         }
     }
 
@@ -105,15 +100,15 @@ public class FactoryMenuActivity extends FragmentActivity {
             return true;
         }
         switch (keyCode) {
-        case KeyEvent.KEYCODE_ESCAPE:
-            finish();
-            return true;
-        case KeyEvent.KEYCODE_MENU:
-        case KeyEvent.KEYCODE_BACK:
-            onBackPressed();
-            return true;
-        default:
-            break;
+            case KeyEvent.KEYCODE_ESCAPE:
+                finish();
+                return true;
+            case KeyEvent.KEYCODE_MENU:
+            case KeyEvent.KEYCODE_BACK:
+                onBackPressed();
+                return true;
+            default:
+                break;
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -129,9 +124,7 @@ public class FactoryMenuActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
-        if (popCurrentPage()) {
-
-        } else {
+        if (!popCurrentPage()) {
             finish();
         }
     }
@@ -223,7 +216,9 @@ public class FactoryMenuActivity extends FragmentActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent == null ? null : intent.getAction();
+            if (intent == null)
+                return;
+            String action = intent.getAction();
 
             switch (action) {
                 case Intent.ACTION_CLOSE_SYSTEM_DIALOGS: {

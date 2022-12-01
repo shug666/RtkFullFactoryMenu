@@ -133,6 +133,7 @@ public class SoundAdjustLogic extends LogicInterface {
                     return;
                 }
                 mFactoryMainApi.setIntegerValue(TvCommonManager.COMMAND_SET_AVC_THL, progress);
+                mFactoryMainApi.setIntegerValue(TvCommonManager.COMMAND_SET_AVC_THL_MAX, progress);
                 break;
             case R.id.avc_thl_max:
                 if (progress <= mAvcThl.getProgress()){
@@ -157,6 +158,7 @@ public class SoundAdjustLogic extends LogicInterface {
                     return;
                 }
                 mFactoryMainApi.setIntegerValue(TvCommonManager.COMMAND_SET_DRC_THL, progress);
+                mFactoryMainApi.setIntegerValue(TvCommonManager.COMMAND_SET_DRC_THL_MAX, progress);
                 break;
             case R.id.drc_thl_max:
                 if (progress <= mDrcThl.getProgress()){

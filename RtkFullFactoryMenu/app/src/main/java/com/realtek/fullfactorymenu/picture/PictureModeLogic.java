@@ -1,33 +1,30 @@
 package com.realtek.fullfactorymenu.picture;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Objects;
-
-import org.xmlpull.v1.XmlPullParserException;
-
-
-import com.realtek.fullfactorymenu.FactoryApplication;
-import com.realtek.fullfactorymenu.R;
-import com.realtek.fullfactorymenu.api.impl.PictureApi;
-import com.realtek.fullfactorymenu.api.manager.TvPictureManager;
-
-import com.realtek.fullfactorymenu.logic.LogicInterface;
-import com.realtek.fullfactorymenu.preference.PreferenceContainer;
-import com.realtek.fullfactorymenu.preference.SeekBarPreference;
-import com.realtek.fullfactorymenu.preference.StatePreference;
-import com.realtek.fullfactorymenu.utils.LogHelper;
-
-import com.realtek.fullfactorymenu.utils.TvInputUtils;
-import com.realtek.fullfactorymenu.utils.TvUtils;
-import com.realtek.fullfactorymenu.utils.Utils;
-
 import android.content.res.XmlResourceParser;
 import android.media.tv.TvInputInfo;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+
+import com.realtek.fullfactorymenu.FactoryApplication;
+import com.realtek.fullfactorymenu.R;
+import com.realtek.fullfactorymenu.api.impl.PictureApi;
+import com.realtek.fullfactorymenu.api.manager.TvPictureManager;
+import com.realtek.fullfactorymenu.logic.LogicInterface;
+import com.realtek.fullfactorymenu.preference.PreferenceContainer;
+import com.realtek.fullfactorymenu.preference.SeekBarPreference;
+import com.realtek.fullfactorymenu.preference.StatePreference;
+import com.realtek.fullfactorymenu.utils.LogHelper;
+import com.realtek.fullfactorymenu.utils.TvInputUtils;
+import com.realtek.fullfactorymenu.utils.TvUtils;
+import com.realtek.fullfactorymenu.utils.Utils;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class PictureModeLogic extends LogicInterface {
 

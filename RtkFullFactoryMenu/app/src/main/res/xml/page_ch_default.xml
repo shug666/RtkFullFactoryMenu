@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.chdefault.DefaultLogic">
+    <Preference id="@+id/ch_default_factory_setting" title="@string/str_ch_default_factory_setting" />
+
+    <StatePreference id="@+id/ch_default_m_mode" title="@string/str_ch_default_m_mode" cycleEnabled="true">
+        <entry name="@string/str_off" index="0" enabled="true" />
+        <entry name="@string/str_on" index="1" enabled="true" />
+    </StatePreference>
+</PreferenceContainer>

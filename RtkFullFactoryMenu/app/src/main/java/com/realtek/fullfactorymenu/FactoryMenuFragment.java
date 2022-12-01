@@ -80,12 +80,12 @@ public class FactoryMenuFragment extends BaseFragment {
                 mFactoryFrameLayout.scrollTo(Math.round(scrollx * density), 0);
                 break;
             case KeyEvent.KEYCODE_PROG_RED:
-                if (!isHide){
-                    mFactoryFrameLayout.setVisibility(View.GONE);
-                    isHide = true;
-                } else if (isHide){
+                if (isHide){
                     mFactoryFrameLayout.setVisibility(View.VISIBLE);
                     isHide = false;
+                } else {
+                    mFactoryFrameLayout.setVisibility(View.GONE);
+                    isHide = true;
                 }
                 break;
             /*case KeyEvent.KEYCODE_INFO:

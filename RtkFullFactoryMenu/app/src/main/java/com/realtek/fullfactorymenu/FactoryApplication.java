@@ -37,13 +37,13 @@ public class FactoryApplication extends Application {
 
     private static FactoryApplication instance;
     public static final boolean CUSTOMER_IS_BOE;
-    public static final boolean CUSTOMER_IS_CHANGHONG;
+    public static final boolean CUSTOMER_IS_CH;
     public static final boolean CUSTOMER_IS_KONKA;
 
     static {
         CUSTOMER_IS_BOE = "BOEVT".equals(SystemProperties.get("ro.product.manufacturer", "unknow"));
-        CUSTOMER_IS_CHANGHONG = "Changhong".equals(SystemProperties.get("ro.product.manufacturer", "unknow"));
         CUSTOMER_IS_KONKA = "KONKA".equals(SystemProperties.get("ro.product.manufacturer", "unknow"));
+        CUSTOMER_IS_CH = "Changhong".equals(SystemProperties.get("ro.product.manufacturer", "unknow"));
     }
     private Tv mTv;
     private AQ mAq;

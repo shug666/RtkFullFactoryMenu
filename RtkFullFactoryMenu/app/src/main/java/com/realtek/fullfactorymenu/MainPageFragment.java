@@ -1,30 +1,5 @@
 package com.realtek.fullfactorymenu;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.Locale;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-
-import com.realtek.fullfactorymenu.api.impl.FactoryMainApi;
-import com.realtek.fullfactorymenu.api.manager.TvCommonManager;
-import com.realtek.fullfactorymenu.debug.DeBugPageFragment;
-import com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic;
-import com.realtek.fullfactorymenu.konka.CustomerOptionsFragment;
-import com.realtek.fullfactorymenu.oled.OledFragment;
-import com.realtek.fullfactorymenu.others.OthersPageFragment;
-import com.realtek.fullfactorymenu.panel.PanelPageFragment;
-import com.realtek.fullfactorymenu.picture.PicturePageFragment;
-import com.realtek.fullfactorymenu.preference.Preference;
-import com.realtek.fullfactorymenu.preference.PreferenceContainer;
-import com.realtek.fullfactorymenu.preference.PreferenceContainer.PreferenceItemClickListener;
-import com.realtek.fullfactorymenu.sound.SoundPageFragment;
-import com.realtek.fullfactorymenu.swInfo.SwInfoFragment;
-import com.realtek.fullfactorymenu.systemInfo.SystemInfoFragment;
-import com.realtek.fullfactorymenu.user.UserPageFragment;
-
 import android.app.AlertDialog;
 import android.app.usage.StorageStatsManager;
 import android.content.Context;
@@ -42,6 +17,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.realtek.fullfactorymenu.api.impl.FactoryMainApi;
+import com.realtek.fullfactorymenu.api.manager.TvCommonManager;
+import com.realtek.fullfactorymenu.chdefault.DefaultFragment;
+import com.realtek.fullfactorymenu.debug.DeBugPageFragment;
+import com.realtek.fullfactorymenu.oled.OledFragment;
+import com.realtek.fullfactorymenu.others.OthersPageFragment;
+import com.realtek.fullfactorymenu.panel.PanelPageFragment;
+import com.realtek.fullfactorymenu.picture.PicturePageFragment;
+import com.realtek.fullfactorymenu.preference.Preference;
+import com.realtek.fullfactorymenu.preference.PreferenceContainer;
+import com.realtek.fullfactorymenu.preference.PreferenceContainer.PreferenceItemClickListener;
+import com.realtek.fullfactorymenu.sound.SoundPageFragment;
+import com.realtek.fullfactorymenu.ssc.SSCFragment;
+import com.realtek.fullfactorymenu.swInfo.SwInfoFragment;
+import com.realtek.fullfactorymenu.systemInfo.SystemInfoFragment;
+import com.realtek.fullfactorymenu.user.UserPageFragment;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.Locale;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import vendor.realtek.rtkconfigs.V1_0.IRtkProjectConfigs;
 import vendor.realtek.rtkconfigs.V1_0.OptionalString;
 
@@ -87,7 +87,7 @@ public class MainPageFragment extends BaseFragment implements PreferenceItemClic
             mSoftwareVersion.setText(getProcessedVersion(projectName));
             mPanel.setText(mFactoryMainApi.getPanelType());
             dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
-            long time = SystemProperties.getLong("ro.build.date.utc", 0) * 1000l;
+            long time = SystemProperties.getLong("ro.build.date.utc", 0) * 1000L;
             String compileTimeText = dateFormat.format(new Date(time));
             String versionTime = getVersionTime();
             mCompileTime.setText(versionTime != null ? versionTime : compileTimeText);
@@ -212,45 +212,47 @@ public class MainPageFragment extends BaseFragment implements PreferenceItemClic
     @Override
     public void onPreferenceItemClick(Preference preference) {
         switch (preference.getId()) {
-        case R.id.page_picture:
-            showPage(PicturePageFragment.class, FactoryApplication.CUSTOMER_IS_KONKA ? R.string.str_pq_adjust : R.string.str_picture);
-            break;
-        case R.id.page_sound:
-            showPage(SoundPageFragment.class,FactoryApplication.CUSTOMER_IS_KONKA ? R.string.str_aq_adjust : R.string.str_sound);
-            break;
-        case R.id.page_panel:
-            showPage(PanelPageFragment.class,R.string.str_panel);
-            break;
-        case R.id.page_user:
-            showPage(UserPageFragment.class,FactoryApplication.CUSTOMER_IS_KONKA ? R.string.str_factory_setting : R.string.str_user);
-            break;
-        case R.id.page_debug:
-            showPage(DeBugPageFragment.class,R.string.str_debug_setting);
-            break;
-        case R.id.page_others:
-        	showPage(OthersPageFragment.class,R.string.str_others);
-        	break;
-        case R.id.reset:
-        	showResetCofirmDialog();
-        	break;
-        case R.id.android_reset:
-            showAndroidResetCofirmDialog();
-            break;
-        case R.id.system_info:
-            showPage(SystemInfoFragment.class,R.string.str_system_info);
-        break;
-        case R.id.page_customer:
-            showPage(CustomerOptionsFragment.class, R.string.str_customer);
-            break;
-        case R.id.page_oled:
-            showPage(OledFragment.class,R.string.str_OLED);
-            break;
-        //changhong 工厂菜单
-        case R.id.page_sw_info:
-            showPage(SwInfoFragment.class,R.string.str_sw_info);
-            break;
-        default:
-            break;
+            case R.id.page_sw_info:
+                showPage(SwInfoFragment.class,R.string.str_sw_info);
+                break;
+            case R.id.system_info:
+                showPage(SystemInfoFragment.class,R.string.str_system_info);
+                break;
+            case R.id.page_picture:
+                showPage(PicturePageFragment.class, R.string.str_picture);
+                break;
+            case R.id.page_sound:
+                showPage(SoundPageFragment.class, R.string.str_sound);
+                break;
+            case R.id.page_panel:
+                showPage(PanelPageFragment.class,R.string.str_panel);
+                break;
+            case R.id.page_user:
+                showPage(UserPageFragment.class, R.string.str_user);
+                break;
+            case R.id.page_debug:
+                showPage(DeBugPageFragment.class,R.string.str_debug_setting);
+                break;
+            case R.id.page_others:
+                showPage(OthersPageFragment.class, R.string.str_others);
+                break;
+            case R.id.reset:
+                showResetCofirmDialog();
+                break;
+            case R.id.android_reset:
+                showAndroidResetCofirmDialog();
+                break;
+            case R.id.page_ssc:
+                showPage(SSCFragment.class, R.string.str_ssc_title);
+                break;
+            case R.id.page_ch_default:
+                showPage(DefaultFragment.class, R.string.str_ch_default);
+                break;
+            case R.id.page_oled:
+                showPage(OledFragment.class,R.string.str_OLED);
+                break;
+            default:
+                break;
         }
     }
 

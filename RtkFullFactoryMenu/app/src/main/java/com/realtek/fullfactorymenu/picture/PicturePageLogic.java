@@ -1,18 +1,17 @@
 package com.realtek.fullfactorymenu.picture;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
 
-import com.realtek.system.RtkProjectConfigs;
 import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.R;
-import com.realtek.fullfactorymenu.api.impl.FactoryMainApi;
+import com.realtek.fullfactorymenu.api.Constant;
 import com.realtek.fullfactorymenu.api.impl.PictureApi;
 import com.realtek.fullfactorymenu.api.manager.TvCommonManager;
+import com.realtek.fullfactorymenu.api.manager.TvPictureManager;
 import com.realtek.fullfactorymenu.logic.LogicInterface;
 import com.realtek.fullfactorymenu.preference.Preference;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;
@@ -23,26 +22,27 @@ import com.realtek.fullfactorymenu.utils.LogHelper;
 import com.realtek.fullfactorymenu.utils.Predicate;
 import com.realtek.fullfactorymenu.utils.TvInputUtils;
 import com.realtek.fullfactorymenu.utils.Utils;
+import com.realtek.system.RtkProjectConfigs;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class PicturePageLogic extends LogicInterface {
 
     private static final String TAG = "PicturePageLogic";
 
     private PictureApi mPictureApi;
-    private FactoryMainApi mFactoryMainApi;
     private StatePreference mTestPattern;
-    private Preference mOverScan;
-    private int mCurrentInputSource;
-    private boolean mIsSignalStable;
+    private SumaryPreference pic_backlight;
     private SumaryPreference md5PQ;
     private SumaryPreference md5PQHDR;
     private SumaryPreference md5PQOSD;
     private SumaryPreference md5DV;
+
+    private int backlight_default;
 
     public PicturePageLogic(PreferenceContainer container) {
         super(container);
@@ -52,24 +52,29 @@ public class PicturePageLogic extends LogicInterface {
     public void init() {
 
         mPictureApi = PictureApi.getInstance();
-        mFactoryMainApi = FactoryMainApi.getInstance();
         mTestPattern = (StatePreference) mContainer.findPreferenceById(R.id.test_pattern);
         if (FactoryApplication.CUSTOMER_IS_KONKA) {
             mTestPattern.setVisibility(View.GONE);
         }
-        mOverScan = (Preference) mContainer.findPreferenceById(R.id.page_over_scan);
-        mCurrentInputSource = FactoryApplication.getInstance().getInputSource(TvInputUtils.getCurrentInput(mContext));
-        mIsSignalStable = FactoryApplication.getInstance().isSignalStable();
+        Preference mOverScan = (Preference) mContainer.findPreferenceById(R.id.page_over_scan);
+        int mCurrentInputSource = FactoryApplication.getInstance().getInputSource(TvInputUtils.getCurrentInput(mContext));
+        boolean mIsSignalStable = FactoryApplication.getInstance().isSignalStable();
         if (mCurrentInputSource == TvCommonManager.INPUT_SOURCE_DVI ||
                 mCurrentInputSource == TvCommonManager.INPUT_SOURCE_VGA ||
                 !mIsSignalStable) {
             mOverScan.setEnabled(false);
         }
+        SumaryPreference dream_time = (SumaryPreference) mContainer.findPreferenceById(R.id.dream_time);
+        pic_backlight = (SumaryPreference) mContainer.findPreferenceById(R.id.pic_backlight);
         md5PQ = (SumaryPreference) mContainer.findPreferenceById(R.id.md5_pq);
         md5PQHDR = (SumaryPreference) mContainer.findPreferenceById(R.id.md5_pq_hdr);
         md5PQOSD = (SumaryPreference) mContainer.findPreferenceById(R.id.md5_pq_osd);
         md5DV = (SumaryPreference) mContainer.findPreferenceById(R.id.md5_dv);
         initMD5();
+        backlight_default = mPictureApi.getVideoItem(TvPictureManager.PICTURE_BACKLIGHT);
+        int rtkDreamTime = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, Constant.DEFAULT_DREAM_TIME_MS);
+        dream_time.setSumary(rtkDreamTime + " ms");
+        pic_backlight.setSumary(mPictureApi.getVideoItem(TvPictureManager.PICTURE_BACKLIGHT)+"");
     }
 
     private void initMD5() {
@@ -131,6 +136,7 @@ public class PicturePageLogic extends LogicInterface {
                 mPictureApi.setVideoTestPattern(0);
             }
         }
+        mPictureApi.setVideoItem(TvPictureManager.PICTURE_BACKLIGHT, backlight_default);
     }
 
     public boolean isTestPatternEnabled() {
@@ -186,12 +192,16 @@ public class PicturePageLogic extends LogicInterface {
     public void onPreferenceIndexChange(StatePreference preference, int previous, int current) {
         LogHelper.d(TAG, "%s -> index: %d.", Utils.resourceNameOf(mContext, preference.getId()), current);
         switch (preference.getId()) {
-        case R.id.test_pattern:
-            mPictureApi.setVideoTestPattern(current);
-            handleTestPatternChanged();
-            break;
-        default:
-            break;
+            case R.id.test_pattern:
+                mPictureApi.setVideoTestPattern(current);
+                handleTestPatternChanged();
+                break;
+            case R.id.backlight_mode:
+                setBacklightMode(current);
+                pic_backlight.setSumary(mPictureApi.getVideoItem(TvPictureManager.PICTURE_BACKLIGHT)+"");
+                break;
+            default:
+                break;
         }
     }
 
@@ -200,4 +210,22 @@ public class PicturePageLogic extends LogicInterface {
 
     }
 
+    private void setBacklightMode(int current){
+        switch (current){
+            case 0:
+                mPictureApi.setVideoItem(TvPictureManager.PICTURE_BACKLIGHT, backlight_default);
+                break;
+            case 1:
+                mPictureApi.setVideoItem(TvPictureManager.PICTURE_BACKLIGHT,0);
+                break;
+            case 2:
+                mPictureApi.setVideoItem(TvPictureManager.PICTURE_BACKLIGHT,50);
+                break;
+            case 3:
+                mPictureApi.setVideoItem(TvPictureManager.PICTURE_BACKLIGHT,100);
+                break;
+            default:
+                break;
+        }
+    }
 }

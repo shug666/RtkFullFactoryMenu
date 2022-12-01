@@ -3,6 +3,8 @@
 
     <Preference id="@+id/page_sw_info" title="@string/str_sw_info" />
 
+    <Preference id="@+id/system_info" title="@string/str_system_info"/>
+
     <Preference id="@+id/page_picture" title="@string/str_picture" />
 
     <Preference id="@+id/page_sound" title="@string/str_sound" />
@@ -13,12 +15,13 @@
 
     <Preference id="@+id/page_others" title="@string/str_others" visible="false"/>
 
-    <Preference id="@+id/system_info" title="@string/str_system_info"/>
+    <Preference id="@+id/page_ssc" title="@string/str_ssc_title" />
+
+    <Preference id="@+id/page_ch_default" title="@string/str_ch_default" visible="false"/>
 
     <Preference id="@+id/reset" title="@string/str_reset" />
 
-    <Preference id="@+id/android_reset" title="@string/str_Android_reset" visible="false"/>
-
+    <Preference id="@+id/android_reset" title="@string/str_Android_reset"/>
 
     <StatePreference id="@+id/CustomerPowerOnMode" title="@string/str_CustomerPowerOnMode" cycleEnabled="true" visible="false">
         <entry name="@string/str_on" enabled="true" />

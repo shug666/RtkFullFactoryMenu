@@ -1,6 +1,8 @@
 package com.realtek.fullfactorymenu.picture;
 
-import java.util.ArrayList;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 
 import com.realtek.fullfactorymenu.FactoryMenuActivity;
 import com.realtek.fullfactorymenu.R;
@@ -10,9 +12,7 @@ import com.realtek.fullfactorymenu.preference.PreferenceFragment;
 import com.realtek.fullfactorymenu.preference.SeekBarPreference;
 import com.realtek.fullfactorymenu.preference.SeekBarPreferenceFragment;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
+import java.util.ArrayList;
 
 public class PictureModeFragment extends PreferenceFragment {
 

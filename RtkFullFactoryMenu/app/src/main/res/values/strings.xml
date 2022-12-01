@@ -29,13 +29,13 @@
     <string name="inputsource_hdmi">HDMI</string>
 
     <!-- Main -->
-    <string name="str_picture">Picture</string>
-    <string name="str_sound">Sound</string>
+    <string name="str_picture">Display</string>
+    <string name="str_sound">Sound Setting</string>
     <string name="str_panel">Panel Name</string>
     <string name="str_user">User</string>
     <string name="str_upgrade">Upgrade</string>
     <string name="str_others">Others</string>
-    <string name="str_reset">Reset</string>
+    <string name="str_reset">Factory Reset</string>
     <string name="str_Android_reset">Android Reset</string>
     <string name="str_system_info">System Info</string>
 	<string name="str_CustomerPowerOnMode">CustomerPowerOnMode</string>
@@ -68,7 +68,7 @@
     <string name="picture_mode_eco">ECO</string>
     <string name="picture_mode_pc">PC</string>
     <string name="picture_mode_cricket">CRICKET</string>
-    <string name="picture_mode_pq">PQ</string>
+    <string name="picture_mode_pq">PQ ADVANCED</string>
     <string name="picture_mode_pq_md5">PQ MD5</string>
     <string name="picture_mode_pq_hdr_md5">PQ_HDR MD5</string>
     <string name="picture_mode_pq_osd_md5">PQ_OSD MD5</string>
@@ -80,6 +80,14 @@
     <string name="picture_mode_sharpness">Sharpness</string>
     <string name="picture_mode_hue">Tint</string>
     <string name="picture_mode_backlight">Backlight</string>
+
+    <string name="picture_mode_pic_backlight">Pic Backlight</string>
+    <string name="picture_mode_backlight_mode">Backlight Mode</string>
+    <string name="picture_mode_backlight_0">0</string>
+    <string name="picture_mode_backlight_50">50</string>
+    <string name="picture_mode_backlight_100">100</string>
+    <string name="picture_mode_dream_time">Dream Time</string>
+
 
     <string name="str_non_linear">Non-linear</string>
     <string name="str_curve_type">Curve Type</string>
@@ -140,14 +148,6 @@
 
     <string name="str_non_standard_options">Non-standard Options</string>
 
-    <string name="str_ssc_adjust">SSC Adjust</string>
-    <string name="str_ssc_miuenable">MIU Enable</string>
-    <string name="str_ssc_miumodulation">MIU Modulation</string>
-    <string name="str_ssc_miupercentage">MIU Percentage(%)</string>
-    <string name="str_ssc_lvdsenable">LVDS Enable</string>
-    <string name="str_ssc_lvdsmodulation">LVDS Modulation</string>
-    <string name="str_ssc_lvdspercentage">LVDS Percentage(%)</string>
-    <string name="str_ssc_period">LVDS Period(KHz)</string>
     <string name="str_ddr_lvdspercentage">DDR Spread Percentage(%)</string>
 
     <string name="str_test_pattern">Test Pattern</string>
@@ -162,6 +162,7 @@
     <string name="sound_mode_cinema">Cinema</string>
     <string name="sound_mode_personal">Personal</string>
     <string name="sound_mode_news">News</string>
+    <string name="sound_eq_100">100HZ</string>
     <string name="sound_eq_125">125HZ</string>
     <string name="sound_eq_150">150HZ</string>
     <string name="sound_eq_250">250HZ</string>
@@ -179,9 +180,9 @@
     <string name="avc_enable">Avc Enable</string>
     <string name="avc_thl">Avc Thl</string>
     <string name="avc_thl_max">Avc Thl Max</string>
-    <string name="drc_enable">Drc Enable</string>
-    <string name="drc_thl">Drc Thl</string>
-    <string name="drc_thl_max">Drc Thl Max</string>
+    <string name="drc_enable">Drc(Avc 2) Enable</string>
+    <string name="drc_thl">Drc(Avc 2) Thl</string>
+    <string name="drc_thl_max">Drc(Avc 2) Thl Max</string>
     <string name="DigitalAudioOutVolume">Digital Out Volume</string>
     <string name="effect">Effect(HPF)</string>
     <string name="audio_delay">Audio Delay</string>
@@ -606,7 +607,7 @@
     <string name="ZAMBIA">ZAMBIA</string>
     <string name="AZERBAIJAN">AZERBAIJAN</string>
 
-    <!--changhong-->
+    <!--CH-->
     <string name="str_sw_info">Sw Info</string>
     <string name="str_max_address">MAC Address</string>
     <string name="str_device_id">Device ID</string>
@@ -621,4 +622,31 @@
     <string name="str_built_time">Built Time</string>
     <string name="str_tvConfig_version">TvConfig Version</string>
     <string name="str_tv_work_time">Tv Work Time</string>
+    <string name="str_default">default</string>
+    <!--SSC-->
+    <string name="str_ssc_title">SSC(EMC)</string>
+    <string name="str_ssc_adjust">SSC Adjust</string>
+    <string name="str_ssc_miuenable">MIU Enable</string>
+    <string name="str_ssc_miumodulation">MIU Modulation</string>
+    <string name="str_ssc_miupercentage">MIU Percentage(%)</string>
+    <string name="str_ssc_lvdsenable">LVDS Enable</string>
+    <string name="str_ssc_lvdsmodulation">LVDS Modulation</string>
+    <string name="str_ssc_lvdspercentage">LVDS Percentage(%)</string>
+    <string name="str_ssc_period">LVDS Period(KHz)</string>
+    <!--Balance-->
+    <string name="str_balance">Balance</string>
+    <string name="str_balance_cur">Current Balance</string>
+    <string name="str_balance_l">-50</string>
+    <string name="str_balance_m">0</string>
+    <string name="str_balance_r">50</string>
+    <!--Volume-->
+    <string name="str_volume">Volume</string>
+    <string name="str_volume_0">0</string>
+    <string name="str_volume_50">50</string>
+    <string name="str_volume_100">100</string>
+    <!--CH Default-->
+    <string name="str_ch_default">Default</string>
+    <string name="str_ch_default_factory_setting">Factory Setting</string>
+    <string name="str_ch_default_m_mode">M Mode</string>
+
 </resources>

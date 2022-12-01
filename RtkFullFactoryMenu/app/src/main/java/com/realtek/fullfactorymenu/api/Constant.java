@@ -2,6 +2,8 @@
 package com.realtek.fullfactorymenu.api;
 
 
+import android.text.format.DateUtils;
+
 public final class Constant {
 
     public static final int TVCA_IPPV_DIALOG_EVENT_START = 0;
@@ -248,6 +250,17 @@ public final class Constant {
     public static final String EVENT_SCHEDULER_RECORDING_START = "start";
     public static final String EVENT_SCHEDULER_RECORDING_STOP = "stop";
 
+    /**
+     * show which fragment page by Intent.getInt(SHOW_FRAGMENT_PAGE, -1);
+     */
+    public static final String SHOW_FRAGMENT_PAGE = "show_fragment_page";
+    public static final int SHOW_FRAGMENT_SW_INFO = 1;
+    public static final int SHOW_FRAGMENT_SYSTEM_INFO = 2;
+    public static final int SHOW_FRAGMENT_WHITE_BALANCE = 3;
+    public static final int SHOW_FRAGMENT_WHITE_PATTERN = 4;
+    public static final int SHOW_FRAGMENT_DESIGN_MODE = 5;
+    public static final int SHOW_FRAGMENT_ADC_ADJUST = 6;
+
     //AudioManager
     public static final int TVAUDIO_VOLUME_EVENT_START = 0;
     public static final int TVAUDIO_AP_SET_VOLUME = 1;
@@ -286,4 +299,5 @@ public final class Constant {
 
     public static final int TVTIMER_TIME_ZONE_CHG = 12;
 
+    public static final int DEFAULT_DREAM_TIME_MS = (int) (30 * DateUtils.MINUTE_IN_MILLIS);
 }

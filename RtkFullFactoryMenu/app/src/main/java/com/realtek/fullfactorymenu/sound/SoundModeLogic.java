@@ -1,6 +1,8 @@
 package com.realtek.fullfactorymenu.sound;
 
 
+import android.view.textclassifier.Log;
+
 import com.realtek.fullfactorymenu.R;
 import com.realtek.fullfactorymenu.api.impl.SoundApi;
 import com.realtek.fullfactorymenu.api.manager.TvAudioManager;
@@ -193,6 +195,7 @@ public class SoundModeLogic extends LogicInterface {
 
     @Override
     public void onPreferenceIndexChange(StatePreference preference, int previous, int current) {
+        Log.d(TAG, "onPreferenceIndexChange");
         switch (preference.getId()){
             case R.id.sound_mode:
                 mSoundApi.setAudioSoundMode(current);

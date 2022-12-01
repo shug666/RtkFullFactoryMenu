@@ -11,8 +11,6 @@
 
     <Preference id="@+id/page_over_scan" title="@string/str_over_scan" />
 
-    <Preference id="@+id/page_ssc_adjust" title="@string/str_ssc_adjust" />
-
     <StatePreference id="@+id/test_pattern" title="@string/str_test_pattern" index="0" cycleEnabled="true" >
         <entry name="@string/str_off" index="0" enabled="true" >
             <boolean name="off" value="true" />
@@ -22,11 +20,18 @@
         <entry name="@string/str_green" index="3"  enabled="true" />
         <entry name="@string/str_blue" index="4"  enabled="true" />
         <entry name="@string/str_black" index="5"  enabled="true" />
-
     </StatePreference>
     <Preference id="@+id/page_pq" title="@string/picture_mode_pq" />
     <SumaryPreference id="@+id/md5_pq" title="@string/picture_mode_pq_md5" />
     <SumaryPreference id="@+id/md5_pq_hdr" title="@string/picture_mode_pq_hdr_md5" />
     <SumaryPreference id="@+id/md5_pq_osd" title="@string/picture_mode_pq_osd_md5" />
     <SumaryPreference id="@+id/md5_dv" title="@string/picture_mode_dv_md5" />
+    <StatePreference id="@+id/backlight_mode" title="@string/picture_mode_backlight_mode" index="0" cycleEnabled="true" >
+        <entry name="@string/str_default" index="0"  enabled="true"/>
+        <entry name="@string/picture_mode_backlight_0" index="1"  enabled="true" />
+        <entry name="@string/picture_mode_backlight_50" index="2"  enabled="true" />
+        <entry name="@string/picture_mode_backlight_100" index="3"  enabled="true" />
+    </StatePreference>
+    <SumaryPreference id="@+id/pic_backlight" title="@string/picture_mode_pic_backlight" />
+    <SumaryPreference id="@+id/dream_time" title="@string/picture_mode_dream_time" />
 </PreferenceContainer>

@@ -10,7 +10,7 @@
 
     <SeekBarPreference id="@+id/avc_thl" title="@string/avc_thl" minValue="0" maxValue="128" />
 
-    <SeekBarPreference id="@+id/avc_thl_max" title="@string/avc_thl_max" minValue="0" maxValue="128" />
+    <SeekBarPreference id="@+id/avc_thl_max" title="@string/avc_thl_max" minValue="0" maxValue="128" visible="false"/>
 
     <StatePreference id="@+id/drc_enable" title="@string/drc_enable" cycleEnabled="true" >
         <entry name="@string/str_off" enabled="true" />
@@ -19,9 +19,9 @@
 
     <SeekBarPreference id="@+id/drc_thl" title="@string/drc_thl" minValue="0" maxValue="32768" />
     
-    <SeekBarPreference id="@+id/drc_thl_max" title="@string/drc_thl_max" minValue="0" maxValue="32768" />
+    <SeekBarPreference id="@+id/drc_thl_max" title="@string/drc_thl_max" minValue="0" maxValue="32768" visible="false"/>
 
-    <StatePreference id="@+id/effect" title="@string/effect" cycleEnabled="true">
+    <StatePreference id="@+id/effect" title="@string/effect" cycleEnabled="true" visible="false">
         <entry name="@string/str_off" enabled="true" />
         <entry name="@string/str_on" enabled="true" />
     </StatePreference>
@@ -30,12 +30,12 @@
 
     <SeekBarPreference id="@+id/digital_audio" title="@string/DigitalAudioOutVolume" minValue="0" maxValue="100" />
 
-    <StatePreference id="@+id/audio_nr" title="@string/audio_nr" cycleEnabled="true">
+    <StatePreference id="@+id/audio_nr" title="@string/audio_nr" cycleEnabled="true" visible="false">
         <entry name="@string/str_off" enabled="true" />
         <entry name="@string/str_on" enabled="true" />
     </StatePreference>
 
-    <StatePreference id="@+id/surround" title="@string/surround" cycleEnabled="true">
+    <StatePreference id="@+id/surround" title="@string/surround" cycleEnabled="true" visible="false">
         <entry name="@string/str_off" enabled="true" />
         <entry name="@string/str_on" enabled="true" />
     </StatePreference>

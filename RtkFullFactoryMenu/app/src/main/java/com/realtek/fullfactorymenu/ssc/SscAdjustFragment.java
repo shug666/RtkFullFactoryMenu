@@ -1,10 +1,10 @@
-package com.realtek.fullfactorymenu.picture;
+package com.realtek.fullfactorymenu.ssc;
+
+import android.os.Bundle;
 
 import com.realtek.fullfactorymenu.R;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;
 import com.realtek.fullfactorymenu.preference.PreferenceFragment;
-
-import android.os.Bundle;
 
 public class SscAdjustFragment extends PreferenceFragment {
 

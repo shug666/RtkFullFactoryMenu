@@ -11,9 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y385"
         android:layout_gravity="top|center_horizontal"
-        app:xml="@xml/page_main"
-        app:konka="@xml/page_main_konka"
-        app:changhong="@xml/page_main_changhong"/>
+        app:xml="@xml/page_main"/>
 
     <LinearLayout
         android:layout_width="match_parent"

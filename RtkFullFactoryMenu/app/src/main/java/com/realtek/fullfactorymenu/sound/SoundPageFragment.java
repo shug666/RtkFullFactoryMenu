@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.realtek.fullfactorymenu.BaseFragment;
-import com.realtek.fullfactorymenu.FactoryMenuActivity;
 import com.realtek.fullfactorymenu.FactoryMenuFragment;
 import com.realtek.fullfactorymenu.R;
 import com.realtek.fullfactorymenu.preference.Preference;
@@ -20,12 +19,9 @@ import com.realtek.fullfactorymenu.user.VolumeCurveFragment;
 
 public class SoundPageFragment extends PreferenceFragment {
 
-    private FactoryMenuActivity mFactoryMenu;
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mFactoryMenu = (FactoryMenuActivity) activity;
     }
 
     @Override
@@ -39,7 +35,6 @@ public class SoundPageFragment extends PreferenceFragment {
 
     @Override
     public void onDetach() {
-        mFactoryMenu = null;
         super.onDetach();
     }
 

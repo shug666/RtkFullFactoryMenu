@@ -36,7 +36,7 @@ public class SystemInfoFragment extends PreferenceFragment {
     private static final String PATH_RMCA;
 
     static {
-        if (FactoryApplication.CUSTOMER_IS_CHANGHONG) {
+        if (FactoryApplication.CUSTOMER_IS_CH) {
             PATH_MAC = "/CH_SYSTEM_KEYS/MAC";
             PATH_OEM = "/CH_SYSTEM_KEYS/OEM_KEY";
             PATH_NETFLIX_ESN = "/CH_SYSTEM_KEYS/NETFLIX";

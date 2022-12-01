@@ -1,4 +1,4 @@
-package com.realtek.fullfactorymenu.picture;
+package com.realtek.fullfactorymenu.ssc;
 
 import com.realtek.fullfactorymenu.R;
 import com.realtek.fullfactorymenu.api.impl.PictureApi;
@@ -12,8 +12,7 @@ import com.realtek.fullfactorymenu.utils.Utils;
 
 public class SscAdjustLogic extends LogicInterface {
 
-    private static final String TAG = "PicturePageLogic";
-
+    private static final String TAG = "SscAdjustLogic";
 
     private PictureApi mPictureApi;
     private StatePreference mLvdsEnable;
@@ -63,15 +62,15 @@ public class SscAdjustLogic extends LogicInterface {
     public void onPreferenceIndexChange(StatePreference preference, int previous, int current) {
         LogHelper.d(TAG, "%s -> index: %d.", Utils.resourceNameOf(mContext, preference.getId()), current);
         switch (preference.getId()) {
-        case R.id.ssc_lvds_enable:
-            int progress = mLvdsPercentage.getProgress();
-            mPictureApi.setLvdsEnable(current != 0, progress);
-            break;
-        case R.id.ssc_ddr_percentage:
-            mPictureApi.setIntegerValue(TvCommonManager.DDRSPREAD_RATIO, current);
-            break;
-        default:
-            break;
+            case R.id.ssc_lvds_enable:
+                int progress = mLvdsPercentage.getProgress();
+                mPictureApi.setLvdsEnable(current != 0, progress);
+                break;
+            case R.id.ssc_ddr_percentage:
+                mPictureApi.setIntegerValue(TvCommonManager.DDRSPREAD_RATIO, current);
+                break;
+            default:
+                break;
         }
     }
 
@@ -79,22 +78,17 @@ public class SscAdjustLogic extends LogicInterface {
     public void onProgressChange(SeekBarPreference preference, int progress) {
 
         switch (preference.getId()) {
-        case R.id.ssc_lvds_percentage:
-            String currentEntryName = mLvdsEnable.getCurrentEntryName();
-            boolean isEnable = false;
-            if (currentEntryName.equals("On")) {
-                isEnable = true;
-            } else if (currentEntryName.equals("Off")) {
-                isEnable = false;
-            }
-            mPictureApi.setLvdsPercentage(progress, isEnable);
-            break;
-        case R.id.ssc_lvds_period:
-            int period = progress * 10;
-            mPictureApi.setLvdsPeriod(period);
-            break;
-        default:
-            break;
+            case R.id.ssc_lvds_percentage:
+                String currentEntryName = mLvdsEnable.getCurrentEntryName();
+                boolean isEnable = currentEntryName.equals("On");
+                mPictureApi.setLvdsPercentage(progress, isEnable);
+                break;
+            case R.id.ssc_lvds_period:
+                int period = progress * 10;
+                mPictureApi.setLvdsPeriod(period);
+                break;
+            default:
+                break;
         }
     }
 
