@@ -1,4 +1,4 @@
-package com.realtek.fullfactorymenu.user;
+package com.realtek.fullfactorymenu.select;
 
 import com.realtek.fullfactorymenu.logic.LogicInterface;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;

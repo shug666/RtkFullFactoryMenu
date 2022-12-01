@@ -650,5 +650,9 @@
     <string name="str_ch_default">Default</string>
     <string name="str_ch_default_factory_setting">Factory Setting</string>
     <string name="str_ch_default_m_mode">M Mode</string>
-
+    <!--Factory Select-->
+    <string name="str_select_title">Factory Select</string>
+    <string name="str_select_Panel_Sel">Panel Sel</string>
+    <string name="str_select_panel_setting">Panel Setting</string>
+    <string name="str_select_Project">Project Select</string>
 </resources>

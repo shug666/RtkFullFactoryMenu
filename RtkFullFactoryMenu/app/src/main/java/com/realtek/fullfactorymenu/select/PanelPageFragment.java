@@ -1,4 +1,4 @@
-package com.realtek.fullfactorymenu.panel;
+package com.realtek.fullfactorymenu.select;
 
 import android.os.Bundle;
 

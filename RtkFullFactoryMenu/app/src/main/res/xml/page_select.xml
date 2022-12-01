@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.select.SelectLogic">
+    <SumaryPreference id="@+id/panel_Sel" title="@string/str_select_Panel_Sel" />
+    <Preference id="@+id/page_panel_setting" title="@string/str_select_panel_setting" />
+    <Preference id="@+id/page_Project" title="@string/str_select_Project" />
+</PreferenceContainer>

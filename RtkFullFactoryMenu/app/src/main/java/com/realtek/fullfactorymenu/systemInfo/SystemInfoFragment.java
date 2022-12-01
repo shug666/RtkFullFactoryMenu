@@ -1,22 +1,29 @@
 package com.realtek.fullfactorymenu.systemInfo;
 
-import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.*;
+import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_Attestation;
+import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_BOOTLOGO;
+import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_CI_KEY;
+import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_HDCP;
+import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_HDCP22;
+import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_MAC;
+import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_Netflix_ESN;
+import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_OEM;
+import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_PLAYREADY;
+import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_PQ;
+import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_RMCA;
+import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_WIDEVINE;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.os.storage.StorageManager;
+import android.os.storage.VolumeInfo;
 
 import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.R;
 import com.realtek.fullfactorymenu.preference.Preference;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;
 import com.realtek.fullfactorymenu.preference.PreferenceFragment;
-import com.realtek.fullfactorymenu.preference.SumaryPreference;
 import com.realtek.fullfactorymenu.utils.Tools;
-import com.realtek.fullfactorymenu.utils.Utils;
-
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.os.storage.StorageManager;
-import android.os.storage.VolumeInfo;
 
 import java.util.List;
 

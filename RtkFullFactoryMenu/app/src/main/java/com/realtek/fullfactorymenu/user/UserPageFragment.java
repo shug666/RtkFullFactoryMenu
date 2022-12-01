@@ -10,10 +10,10 @@ import com.realtek.fullfactorymenu.BaseFragment;
 import com.realtek.fullfactorymenu.FactoryMenuFragment;
 import com.realtek.fullfactorymenu.R;
 import com.realtek.fullfactorymenu.api.impl.UserApi;
-import com.realtek.fullfactorymenu.panel.PanelPageFragment;
 import com.realtek.fullfactorymenu.preference.Preference;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;
 import com.realtek.fullfactorymenu.preference.PreferenceFragment;
+import com.realtek.fullfactorymenu.select.PanelPageFragment;
 
 public class UserPageFragment extends PreferenceFragment{
 
@@ -62,9 +62,6 @@ public class UserPageFragment extends PreferenceFragment{
            break;
        case R.id.volume_curve:
            showPage(VolumeCurveFragment.class, R.string.str_volume_curve);
-           break;
-       case R.id.project_id:
-           showPage(ProjectIdFragment.class, R.string.str_project_id);
            break;
        case R.id.logcat_tools:
            showPage(LogPageFragment.class, R.string.str_log_tool);

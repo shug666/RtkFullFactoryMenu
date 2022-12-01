@@ -1,6 +1,4 @@
-package com.realtek.fullfactorymenu.panel;
-
-
+package com.realtek.fullfactorymenu.select;
 
 import com.realtek.fullfactorymenu.api.impl.PanelApi;
 import com.realtek.fullfactorymenu.api.manager.TvCommonManager;
@@ -54,31 +52,31 @@ public class PanelLogic extends LogicInterface {
     public void onPreferenceIndexChange(StatePreference preference, int previous, int current) {
 
         switch (preference.getId()){
-        case R.id.ti_mode:
-            if (mTiMode != null) {
-                mPanelApi.setIntegerValue(TvCommonManager.COMMAND_SET_TI_MODE, current);
-            }
-            break;
-        case R.id.bit_mode:
-            if (mBitMode != null) {
-                mPanelApi.setIntegerValue(TvCommonManager.BIT_MODE, current);
-            }
-            break;
-        case R.id.swap_mode:
-            if (mSwapMode != null) {
-                mPanelApi.setIntegerValue(TvCommonManager.COMMAND_SET_SWAP_MODE, current);
-            }
-            break;
-        case R.id.mirror_mode:
-            if (mMirrorMode != null) {
-                mPanelApi.setIntegerValue(TvCommonManager.MIRROR_MODE, current);
-            }
-            break;
-        case R.id.dual_mode:
-            if (mDualMode != null) {
-                mPanelApi.setIntegerValue(TvCommonManager.DUAL_MODE, current);
-            }
-            break;
+            case R.id.ti_mode:
+                if (mTiMode != null) {
+                    mPanelApi.setIntegerValue(TvCommonManager.COMMAND_SET_TI_MODE, current);
+                }
+                break;
+            case R.id.bit_mode:
+                if (mBitMode != null) {
+                    mPanelApi.setIntegerValue(TvCommonManager.BIT_MODE, current);
+                }
+                break;
+            case R.id.swap_mode:
+                if (mSwapMode != null) {
+                    mPanelApi.setIntegerValue(TvCommonManager.COMMAND_SET_SWAP_MODE, current);
+                }
+                break;
+            case R.id.mirror_mode:
+                if (mMirrorMode != null) {
+                    mPanelApi.setIntegerValue(TvCommonManager.MIRROR_MODE, current);
+                }
+                break;
+            case R.id.dual_mode:
+                if (mDualMode != null) {
+                    mPanelApi.setIntegerValue(TvCommonManager.DUAL_MODE, current);
+                }
+                break;
         }
 
     }

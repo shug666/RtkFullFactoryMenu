@@ -24,11 +24,11 @@ import com.realtek.fullfactorymenu.chdefault.DefaultFragment;
 import com.realtek.fullfactorymenu.debug.DeBugPageFragment;
 import com.realtek.fullfactorymenu.oled.OledFragment;
 import com.realtek.fullfactorymenu.others.OthersPageFragment;
-import com.realtek.fullfactorymenu.panel.PanelPageFragment;
 import com.realtek.fullfactorymenu.picture.PicturePageFragment;
 import com.realtek.fullfactorymenu.preference.Preference;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer.PreferenceItemClickListener;
+import com.realtek.fullfactorymenu.select.SelectFragment;
 import com.realtek.fullfactorymenu.sound.SoundPageFragment;
 import com.realtek.fullfactorymenu.ssc.SSCFragment;
 import com.realtek.fullfactorymenu.swInfo.SwInfoFragment;
@@ -215,6 +215,9 @@ public class MainPageFragment extends BaseFragment implements PreferenceItemClic
             case R.id.page_sw_info:
                 showPage(SwInfoFragment.class,R.string.str_sw_info);
                 break;
+            case R.id.select:
+                showPage(SelectFragment.class,R.string.str_select_title);
+                break;
             case R.id.system_info:
                 showPage(SystemInfoFragment.class,R.string.str_system_info);
                 break;
@@ -223,9 +226,6 @@ public class MainPageFragment extends BaseFragment implements PreferenceItemClic
                 break;
             case R.id.page_sound:
                 showPage(SoundPageFragment.class, R.string.str_sound);
-                break;
-            case R.id.page_panel:
-                showPage(PanelPageFragment.class,R.string.str_panel);
                 break;
             case R.id.page_user:
                 showPage(UserPageFragment.class, R.string.str_user);

@@ -3,13 +3,13 @@
 
     <Preference id="@+id/page_sw_info" title="@string/str_sw_info" />
 
+    <Preference id="@+id/select" title="@string/str_select_title"/>
+
     <Preference id="@+id/system_info" title="@string/str_system_info"/>
 
     <Preference id="@+id/page_picture" title="@string/str_picture" />
 
     <Preference id="@+id/page_sound" title="@string/str_sound" />
-
-    <Preference id="@+id/page_panel" title="@string/str_panel" />
 
     <Preference id="@+id/page_user" title="@string/str_user" />
 

@@ -1,4 +1,4 @@
-package com.realtek.fullfactorymenu.user;
+package com.realtek.fullfactorymenu.select;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
