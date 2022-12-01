@@ -15,18 +15,18 @@
 
     <SeekBarPreference id="@+id/sound_bass" title="@string/sound_bass" minValue="-20" maxValue="20" />
 
-    <SeekBarPreference id="@+id/sound_eq_0" title="@string/sound_eq_125" minValue="-20" maxValue="20" />
+    <SeekBarPreference id="@+id/sound_eq_0" title="@string/sound_eq_125" minValue="-20" maxValue="20" visible="false"/>
 
-    <SeekBarPreference id="@+id/sound_eq_1" title="@string/sound_eq_250" minValue="-20" maxValue="20" />
+    <SeekBarPreference id="@+id/sound_eq_1" title="@string/sound_eq_250" minValue="-20" maxValue="20" visible="false"/>
 
-    <SeekBarPreference id="@+id/sound_eq_2" title="@string/sound_eq_500" minValue="-20" maxValue="20" />
+    <SeekBarPreference id="@+id/sound_eq_2" title="@string/sound_eq_500" minValue="-20" maxValue="20" visible="false"/>
 
-    <SeekBarPreference id="@+id/sound_eq_3" title="@string/sound_eq_1000" minValue="-20" maxValue="20" />
+    <SeekBarPreference id="@+id/sound_eq_3" title="@string/sound_eq_1000" minValue="-20" maxValue="20" visible="false"/>
 
-    <SeekBarPreference id="@+id/sound_eq_4" title="@string/sound_eq_2000" minValue="-20" maxValue="20" />
+    <SeekBarPreference id="@+id/sound_eq_4" title="@string/sound_eq_2000" minValue="-20" maxValue="20" visible="false"/>
 
-    <SeekBarPreference id="@+id/sound_eq_5" title="@string/sound_eq_4000" minValue="-20" maxValue="20" visible="false" />
+    <SeekBarPreference id="@+id/sound_eq_5" title="@string/sound_eq_4000" minValue="-20" maxValue="20" visible="false"/>
 
-    <SeekBarPreference id="@+id/sound_eq_6" title="@string/sound_eq_12000" minValue="-20" maxValue="20" visible="false" />
+    <SeekBarPreference id="@+id/sound_eq_6" title="@string/sound_eq_12000" minValue="-20" maxValue="20" visible="false"/>
 
 </PreferenceContainer>

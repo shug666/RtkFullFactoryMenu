@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.api.manager.TvAudioManager;
+import com.realtek.tv.SoundEqualList;
 
 public class SoundApi {
     private static final String TAG = "SoundApi";
@@ -106,6 +107,14 @@ public class SoundApi {
 
     public void setBassLevel(int bLevel) {
         mFactoryApplication.getAq().setBassLevel(bLevel);
+    }
+
+    public SoundEqualList getEqualList() {
+        return mFactoryApplication.getAq().getEqualList();
+    }
+
+    public void setEqualLoudValue(int band, int gain) {
+        mFactoryApplication.getAq().setEqualLoudValue(band, gain);
     }
 
 }
