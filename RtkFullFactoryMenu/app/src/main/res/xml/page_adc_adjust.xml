@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.picture.AdcAdjustLogic">
+
+    <StatePreference id="@+id/input_source" title="@string/inputsource" cycleEnabled="true">
+        <entry name="@string/str_adc_source_vga" index ="0" enabled="true" />
+        <entry name="@string/str_adc_source_ypbpr1_sd" index ="1"  enabled="false" />
+        <entry name="@string/str_adc_source_ypbpr1_hd" index ="2"  enabled="true" />
+        <entry name="@string/str_adc_source_scart" index ="3"  enabled="false" />
+        <entry name="@string/str_adc_source_ypbpr2_sd" index ="4"  enabled="false" />
+        <entry name="@string/str_adc_source_ypbpr2_hd" index ="5"  enabled="true" />
+        <entry name="@string/str_adc_source_ypbpr3_sd" index ="6"  enabled="false" />
+        <entry name="@string/str_adc_source_ypbpr3_hd" index ="7"  enabled="true" />
+    </StatePreference>
+
+    <SeekBarPreference id="@+id/r_gain" title="@string/str_r_gain" minValue="0" maxValue="2048" />
+
+    <SeekBarPreference id="@+id/g_gain" title="@string/str_g_gain" minValue="0" maxValue="2048" />
+
+    <SeekBarPreference id="@+id/b_gain" title="@string/str_b_gain" minValue="0" maxValue="2048" />
+
+    <SeekBarPreference id="@+id/r_offset" title="@string/str_r_offset" minValue="0" maxValue="2048" />
+
+    <SeekBarPreference id="@+id/g_offset" title="@string/str_g_offset" minValue="0" maxValue="2048" />
+
+    <SeekBarPreference id="@+id/b_offset" title="@string/str_b_offset" minValue="0" maxValue="2048" />
+
+    <SeekBarPreference id="@+id/phase" title="@string/str_phase" minValue="0" maxValue="127" />
+
+    <Preference id="@+id/auto_tune" title="@string/str_auto_tune" />
+
+</PreferenceContainer>

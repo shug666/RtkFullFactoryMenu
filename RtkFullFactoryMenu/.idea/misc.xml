@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/JHSProject/FactoryTools-GTV/FactoryToolsGTV/src/main/res/layout/activity_main.xml" value="0.2861552028218695" />
+        <entry key="..\:/JHSProject/FactoryTools-GTV/FactoryToolsGTV/src/main/res/layout/fragment_file_list.xml" value="0.2861552028218695" />
+        <entry key="..\:/JHSProject/FactoryTools-GTV/RtkFactoryMenu/src/main/res/layout/fragment_system.xml" value="0.3099647266313933" />
+        <entry key="..\:/JHSProject/FactoryTools-GTV/TvFactoryGTV/src/main/res/layout/layout_main.xml" value="0.3099647266313933" />
+        <entry key="..\:/JHSProject/FactoryTools-GTV/app/src/main/res/layout/activity_aging.xml" value="0.2861552028218695" />
+        <entry key="..\:/JHSProject/FactoryTools-GTV/app/src/main/res/layout/activity_main.xml" value="0.2861552028218695" />
+        <entry key="..\:/JHSProject/FactoryTools-GTV/app/src/main/res/layout/activity_project_idactivity.xml" value="0.2861552028218695" />
+        <entry key="..\:/JHSProject/FactoryTools-GTV/app/src/main/res/layout/factory_show.xml" value="0.2980599647266314" />
+        <entry key="..\:/JHSProject/FactoryTools-GTV/app/src/main/res/layout/factorytest.xml" value="0.2861552028218695" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.26404494" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

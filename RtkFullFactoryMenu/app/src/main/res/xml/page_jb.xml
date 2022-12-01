@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.oled.JBLogic">
+
+    <Preference id="@+id/Run_JB" title="@string/str_Run_JB" />
+
+    <StatePreference id="@+id/JB_enable" title="@string/str_JB_enable" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <SeekBarPreference id="@+id/JB_User_Mode" title="@string/JB_User_Mode" minValue="0" maxValue="2000" />
+
+    <SeekBarPreference id="@+id/JB_Retail_Mode" title="@string/JB_Retail_Mode" minValue="0" maxValue="2000" />
+
+    <SeekBarPreference id="@+id/Cooling_Interval" title="@string/Cooling_Interval" minValue="0" maxValue="120" />
+
+</PreferenceContainer>

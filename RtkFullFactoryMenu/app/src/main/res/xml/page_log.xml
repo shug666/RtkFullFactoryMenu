@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.user.LogLogic">
+
+    <StatePreference id="@+id/item_log_options" title="@string/str_log_Options" cycleEnabled="true">
+        <entry name="@string/str_logcat" enabled="true" />
+        <entry name="@string/str_kernel" enabled="true" />
+        <entry name="@string/str_recovery" enabled="false" />
+        <entry name="@string/str_anr" enabled="true" />
+        <entry name="@string/str_tombstone" enabled="true" />
+        <entry name="@string/str_logcat_kernel" enabled="true" />
+        <entry name="@string/str_all" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/item_log_onoff" title="@string/str_log_on_off" cycleEnabled="true">
+        <entry name="@string/str_on" enabled="true" />
+        <entry name="@string/str_off" enabled="true" />
+    </StatePreference>
+
+    <Preference id="@+id/item_log_reboot" title="@string/str_reboot" />
+</PreferenceContainer>

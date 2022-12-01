@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.realtek.fullfactorymenu.preference.PreferenceContainer
+        android:id="@+id/main_preference_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y385"
+        android:layout_gravity="top|center_horizontal"
+        app:xml="@xml/page_main"
+        app:konka="@xml/page_main_konka"
+        app:changhong="@xml/page_main_changhong"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:layout_gravity="center|bottom">
+
+        <LinearLayout style="@style/InfoLayout" >
+            <TextView
+                android:id="@+id/pcb_title"
+                style="@style/InfoTitle"
+                android:text="@string/str_pcb_info" />
+
+            <TextView
+                android:id="@+id/tv_pcb_info_label"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                style="@style/InfoLabel" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/InfoLayout" >
+            <TextView
+                android:id="@+id/sw_title"
+                style="@style/InfoTitle"
+                android:text="@string/str_software_version" />
+
+            <TextView
+                android:id="@+id/tv_software_version_label"
+                style="@style/InfoLabel" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/InfoLayout" >
+            <TextView
+                android:id="@+id/panel_title"
+                style="@style/InfoTitle"
+                android:text="@string/str_panel" />
+
+            <TextView
+                android:id="@+id/tv_panel_label"
+                style="@style/InfoLabel" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/InfoLayout" >
+            <TextView
+                android:id="@+id/compile_title"
+                style="@style/InfoTitle"
+                android:text="@string/str_compile_time" />
+
+            <TextView
+                android:id="@+id/tv_compile_time_label"
+                style="@style/InfoLabel" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/InfoLayout" >
+            <TextView
+                android:id="@+id/par_name_title"
+                style="@style/InfoTitle"
+                android:text="@string/str_pra_name" />
+
+            <TextView
+                android:id="@+id/tv_praName_label"
+                style="@style/InfoLabel" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/InfoLayout" >
+            <TextView
+                android:id="@+id/pro_title"
+                style="@style/InfoTitle"
+                android:text="@string/str_pro_name" />
+
+            <TextView
+                android:id="@+id/tv_proName_label"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                style="@style/InfoLabel" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/InfoLayout" >
+            <TextView
+                android:id="@+id/customer_title"
+                style="@style/InfoTitle"
+                android:text="@string/str_cus_name" />
+
+            <com.realtek.fullfactorymenu.preference.MarqueeTextView
+                android:id="@+id/tv_cusName_label"
+                style="@style/InfoLabel" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/InfoLayout" >
+            <TextView
+                android:id="@+id/pre_title"
+                style="@style/InfoTitle"
+                android:text="@string/str_pre_version" />
+
+            <TextView
+                android:id="@+id/tv_preVersion_label"
+                style="@style/InfoLabel" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/InfoLayout"
+            android:id="@+id/container_ddr"
+            android:visibility="gone">
+            <TextView
+                style="@style/InfoTitle"
+                android:text="@string/str_ddr_emmc" />
+
+            <TextView
+                android:id="@+id/tv_ddr_label"
+                style="@style/InfoLabel" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/InfoLayout"
+            android:visibility="gone">
+            <TextView
+                style="@style/InfoTitle"
+                android:text="@string/str_connect_time" />
+
+            <TextView
+                android:id="@+id/tv_connect_time"
+                style="@style/InfoLabel" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1mm"
+        android:layout_marginBottom="@dimen/y10"
+        android:layout_marginEnd="@dimen/x5"
+        android:layout_marginStart="@dimen/x5"
+        android:background="#40aaaaaa"
+        tools:ignore="InOrMmUsage" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="bottom|center_vertical">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/y5"
+                android:duplicateParentState="true"
+                android:src="@drawable/ic_btn_r"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="true"
+                android:text="@string/str_red_hide"
+                android:textSize="@dimen/x16"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/y5"
+                android:duplicateParentState="true"
+                android:src="@drawable/ic_btn_g"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="true"
+                android:text="@string/str_green_move"
+                android:textSize="@dimen/x16"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

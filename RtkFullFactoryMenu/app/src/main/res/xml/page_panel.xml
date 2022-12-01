@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.panel.PanelLogic"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <if condition="true" product="rtd2841a" >
+
+        <StatePreference id="@+id/ti_mode" title="@string/str_ti_mode" cycleEnabled="true">
+            <entry name="@string/str_off" enabled="true" />
+            <entry name="@string/str_on" enabled="true" />
+        </StatePreference>
+
+        <StatePreference id="@+id/bit_mode" title="@string/str_bit_mode" cycleEnabled="true">
+            <entry name="@string/str_10bits" index = "0" enabled="true" />
+            <entry name="@string/str_8bits" index = "1"  enabled="true" />
+            <entry name="@string/str_6bits" index = "2"  enabled="true" />
+        </StatePreference>
+
+        <StatePreference id="@+id/swap_mode" title="@string/str_swap_mode" cycleEnabled="true">
+            <entry name="@string/str_off" enabled="true" />
+            <entry name="@string/str_on" enabled="true" />
+        </StatePreference>
+
+    </if>
+
+    <StatePreference id="@+id/mirror_mode" title="@string/str_mirror_mode" cycleEnabled="true">
+        <entry name="@string/str_mirror_normal" index = "0" enabled="true" />
+        <entry name="@string/str_mirror_mirror" index = "1" enabled="true" />
+        <entry name="@string/str_mirror_flip" index = "2" enabled="false" />
+        <entry name="@string/str_mirror_maf" index = "3" enabled="false" />
+    </StatePreference>
+
+    <if condition="true" product="rtd2851a" >
+        <StatePreference id="@+id/dual_mode" title="@string/str_dual_mode" cycleEnabled="true">
+            <entry name="@string/str_off" enabled="true" />
+            <entry name="@string/str_on" enabled="true" />
+        </StatePreference>
+    </if>
+</PreferenceContainer>

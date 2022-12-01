@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.sound.SoundModeLogic">
+
+    <StatePreference id="@+id/sound_mode" title="@string/str_sound_mode" cycleEnabled="true">
+        <entry name="@string/sound_mode_news" index="0" enabled="true" />
+        <entry name="@string/sound_mode_standard" index="1" enabled="true" />
+        <entry name="@string/sound_mode_cinema" index="2" enabled="true" />
+        <entry name="@string/sound_mode_music" index="3" enabled="true" />
+        <entry name="@string/sound_mode_personal" index="4" enabled="true" >
+            <boolean name="user" value="true" />
+        </entry>
+    </StatePreference>
+
+    <SeekBarPreference id="@+id/sound_eq_0" title="@string/sound_eq_125" minValue="-20" maxValue="20" />
+
+    <SeekBarPreference id="@+id/sound_eq_1" title="@string/sound_eq_250" minValue="-20" maxValue="20" />
+
+    <SeekBarPreference id="@+id/sound_eq_2" title="@string/sound_eq_500" minValue="-20" maxValue="20" />
+
+    <SeekBarPreference id="@+id/sound_eq_3" title="@string/sound_eq_1000" minValue="-20" maxValue="20" />
+
+    <SeekBarPreference id="@+id/sound_eq_4" title="@string/sound_eq_2000" minValue="-20" maxValue="20" />
+
+    <SeekBarPreference id="@+id/sound_eq_5" title="@string/sound_eq_4000" minValue="-20" maxValue="20" visible="false" />
+
+    <SeekBarPreference id="@+id/sound_eq_6" title="@string/sound_eq_12000" minValue="-20" maxValue="20" visible="false" />
+
+</PreferenceContainer>

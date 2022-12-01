@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PreferenceRoot" >
+
+    <TextView
+        android:id="@+id/preference_title"
+        style="@style/PreferenceTitle.StatePreference" />
+
+    <ImageView
+        android:id="@+id/previous_state"
+        android:layout_width="@dimen/x21"
+        android:layout_height="@dimen/x36"
+        android:visibility="invisible"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:id="@+id/preference_value"
+        style="@style/PreferenceValue.StatePreference" />
+
+    <ImageView
+        android:id="@+id/next_state"
+        android:layout_width="@dimen/x21"
+        android:layout_height="@dimen/x36"
+        android:visibility="gone"
+        android:contentDescription="@null" />
+
+</LinearLayout>

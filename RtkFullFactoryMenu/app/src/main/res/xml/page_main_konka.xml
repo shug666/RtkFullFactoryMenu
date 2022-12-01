@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.toptech.tvfactory.MainLogic">
+
+    <Preference id="@+id/page_customer" title="@string/str_customer" />
+
+    <Preference id="@+id/page_picture" title="@string/str_pq_adjust" />
+
+    <if condition="true" product="rtd6748" >
+        <Preference id="@+id/page_oled" title="@string/str_OLED"/>
+    </if>
+
+    <Preference id="@+id/page_sound" title="@string/str_aq_adjust" />
+
+    <Preference id="@+id/page_user" title="@string/str_factory_setting" />
+
+    <Preference id="@+id/page_debug" title="@string/str_debug_setting" />
+
+    <Preference id="@+id/page_keysOption" title="@string/str_keys_options" />
+
+    <Preference id="@+id/usb_upgrade" title="@string/str_usb_upgrade"/>
+
+    <Preference id="@+id/android_reset" title="@string/str_Android_reset"/>
+
+</PreferenceContainer>

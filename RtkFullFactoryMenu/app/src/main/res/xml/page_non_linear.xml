@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.picture.NonLinearLogic">
+
+    <StatePreference id="@+id/input_source" title="@string/inputsource" cycleEnabled="true" />
+
+    <StatePreference id="@+id/curve_type" title="@string/str_curve_type" index="0" cycleEnabled="true">
+        <entry name="@string/curve_type_volume"  index = "0" enabled="false" />
+        <entry name="@string/curve_type_brightness"  index = "1" enabled="true" />
+        <entry name="@string/curve_type_contrast" index = "2" enabled="true" />
+        <entry name="@string/curve_type_color"  index = "3" enabled="true" />
+        <entry name="@string/curve_type_sharpness" index = "4" enabled="true" />
+        <entry name="@string/curve_type_hue"  index = "5" enabled="true" />
+        <entry name="@string/curve_type_backlight"  index = "6" enabled="false" />
+    </StatePreference>
+
+    <SeekBarPreference id="@+id/osd_0" title="@string/str_osd_0" minValue="0" maxValue="255" />
+
+    <SeekBarPreference id="@+id/osd_25" title="@string/str_osd_25" minValue="0" maxValue="255" />
+
+    <SeekBarPreference id="@+id/osd_50" title="@string/str_osd_50" minValue="0" maxValue="255" />
+
+    <SeekBarPreference id="@+id/osd_75" title="@string/str_osd_75" minValue="0" maxValue="255" />
+
+    <SeekBarPreference id="@+id/osd_100" title="@string/str_osd_100" minValue="0" maxValue="255" />
+
+</PreferenceContainer>

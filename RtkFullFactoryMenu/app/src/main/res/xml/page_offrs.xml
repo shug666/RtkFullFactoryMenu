@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.oled.OffRSLogic">
+
+    <Preference id="@+id/RunOffRS" title="@string/str_RunOffRS" />
+
+    <StatePreference id="@+id/OffRS_enable" title="@string/str_OffRS_enable" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <SeekBarPreference id="@+id/OffRS_Interval" title="@string/OffRS_Interval" minValue="0" maxValue="12" />
+
+</PreferenceContainer>

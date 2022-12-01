@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.sound.SoundAdjustLogic">
+
+    <SeekBarPreference id="@+id/audio_out_volume" title="@string/audio_out_volume" minValue="-72" maxValue="46" />
+
+    <StatePreference id="@+id/avc_enable" title="@string/avc_enable" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <SeekBarPreference id="@+id/avc_thl" title="@string/avc_thl" minValue="0" maxValue="128" />
+
+    <SeekBarPreference id="@+id/avc_thl_max" title="@string/avc_thl_max" minValue="0" maxValue="128" />
+
+    <StatePreference id="@+id/drc_enable" title="@string/drc_enable" cycleEnabled="true" >
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <SeekBarPreference id="@+id/drc_thl" title="@string/drc_thl" minValue="0" maxValue="32768" />
+    
+    <SeekBarPreference id="@+id/drc_thl_max" title="@string/drc_thl_max" minValue="0" maxValue="32768" />
+
+    <StatePreference id="@+id/effect" title="@string/effect" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <SeekBarPreference id="@+id/audio_delay" title="@string/audio_delay" minValue="0" maxValue="200" />
+
+    <SeekBarPreference id="@+id/digital_audio" title="@string/DigitalAudioOutVolume" minValue="0" maxValue="100" />
+
+    <StatePreference id="@+id/audio_nr" title="@string/audio_nr" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/surround" title="@string/surround" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/audio_out_channel" title="@string/audio_out_channel" cycleEnabled="true">
+        <entry name="@string/tv_speaker" enabled="true" />
+        <entry name="@string/spdif" enabled="true" />
+    </StatePreference>
+</PreferenceContainer>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.user.VolumeCurveLogic">
+
+    <StatePreference id = "@+id/volume_source" title="@string/volume_source">
+        <entry name="@string/source_atv" enabled="true" />
+        <entry name="@string/source_dtv" enabled="true" />
+        <entry name="@string/source_av" enabled="true" />
+        <entry name="@string/source_ypbpr" enabled="true" />
+        <entry name="@string/source_vga" enabled="true" />
+        <entry name="@string/source_hdmi" enabled="true" />
+
+    </StatePreference>
+
+    <SeekBarPreference id="@+id/preScale" title="@string/preScale" minValue="-100" maxValue="100" />
+
+    <SeekBarPreference id="@+id/volume_0" title="@string/volume_0" minValue="-576" maxValue="383" />
+
+    <SeekBarPreference id="@+id/volume_10" title="@string/volume_10" minValue="-576" maxValue="383" />
+
+    <SeekBarPreference id="@+id/volume_20" title="@string/volume_20" minValue="-576" maxValue="383" />
+
+    <SeekBarPreference id="@+id/volume_30" title="@string/volume_30" minValue="-576" maxValue="383" />
+
+    <SeekBarPreference id="@+id/volume_40" title="@string/volume_40" minValue="-576" maxValue="383" />
+
+    <SeekBarPreference id="@+id/volume_50" title="@string/volume_50" minValue="-576" maxValue="383" />
+
+    <SeekBarPreference id="@+id/volume_60" title="@string/volume_60" minValue="-576" maxValue="383" />
+
+    <SeekBarPreference id="@+id/volume_70" title="@string/volume_70" minValue="-576" maxValue="383" />
+
+    <SeekBarPreference id="@+id/volume_80" title="@string/volume_80" minValue="-576" maxValue="383" />
+
+    <SeekBarPreference id="@+id/volume_90" title="@string/volume_90" minValue="-576" maxValue="383" />
+
+    <SeekBarPreference id="@+id/volume_100" title="@string/volume_100" minValue="-576" maxValue="383" />
+
+</PreferenceContainer>

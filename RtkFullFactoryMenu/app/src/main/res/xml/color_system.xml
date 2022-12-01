@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="color_system">
+        <item value="UNKNOWN" />                            <!-- AVD_VIDEO_STD_UNKNOWN -->
+        <item value="@string/colorSystem_ntsc" />       <!-- AVD_VIDEO_STD_NTSC -->
+        <item value="@string/colorSystem_pal" />        <!-- AVD_VIDEO_STD_PAL -->
+        <item value="@string/colorSystem_pal" />        <!-- AVD_VIDEO_STD_PAL_NC_358 -->
+        <item value="@string/colorSystem_pal" />        <!-- AVD_VIDEO_STD_PAL_M -->
+        <item value="@string/colorSystem_secam" />      <!-- AVD_VIDEO_STD_SECAM -->
+        <item value="@string/colorSystem_ntsc" />       <!-- AVD_VIDEO_STD_NTSC_443 -->
+        <item value="@string/colorSystem_pal" />        <!-- AVD_VIDEO_STD_PAL_60 -->
+        <item value="UNKNOWN" />                            <!-- AVD_VIDEO_STD_UNKNOWN_525 -->
+        <item value="UNKNOWN" />                            <!-- AVD_VIDEO_STD_UNKNOWN_625 -->
+        <item value="@string/colorSystem_secam" />      <!-- AVD_VIDEO_STD_SECAM_LL -->
+        <item value="@string/colorSystem_auto" />       <!-- AUTO -->
+    </string-array>
+
+</resources>

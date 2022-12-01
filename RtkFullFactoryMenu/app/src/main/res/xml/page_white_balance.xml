@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.picture.WhiteBalanceAdjustLogic">
+
+    <StatePreference id="@+id/input_source" title="@string/inputsource" cycleEnabled="true" />
+
+    <StatePreference id="@+id/color_temp" title="@string/str_color_temp" index="0" cycleEnabled="true">
+        <entry name="@string/str_color_temp_user" index ="0" enabled="false" />
+        <entry name="@string/str_color_temp_standard" index ="1"  enabled="true" />
+        <entry name="@string/str_color_temp_warmer" index ="2"  enabled="true" />
+        <entry name="@string/str_color_temp_warm" index ="3"  enabled="true" />
+        <entry name="@string/str_color_temp_cool" index ="4"  enabled="true" />
+        <entry name="@string/str_color_temp_cooler" index ="5"  enabled="true" />
+
+    </StatePreference>
+
+
+    <SeekBarPreference id="@+id/r_gain" title="@string/str_r_gain" minValue="0" maxValue="1023" />
+
+    <SeekBarPreference id="@+id/g_gain" title="@string/str_g_gain" minValue="0"  maxValue="1023" />
+
+    <SeekBarPreference id="@+id/b_gain" title="@string/str_b_gain" minValue="0"  maxValue="1023" />
+
+    <SeekBarPreference id="@+id/r_offset" title="@string/str_r_offset" minValue="0"  maxValue="1023" />
+
+    <SeekBarPreference id="@+id/g_offset" title="@string/str_g_offset" minValue="0"  maxValue="1023" />
+
+    <SeekBarPreference id="@+id/b_offset" title="@string/str_b_offset" minValue="0"  maxValue="1023" />
+
+    <Preference id="@+id/copy_data_to_allsource" title="@string/str_color_temp_copytosource" visible="true" />
+
+</PreferenceContainer>

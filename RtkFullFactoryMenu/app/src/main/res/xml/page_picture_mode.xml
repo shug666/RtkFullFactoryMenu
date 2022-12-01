@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.picture.PictureModeLogic">
+
+    <StatePreference id="@+id/input_source" title="@string/inputsource" cycleEnabled="true" />
+
+    <StatePreference id="@+id/picture_mode" title="@string/str_picture_mode" cycleEnabled="true">
+        <entry name="@string/picture_mode_personal" index="0" enabled="true" />
+        <entry name="@string/picture_mode_vivid" index="1" enabled="true" />
+        <entry name="@string/picture_mode_std" index="2" enabled="false" />
+        <entry name="@string/picture_mode_gentle" index="3" enabled="true" />
+        <entry name="@string/picture_mode_movie" index="4" enabled="true" />
+        <entry name="@string/picture_mode_sport" index="5" enabled="true" />
+        <entry name="@string/picture_mode_game" index="6" enabled="false" />
+        <entry name="@string/picture_mode_eye_comfort" index="7" enabled="true" />
+        <entry name="@string/picture_mode_dynamic" index="8" enabled="true" />
+        <entry name="@string/picture_mode_standard" index="9" enabled="true" />
+        <entry name="@string/picture_mode_mild" index="10" enabled="false" />
+        <entry name="@string/picture_mode_eco" index="11" enabled="false" />
+        <entry name="@string/picture_mode_pc" index="12" enabled="false" />
+        <entry name="@string/picture_mode_cricket" index="13" enabled="false" />
+    </StatePreference>
+
+    <SeekBarPreference id="@+id/pm_brightness" title="@string/picture_mode_brightness" minValue="0" maxValue="100" />
+
+    <SeekBarPreference id="@+id/pm_contrast" title="@string/picture_mode_contrast" minValue="0" maxValue="100" />
+
+    <SeekBarPreference id="@+id/pm_color" title="@string/picture_mode_color" minValue="0" maxValue="100" />
+
+    <SeekBarPreference id="@+id/pm_sharpness" title="@string/picture_mode_sharpness" minValue="0" maxValue="100" />
+
+    <SeekBarPreference id="@+id/pm_hue" title="@string/picture_mode_hue" minValue="0" maxValue="100" />
+
+    <SeekBarPreference id="@+id/pm_backlight" title="@string/picture_mode_backlight" minValue="0" maxValue="100" />
+
+</PreferenceContainer>

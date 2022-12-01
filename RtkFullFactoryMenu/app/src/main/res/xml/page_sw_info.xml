@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.swInfo.SwInfoLogic">
+    <SumaryPreference id="@+id/display_project_id" title="@string/str_project_id" />
+    <SumaryPreference id="@+id/display_panel" title="@string/str_panel_info" />
+    <SumaryPreference id="@+id/display_mac_address" title="@string/str_max_address" />
+    <SumaryPreference id="@+id/display_device_id" title="@string/str_device_id" />
+    <SumaryPreference id="@+id/display_hdcp_key1" title="@string/str_hdcp_key1" />
+    <SumaryPreference id="@+id/display_hdcp_key2" title="@string/str_hdcp_key2" />
+    <SumaryPreference id="@+id/display_widevine_key" title="@string/info_wideVine_display" />
+    <SumaryPreference id="@+id/display_att_key" title="@string/str_att_key" />
+    <SumaryPreference id="@+id/display_mgkid_key" title="@string/str_netflix_esn_info" />
+    <SumaryPreference id="@+id/display_playready_key" title="@string/info_playready_display" />
+    <SumaryPreference id="@+id/display_ci_key" title="@string/str_ci_info" />
+    <SumaryPreference id="@+id/display_oem_key" title="@string/str_oem_key_info" />
+    <SumaryPreference id="@+id/display_rmca_key" title="@string/str_rmca_info" />
+    <SumaryPreference id="@+id/display_google_sn" title="@string/str_google_sn" />
+    <SumaryPreference id="@+id/display_ip" title="@string/str_ip_info" />
+    <SumaryPreference id="@+id/display_pq_md5" title="@string/picture_mode_pq_md5" />
+    <SumaryPreference id="@+id/display_pq_hdr_md5" title="@string/picture_mode_pq_hdr_md5" />
+    <SumaryPreference id="@+id/display_pq_osd_md5" title="@string/picture_mode_pq_osd_md5" />
+    <SumaryPreference id="@+id/display_dv_md5" title="@string/picture_mode_dv_md5" />
+    <SumaryPreference id="@+id/display_pq_version" title="@string/str_pq_version" />
+    <SumaryPreference id="@+id/display_aq_version" title="@string/str_aq_version" />
+    <SumaryPreference id="@+id/display_sw_version" title="@string/str_sw_version" />
+    <SumaryPreference id="@+id/display_built_time" title="@string/str_built_time" />
+    <SumaryPreference id="@+id/display_tvConfig_version" title="@string/str_tvConfig_version" />
+    <SumaryPreference id="@+id/display_tv_work_time" title="@string/str_tv_work_time" />
+</PreferenceContainer>

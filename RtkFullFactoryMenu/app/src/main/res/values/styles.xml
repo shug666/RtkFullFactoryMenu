@@ -1,0 +1,161 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppBaseTheme" parent="android:Theme.Translucent.NoTitleBar.Fullscreen">
+        <item name="preferenceStyle">@style/PreferenceStyle.Default</item>
+    </style>
+
+    <style name="AppTheme" parent="AppBaseTheme"></style>
+
+    <style name="FactoryMenuAnimation" parent="@android:style/Animation.Translucent">
+        <item name="android:windowEnterAnimation">@anim/activity_open</item>
+        <item name="android:windowExitAnimation">@anim/activity_close</item>
+    </style>
+
+    <style name="AppTheme.FactoryMenuActivity" parent="@style/AppTheme">
+        <item name="android:windowAnimationStyle">@style/FactoryMenuAnimation</item>
+    </style>
+
+    <style name="PageTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/y50</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/y25</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">@dimen/x10</item>
+        <item name="android:paddingEnd">@dimen/x10</item>
+        <item name="android:layout_margin">@dimen/y5</item>
+    </style>
+
+    <style name="PreferenceRoot">
+        <item name="android:descendantFocusability">blocksDescendants</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/normal_item_height</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingStart">@dimen/x20</item>
+        <item name="android:paddingEnd">@dimen/x20</item>
+        <item name="android:weightSum">100</item>
+    </style>
+
+    <style name="PreferenceTitle">
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">100</item>
+        <item name="android:marqueeRepeatLimit">5</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/preference_text</item>
+        <item name="android:textDirection">locale</item>
+        <item name="android:textSize">@dimen/preference_text_size</item>
+    </style>
+
+    <style name="PreferenceTitle.SumaryPreference" parent="@style/PreferenceTitle">
+        <item name="android:layout_weight">40</item>
+    </style>
+
+    <style name="PreferenceTitle.StatePreference" parent="@style/PreferenceTitle">
+        <item name="android:layout_weight">75</item>
+    </style>
+
+    <style name="PreferenceTitle.SeekBar" parent="@style/PreferenceTitle">
+        <item name="android:layout_weight">40</item>
+    </style>
+
+    <style name="PreferenceValue">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">25</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:textColor">@color/preference_text</item>
+        <item name="android:textSize">@dimen/preference_text_size</item>
+        <item name="android:gravity">end</item>
+        <item name="android:paddingStart">@dimen/x5</item>
+        <item name="android:paddingEnd">@dimen/x5</item>
+        <item name="android:duplicateParentState">true</item>
+    </style>
+
+    <style name="PreferenceValue.SumaryPreference" parent="@style/PreferenceValue">
+        <item name="android:layout_weight">60</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="PreferenceValue.SumaryValue" parent="@style/PreferenceValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_weight">0</item>
+        <item name="android:ellipsize">start</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:gravity">start</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+    </style>
+
+    <style name="PreferenceValue.StatePreference" parent="@style/PreferenceValue">
+        <item name="android:layout_weight">25</item>
+    </style>
+
+    <style name="PreferenceValue.SeekBarPreference" parent="@style/PreferenceValue">
+        <item name="android:layout_weight">25</item>
+    </style>
+
+    <style name="PreferenceSeekBar">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">35</item>
+        <item name="android:max">100</item>
+        <item name="android:thumbOffset">0dp</item>
+        <item name="android:maxHeight">@dimen/y8</item>
+        <item name="android:minHeight">@dimen/y8</item>
+        <item name="android:thumb">@null</item>
+        <item name="android:progressDrawable">@drawable/seekbar_progress_drawable</item>
+        <item name="android:duplicateParentState">true</item>
+    </style>
+
+    <style name="PreferenceStyle">
+        <item name="background">@drawable/normal_focus_selector</item>
+    </style>
+
+    <style name="PreferenceStyle.Default" parent="@style/PreferenceStyle"></style>
+
+    <style name="InfoLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/info_item_height</item>
+        <item name="android:focusable">false</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">@dimen/x5</item>
+        <item name="android:paddingEnd">@dimen/x5</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="InfoTitle">
+        <item name="android:layout_width">@dimen/x0</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">0.4</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:textColor">#a0cccccc</item>
+        <item name="android:textSize">@dimen/y16</item>
+    </style>
+
+    <style name="InfoLabel">
+        <item name="android:layout_width">@dimen/x0</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">0.6</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:textColor">#a0cccccc</item>
+        <item name="android:textSize">@dimen/y16</item>
+    </style>
+
+    <style name="TranslucentActivity" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+</resources>

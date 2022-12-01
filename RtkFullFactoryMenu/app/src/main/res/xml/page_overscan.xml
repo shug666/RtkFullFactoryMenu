@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.picture.OverScanLogic">
+
+    <StatePreference id="@+id/input_source" title="@string/inputsource" cycleEnabled="true" />
+
+    <SeekBarPreference id="@+id/h_position" title="@string/str_h_position" minValue="0" maxValue="200" progress="0" />
+
+    <SeekBarPreference id="@+id/h_size" title="@string/str_h_size" minValue="0" maxValue="200" progress="0" />
+
+    <SeekBarPreference id="@+id/v_position" title="@string/str_v_position" minValue="0" maxValue="200" progress="0" />
+
+    <SeekBarPreference id="@+id/v_size" title="@string/str_v_size" minValue="0" maxValue="200" progress="0" />
+
+</PreferenceContainer>

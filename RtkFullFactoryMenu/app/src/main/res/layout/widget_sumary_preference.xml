@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PreferenceRoot" >
+
+    <TextView
+        android:id="@+id/preference_title"
+        style="@style/PreferenceTitle.SumaryPreference" />
+
+    <Space
+        android:layout_width="@dimen/x21"
+        android:layout_height="@dimen/x36" />
+    <LinearLayout
+        style="@style/PreferenceValue.SumaryPreference"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/preference_value"
+            style="@style/PreferenceValue.SumaryValue" />
+    </LinearLayout>
+
+    <!--<Space-->
+    <!--    android:layout_width="@dimen/x11"-->
+    <!--    android:layout_height="@dimen/x36" />-->
+
+</LinearLayout>

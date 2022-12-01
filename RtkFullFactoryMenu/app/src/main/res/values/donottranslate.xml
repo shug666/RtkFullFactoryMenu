@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- @hide DO NOT TRANSLATE. -->
+
+    <string name="atv_soundSystem_BG" translatable="false">BG</string>
+    <string name="atv_soundSystem_I" translatable="false">I</string>
+    <string name="atv_soundSystem_DK" translatable="false">DK</string>
+    <string name="atv_soundSystem_M" translatable="false">M</string>
+    <string name="atv_soundSystem_L" translatable="false">L</string>
+
+    <string name="colorSystem_auto" translatable="false">AUTO</string>
+    <string name="colorSystem_pal" translatable="false">PAL</string>
+    <string name="colorSystem_ntsc" translatable="false">NTSC</string>
+    <string name="colorSystem_secam" translatable="false">SECAM</string>
+
+</resources>

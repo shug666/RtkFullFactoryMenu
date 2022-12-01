@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.sound.SoundPageLogic">
+
+    <Preference id="@+id/page_sound_mode" title="@string/str_sound_mode"/>
+
+    <Preference id="@+id/page_sound_adjust" title="@string/str_sound_adjust" />
+
+    <Preference id="@+id/page_volume_curve" title="@string/str_volume_curve"/>
+
+</PreferenceContainer>

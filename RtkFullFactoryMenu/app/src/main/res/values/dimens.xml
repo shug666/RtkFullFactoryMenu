@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="seekbar_radius">@dimen/y3</dimen>
+
+    <dimen name="main_content_width">@dimen/x480</dimen>
+    <dimen name="normal_item_height">@dimen/y42</dimen>
+
+    <dimen name="preference_text_size">@dimen/y14</dimen>
+    <dimen name="info_item_height">@dimen/y25</dimen>
+</resources>

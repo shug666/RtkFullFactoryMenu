@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.user.UserLogic">
+
+    <StatePreference id="@+id/test_pattern" title="@string/str_test_pattern" index="0" cycleEnabled="true" visible="false">
+        <entry name="@string/str_off" index="0" enabled="true" >
+            <boolean name="off" value="true" />
+        </entry>
+        <entry name="@string/str_white" index="1"  enabled="true" />
+        <entry name="@string/str_red" index="2"  enabled="true" />
+        <entry name="@string/str_green" index="3"  enabled="true" />
+        <entry name="@string/str_blue" index="4"  enabled="true" />
+        <entry name="@string/str_black" index="5"  enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/mute_color" title="@string/str_mute_color" cycleEnabled="true">
+        <entry name="@string/str_black" enabled="true" />
+        <entry name="@string/str_white" enabled="true" />
+        <entry name="@string/str_red" enabled="true" />
+        <entry name="@string/str_green" enabled="true" />
+        <entry name="@string/str_blue" enabled="true" />
+        <entry name="@string/str_user" enabled="false" />
+    </StatePreference>
+
+    <Preference id="@+id/volume_curve" title="@string/str_volume_curve" visible="false"/>
+
+    <StatePreference id="@+id/power_mode" title="@string/str_power_mode" cycleEnabled="true">
+        <entry name="@string/power_direct" enabled="true" />
+        <entry name="@string/power_secondary" enabled="true" />
+        <entry name="@string/power_memory" enabled="true" />
+    </StatePreference>
+
+    <Preference id="@+id/user_panel" title="@string/str_panel_setting"  visible="false"/>
+
+    <StatePreference id="@+id/display_logo" title="@string/str_display_logo" cycleEnabled="true">
+        <entry name="@string/str_on" enabled="true" />
+        <entry name="@string/str_off" enabled="true" />
+    </StatePreference>
+
+    <Preference id="@+id/AgingMode" title="@string/str_AgingMode" />
+
+    <StatePreference id="@+id/factory_test" title="@string/str_factory_test" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <Preference id="@+id/program_preset" title="@string/str_program_preset" />
+
+    <Preference id="@+id/project_id" title="@string/str_project_id" />
+
+
+    <StatePreference id="@+id/pvr_enable" title="@string/str_pvr_enable" cycleEnabled="true" visible="false">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/pvr_record_all" title="@string/str_pvr_record_all" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/uart_enable" title="@string/str_uart_enable" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/BOE_cmd_enable" title="@string/str_uart_cmd_enable" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <Preference id="@+id/m_mode" title="@string/str_mmode" />
+
+    <StatePreference id="@+id/remote_control_enable" title="@string/str_remote_control_enable" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <Preference id="@+id/logcat_tools" title="@string/str_log_tool" />
+
+    <StatePreference id="@+id/teletext_enable" title="@string/str_teletext_enable" cycleEnabled="true" visible="false">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/dbxcommand_enable" title="@string/dbx_command_mode" cycleEnabled="true" visible="false">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+
+    <SumaryPreference id="@+id/TotalRunTimt" title="@string/str_total_time" cycleEnabled="true" visible="false"/>
+
+    <Preference id="@+id/wifi_list" title="@string/str_wifi_list"/>
+
+    <Preference id="@+id/bluetooth_list" title="@string/str_bluetooth_list"/>
+
+    <Preference id="@+id/bash_board" title="@string/str_dashboard"/>
+
+</PreferenceContainer>

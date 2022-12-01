@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="config_activityAnimationDuration">750</integer>
+
+    <integer name="config_fragmentEnterAnimationDuration">0</integer>
+    <integer name="config_fragmentExitAnimationDuration">0</integer>
+
+</resources>

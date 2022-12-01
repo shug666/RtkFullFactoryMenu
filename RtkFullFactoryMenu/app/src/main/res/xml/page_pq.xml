@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.picture.PQLogic">
+
+    <SeekBarPreference id="@+id/comb_brightness" title="@string/str_comb_brightness" minValue="0" maxValue="255" />
+
+    <SeekBarPreference id="@+id/comb_contrast" title="@string/str_comb_contrast" minValue="0" maxValue="255" />
+
+    <SeekBarPreference id="@+id/comb_saturation" title="@string/str_comb_saturation" minValue="0" maxValue="255" />
+</PreferenceContainer>

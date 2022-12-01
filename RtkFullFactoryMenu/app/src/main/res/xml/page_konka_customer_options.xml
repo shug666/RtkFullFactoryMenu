@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.konka.CustomerOptionsLogic">
+
+    <SumaryPreference id="@+id/item_id" title="@string/str_customer_id" />
+
+    <SumaryPreference id="@+id/item_osd_language" title="@string/str_osd_language" />
+
+    <SumaryPreference id="@+id/item_country" title="@string/str_country" />
+
+    <SumaryPreference id="@+id/item_teletext" title="@string/str_teletext_enable"/>
+
+    <Preference id="@+id/item_logo_update" title="@string/str_logo_update" />
+
+    <Preference id="@+id/item_2nd_logo_update" title="@string/str_logo2_update" />
+
+    <StatePreference id="@+id/item_power_mode" title="@string/str_power_mode" cycleEnabled="true">
+        <entry name="@string/power_direct" enabled="true" />
+        <entry name="@string/power_secondary" enabled="true" />
+        <entry name="@string/power_memory" enabled="true" />
+    </StatePreference>
+</PreferenceContainer>

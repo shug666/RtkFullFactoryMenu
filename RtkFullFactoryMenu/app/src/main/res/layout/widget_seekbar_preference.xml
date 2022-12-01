@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PreferenceRoot" >
+
+    <TextView
+        android:id="@+id/preference_title"
+        style="@style/PreferenceTitle.SeekBar" />
+
+    <SeekBar
+        android:id="@+id/progress_bar"
+        style="@style/PreferenceSeekBar" />
+
+    <Space
+        android:layout_width="@dimen/x21"
+        android:layout_height="@dimen/x36" />
+
+    <TextView
+        android:id="@+id/preference_value"
+        style="@style/PreferenceValue.SeekBarPreference" />
+
+</LinearLayout>

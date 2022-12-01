@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic">
+
+    <SumaryPreference id="@+id/check_network" title="@string/item_check_network" />
+
+    <SumaryPreference id="@+id/upgrede_all_key" title="@string/item_all_key_upgrade" />
+
+    <SumaryPreference id="@+id/upgrede_mac_manual" title="@string/item_mac_upgrade_manual" />
+
+    <SumaryPreference id="@+id/upgrede_mac" title="@string/item_mac_upgrade" />
+
+    <SumaryPreference id="@+id/upgrade_oem" title="@string/item_oem_upgrade" />
+
+    <SumaryPreference id="@+id/upgrade_netflix_esn" title="@string/item_netflix_esn_upgrade" />
+
+    <SumaryPreference id="@+id/upgrade_playready" title="@string/item_playready_upgrade" />
+
+    <SumaryPreference id="@+id/upgrade_hdcp" title="@string/item_hdcp_upgrade" />
+
+    <SumaryPreference id="@+id/upgrade_hdcp2" title="@string/item_hdcp2.2_upgrade" />
+
+    <SumaryPreference id="@+id/upgrade_widevine" title="@string/item_widevine_upgrade" />
+
+    <SumaryPreference id="@+id/upgrade_ci" title="@string/item_ci_key_upgrade" />
+
+    <SumaryPreference id="@+id/upgrade_attestation" title="@string/item_attestation_key_upgrade" />
+
+    <SumaryPreference id="@+id/upgrade_rmca" title="@string/item_rmca_upgrade" />
+
+    <SumaryPreference id="@+id/upgrade_pq" title="@string/item_pq_upgrade" />
+
+    <SumaryPreference id="@+id/upgrade_aq" title="@string/item_aq_upgrade" />
+
+    <SumaryPreference id="@+id/upgrade_bootlogo" title="@string/item_upgrade_bootlogo" />
+
+    <SumaryPreference id="@+id/upgrade_paneldata" title="@string/item_paneldata_upgrade" />
+
+    <SumaryPreference id="@+id/upgrade_customer" title="@string/item_customer_upgrade" />
+
+</PreferenceContainer>

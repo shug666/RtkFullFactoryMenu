@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.debug.DebugLogic">
+
+    <StatePreference id="@+id/uart_enable" title="@string/str_uart_enable" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/others_watchDog" title="@string/item_watch_dog" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/pvr_record_all" title="@string/str_pvr_record_all" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <Preference id="@+id/logcat_tools" title="@string/str_log_tool" />
+
+
+</PreferenceContainer>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.oled.OledLogic">
+
+    <Preference id="@+id/page_offrs" title="@string/str_OffRS_Mode" />
+
+    <Preference id="@+id/page_JB" title="@string/str_JB_Mode" />
+
+    <StatePreference id="@+id/str_OffRSOrJb_enable" title="@string/str_offRSorJB_Menu" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/TPC" title="@string/str_TPC" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/CPC" title="@string/str_CPC" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/LEA" title="@string/str_LEA" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/Orbit" title="@string/str_Orbit" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/PLC" title="@string/str_PLC" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/PQ_Bypass" title="@string/str_PQ_Bypass" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <SumaryPreference id="@+id/Total_Running_Time" title="@string/Total_Running_Time" />
+    <SumaryPreference id="@+id/OffRS_Executed" title="@string/OffRS_Executed" />
+    <SumaryPreference id="@+id/OffRS_Last_Execution" title="@string/OffRS_Last_Execution" />
+    <SumaryPreference id="@+id/JB_Executed" title="@string/JB_Executed" />
+    <SumaryPreference id="@+id/JB_Last_Execution" title="@string/JB_Last_Execution" />
+    <SumaryPreference id="@+id/Panel_Matching" title="@string/Panel_Matching" />
+
+</PreferenceContainer>
