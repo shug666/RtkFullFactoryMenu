@@ -3,16 +3,26 @@
 -dontskipnonpubliclibraryclasses
 -dontpreverify
 -verbose
-#-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
 
 -keepclasseswithmembernames class * {
     native <methods>;
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
 }
 
 -keepclassmembers class * extends android.app.Activity {
@@ -27,8 +37,9 @@
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
 }
-
--keep public class * extends com.toptech.tvfactory.logic.LogicInterface
--keep class * extends com.toptech.tvfactory.logic.LogicInterface {
+-keep public class * extends com.realtek.fullfactorymenu.logic.LogicInterface
+-keep class * extends com.realtek.fullfactorymenu.logic.LogicInterface {
     *;
 }
+-dontwarn org.apache.**
+-keep class org.apache.** { *; }

@@ -11,11 +11,11 @@ LOCAL_PRIVATE_PLATFORM_APIS := true
 LOCAL_AIDL_INCLUDES += $(LOCAL_PATH)/src/
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
-LOCAL_SRC_FILES += $(call all-Iaidl-files-under, src/com/toptech/tvfactory/api/listener)
+LOCAL_SRC_FILES += $(call all-Iaidl-files-under, src/com/realtek/fullfactorymenu/api/listener)
 
 LOCAL_MODULE_TAGS := optional
 
-LOCAL_PACKAGE_NAME := TopTvFactory
+LOCAL_PACKAGE_NAME := RtkFullFactoryMenu
 
 LOCAL_CERTIFICATE := platform
 
