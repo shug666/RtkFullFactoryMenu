@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+
 public class FactoryMenuFragment extends BaseFragment {
 
     private TextView mPageTitle;

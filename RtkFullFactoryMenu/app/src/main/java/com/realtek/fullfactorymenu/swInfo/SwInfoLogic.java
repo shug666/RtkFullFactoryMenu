@@ -87,6 +87,7 @@ public class SwInfoLogic extends LogicInterface {
 
         mRtkProjectConfigs = RtkProjectConfigs.getInstance();
         mUpgradeApi = UpgradeApi.getInstance();
+        mFactory = FactoryApplication.getInstance().getFactory();
 
         project.setSumary(getProjectId());
         panel.setSumary(getPanelType());
@@ -311,7 +312,6 @@ public class SwInfoLogic extends LogicInterface {
     }
 
     private String getPanel(){
-        mFactory = FactoryApplication.getInstance().getFactory();
         byte[] bytes = mFactory.readConfigFile("/mnt/vendor/factory/env.txt");
 
         if (bytes == null || bytes.length == 0){
