@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.realtek.fullfactorymenu.preference.PreferenceContainer
         android:id="@+id/main_preference_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y385"
+        android:layout_height="match_parent"
         android:layout_gravity="top|center_horizontal"
+        android:layout_above="@+id/bottom_layout"
         app:xml="@xml/page_main"/>
 
     <LinearLayout
+        android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_alignParentBottom="true"
         android:gravity="bottom"
         android:layout_gravity="center|bottom">
 
@@ -134,60 +136,58 @@
                 android:id="@+id/tv_connect_time"
                 style="@style/InfoLabel" />
         </LinearLayout>
-    </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1mm"
-        android:layout_marginBottom="@dimen/y10"
-        android:layout_marginEnd="@dimen/x5"
-        android:layout_marginStart="@dimen/x5"
-        android:background="#40aaaaaa"
-        tools:ignore="InOrMmUsage" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1mm"
+            android:layout_margin="@dimen/x5"
+            android:background="#40aaaaaa"
+            tools:ignore="InOrMmUsage" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="bottom|center_vertical">
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/x2"
             android:gravity="center">
-            <ImageView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/y5"
-                android:duplicateParentState="true"
-                android:src="@drawable/ic_btn_r"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:duplicateParentState="true"
-                android:text="@string/str_red_hide"
-                android:textSize="@dimen/x16"/>
+                android:layout_weight="1"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/y5"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/ic_btn_r"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
+                    android:text="@string/str_red_hide"
+                    android:textSize="@dimen/x16"/>
 
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/y5"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/ic_btn_g"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
+                    android:text="@string/str_green_move"
+                    android:textSize="@dimen/x16"/>
+
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/y5"
-                android:duplicateParentState="true"
-                android:src="@drawable/ic_btn_g"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:duplicateParentState="true"
-                android:text="@string/str_green_move"
-                android:textSize="@dimen/x16"/>
-
-        </LinearLayout>
-
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

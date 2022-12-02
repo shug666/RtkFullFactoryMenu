@@ -98,13 +98,11 @@ public class Preference extends LinearLayout implements OnClickListener, OnHover
     @Override
     public boolean onHover(View view, MotionEvent event) {
         switch (event.getAction()) {
-        case MotionEvent.ACTION_HOVER_ENTER:
-            requestFocus();
-            break;
-        case MotionEvent.ACTION_HOVER_EXIT:
-            break;
-        default:
-            break;
+            case MotionEvent.ACTION_HOVER_ENTER:
+                requestFocus();
+                break;
+            default:
+                break;
         }
         return false;
     }
