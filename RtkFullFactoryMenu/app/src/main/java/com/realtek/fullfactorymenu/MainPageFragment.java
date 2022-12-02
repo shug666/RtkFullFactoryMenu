@@ -215,7 +215,7 @@ public class MainPageFragment extends BaseFragment implements PreferenceItemClic
             case R.id.page_sw_info:
                 showPage(SwInfoFragment.class,R.string.str_sw_info);
                 break;
-            case R.id.select:
+            case R.id.factory_select:
                 showPage(SelectFragment.class,R.string.str_select_title);
                 break;
             case R.id.system_info:
