@@ -11,7 +11,6 @@ import android.view.View;
 
 import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.R;
-import com.realtek.fullfactorymenu.api.impl.FactoryMainApi;
 import com.realtek.fullfactorymenu.api.impl.UpgradeApi;
 import com.realtek.fullfactorymenu.logic.LogicInterface;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;
@@ -23,10 +22,14 @@ import com.realtek.fullfactorymenu.utils.Utils;
 import com.realtek.system.RtkProjectConfigs;
 import com.realtek.tv.Factory;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -110,7 +113,12 @@ public class SwInfoLogic extends LogicInterface {
 
         swVersion.setSumary(getSwVersion());
         builtTime.setSumary(getBuiltTime());
-        tvConfigVersion.setSumary(getTvConfigVersion());
+        if (FactoryApplication.CUSTOMER_IS_CH) {
+            tvConfigVersion.setVisibility(View.GONE);
+        } else {
+            tvConfigVersion.setVisibility(View.VISIBLE);
+            tvConfigVersion.setSumary(getTvConfigVersion());
+        }
 
 
         if(Build.VERSION.SDK_INT == Build.VERSION_CODES.R){
@@ -143,20 +151,57 @@ public class SwInfoLogic extends LogicInterface {
         return "unknown";
     }
 
+    /**
+     * getTvConfig Version or Build Time
+     * TvConfig Version: mnt/vendor/tvconfigs/Readme.txt
+     * @return
+     */
     private String getTvConfigVersion() {
-        String pgn = getProjectName();
-
-        if (FactoryApplication.CUSTOMER_IS_BVT) {
-            return pgn;
+        InputStreamReader inputStreamReader = null;
+        FileInputStream inputStream = null;
+        BufferedReader reader = null;
+        try {
+            inputStream = new FileInputStream("mnt/vendor/tvconfigs/Readme.txt");
+            inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+            reader = new BufferedReader(inputStreamReader);
+            String line;
+            try {
+                line = reader.readLine();
+                Log.d(TAG, "line:" + line);
+                if (!TextUtils.isEmpty(line)) {
+                    return line;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e(TAG, "Error:" + e);
+            }
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+            Log.e(TAG, "Error:" + e1);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (inputStreamReader != null) {
+                try {
+                    inputStreamReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        String[] items = pgn.split("_");
-        int length = items.length;
-        if ((length -3) >= 0) {
-            StringBuilder day = new StringBuilder(items[length-2]).insert(4,"-").insert(7,"-").append(" ");
-            StringBuilder time = new StringBuilder(items[length-1]).insert(2,":").insert(5,":");
-            return String.valueOf(day.append(time));
-        }
-        return pgn;
+        return SystemProperties.get("ro.vendor.build.date", "unknow");
     }
 
     private String getBuiltTime(){
