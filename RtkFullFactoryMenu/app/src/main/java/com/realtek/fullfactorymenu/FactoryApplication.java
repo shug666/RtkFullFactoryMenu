@@ -15,6 +15,7 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import com.exttv.tv.ExtTv;
+import com.realtek.fullfactorymenu.utils.ByteTransformUtils;
 import com.realtek.tv.AQ;
 import com.realtek.tv.DTVVideoAvailability;
 import com.realtek.tv.Factory;
@@ -28,22 +29,29 @@ import com.realtek.fullfactorymenu.utils.Utils;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.*;
+import static com.realtek.fullfactorymenu.utils.Constants.MANUFACTURER_BVT;
+import static com.realtek.fullfactorymenu.utils.Constants.MANUFACTURER_CH;
+import static com.realtek.fullfactorymenu.utils.Constants.MANUFACTURER_KK;
 
 public class FactoryApplication extends Application {
     private static final String TAG = "FactoryApplication";
 
     private static FactoryApplication instance;
-    public static final boolean CUSTOMER_IS_BOE;
+    public static final boolean CUSTOMER_IS_BVT;
     public static final boolean CUSTOMER_IS_CH;
-    public static final boolean CUSTOMER_IS_KONKA;
+    public static final boolean CUSTOMER_IS_KK;
 
     static {
-        CUSTOMER_IS_BOE = "BOEVT".equals(SystemProperties.get("ro.product.manufacturer", "unknow"));
-        CUSTOMER_IS_KONKA = "KONKA".equals(SystemProperties.get("ro.product.manufacturer", "unknow"));
-        CUSTOMER_IS_CH = "Changhong".equals(SystemProperties.get("ro.product.manufacturer", "unknow"));
+        CUSTOMER_IS_BVT = MANUFACTURER_BVT.equals(ByteTransformUtils.parseAscii(
+                SystemProperties.get("ro.product.manufacturer", "unknow").toUpperCase(Locale.ENGLISH)));
+        CUSTOMER_IS_CH = MANUFACTURER_CH.equals(ByteTransformUtils.parseAscii(
+                SystemProperties.get("ro.product.manufacturer", "unknow").toUpperCase(Locale.ENGLISH)));
+        CUSTOMER_IS_KK = MANUFACTURER_KK.equals(ByteTransformUtils.parseAscii(
+                SystemProperties.get("ro.product.manufacturer", "unknow").toUpperCase(Locale.ENGLISH)));
     }
     private Tv mTv;
     private AQ mAq;

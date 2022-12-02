@@ -34,7 +34,7 @@ public class MainLogic extends LogicInterface {
 
     @Override
     public void init() {
-        if (FactoryApplication.CUSTOMER_IS_KONKA) {
+        if (FactoryApplication.CUSTOMER_IS_KK) {
             return;
         }
         mCustomerPowerOnMode = (StatePreference) mContainer.findPreferenceById(R.id.CustomerPowerOnMode);

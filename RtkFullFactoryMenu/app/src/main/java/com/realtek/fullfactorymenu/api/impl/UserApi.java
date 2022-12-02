@@ -139,12 +139,12 @@ public class UserApi implements Callback {
 
     public boolean getBOEOnOff() {
         int result = isBackground(mContext);
-        return result == 1 ? true : false;
+        return result == 1;
     }
 
     public boolean getFactoryRemoteControlOnOff() {
         int result = Settings.Secure.getInt(mContext.getContentResolver(), "customer_factory_remote_control_enable", 0);
-        return result == 1 ? true : false;
+        return result == 1;
     }
 
     public static int isBackground(Context context) {

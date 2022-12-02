@@ -29,8 +29,6 @@
 
     <declare-styleable name="PreferenceContainer">
         <attr name="xml" format="reference" />
-        <attr name="konka" format="reference" />
-        <attr name="changhong" format="reference" />
         <attr name="divider" format="reference" />
         <attr name="customerXml" format="string" />
     </declare-styleable>

@@ -93,7 +93,7 @@ public class MainPageFragment extends BaseFragment implements PreferenceItemClic
             mCompileTime.setText(versionTime != null ? versionTime : compileTimeText);
             String preName = SystemProperties.get("ro.build.version.incremental", "unknown");
             mPraName.setText(SystemProperties.get("ro.build.id", "unknown"));
-            if (FactoryApplication.CUSTOMER_IS_KONKA) {
+            if (FactoryApplication.CUSTOMER_IS_KK) {
                 mProTitle.setText(R.string.str_fingerprint);
                 String fingerprint = SystemProperties.get("ro.build.fingerprint", "undefined");
                 mProName.setText(fingerprint);
@@ -143,7 +143,7 @@ public class MainPageFragment extends BaseFragment implements PreferenceItemClic
     }
 
     public String getProcessedProjectName(String pgn) {
-        if (FactoryApplication.CUSTOMER_IS_BOE) {
+        if (FactoryApplication.CUSTOMER_IS_BVT) {
             return pgn;
         }
         String[] items = pgn.split("_");
@@ -163,7 +163,7 @@ public class MainPageFragment extends BaseFragment implements PreferenceItemClic
     }
 
     public String getProcessedVersion(String pgn) {
-        if (FactoryApplication.CUSTOMER_IS_BOE) {
+        if (FactoryApplication.CUSTOMER_IS_BVT) {
             return "V2.0.10";
         }
         String[] items = pgn.split("_");

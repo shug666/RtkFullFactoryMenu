@@ -146,7 +146,7 @@ public class SwInfoLogic extends LogicInterface {
     private String getTvConfigVersion() {
         String pgn = getProjectName();
 
-        if (FactoryApplication.CUSTOMER_IS_BOE) {
+        if (FactoryApplication.CUSTOMER_IS_BVT) {
             return pgn;
         }
         String[] items = pgn.split("_");
@@ -186,7 +186,7 @@ public class SwInfoLogic extends LogicInterface {
     private String getSwVersion(){
         String proName = getProjectName();
 
-        if (FactoryApplication.CUSTOMER_IS_BOE) {
+        if (FactoryApplication.CUSTOMER_IS_BVT) {
             return "V2.0.10";
         }
         String[] items = proName.split("_");

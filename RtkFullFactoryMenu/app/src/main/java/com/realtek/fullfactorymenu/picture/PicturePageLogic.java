@@ -53,7 +53,7 @@ public class PicturePageLogic extends LogicInterface {
 
         mPictureApi = PictureApi.getInstance();
         mTestPattern = (StatePreference) mContainer.findPreferenceById(R.id.test_pattern);
-        if (FactoryApplication.CUSTOMER_IS_KONKA) {
+        if (FactoryApplication.CUSTOMER_IS_KK) {
             mTestPattern.setVisibility(View.GONE);
         }
         Preference mOverScan = (Preference) mContainer.findPreferenceById(R.id.page_over_scan);

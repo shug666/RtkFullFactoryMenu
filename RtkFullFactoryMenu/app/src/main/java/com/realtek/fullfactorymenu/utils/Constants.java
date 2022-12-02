@@ -307,4 +307,11 @@ public final class Constants {
     public static final String EXTRA_M_MODE_STATUS = "M_MODE_STATUS";
     public static final int MSG_ACTION_START_CH_MMODE = 0x01;
     public static final int MSG_ACTION_STOP_CH_MMODE = 0x02;
+
+    /**
+     * manufacturer
+     */
+    public static final String MANUFACTURER_BVT = "424F455654";
+    public static final String MANUFACTURER_CH = "4348414E47484F4E47";
+    public static final String MANUFACTURER_KK = "4b4f4e4b41";
 }

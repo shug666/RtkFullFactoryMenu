@@ -1,4 +1,4 @@
-package com.realtek.fullfactorymenu.konka;
+package com.realtek.fullfactorymenu.kk;
 
 import com.realtek.fullfactorymenu.R;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;
@@ -11,7 +11,7 @@ public class CustomerOptionsFragment extends PreferenceFragment {
     @Override
     public PreferenceContainer onCreatePreferenceContainer(Bundle savedInstanceState) {
         PreferenceContainer.Builder builder = new PreferenceContainer.Builder(getActivity());
-        builder.setXml(R.xml.page_konka_customer_options);
+        builder.setXml(R.xml.page_kk_customer_options);
         return builder.create();
     }
 }

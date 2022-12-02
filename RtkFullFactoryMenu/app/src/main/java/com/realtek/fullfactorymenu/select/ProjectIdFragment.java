@@ -106,7 +106,7 @@ public class ProjectIdFragment extends PreferenceFragment implements Handler.Cal
         int minSize = Math.min(projectIniList.size(), projectIdList.size());
         mListItems = new ArrayList<>();
 
-        if (!FactoryApplication.CUSTOMER_IS_BOE){
+        if (!FactoryApplication.CUSTOMER_IS_BVT){
             for (int i = 0; i < minSize; i++) {
                 if (i != (currentProjectId - 1)) {
                     mListItems.add(new ProjectId(projectIniList.get(i), projectIdList.get(i), false));

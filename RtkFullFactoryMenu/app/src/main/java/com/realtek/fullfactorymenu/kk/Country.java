@@ -1,4 +1,4 @@
-package com.realtek.fullfactorymenu.konka;
+package com.realtek.fullfactorymenu.kk;
 
 import com.realtek.fullfactorymenu.R;
 

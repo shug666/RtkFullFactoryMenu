@@ -1,7 +1,9 @@
-package com.realtek.fullfactorymenu.konka;
+package com.realtek.fullfactorymenu.kk;
 
 import java.util.Locale;
 
+import com.realtek.fullfactorymenu.utils.ByteTransformUtils;
+import com.realtek.fullfactorymenu.utils.Constants;
 import com.realtek.system.RtkConfigs.TvConfigs;
 import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.R;
@@ -45,7 +47,7 @@ public class CustomerOptionsLogic extends LogicInterface implements Handler.Call
         Preference logoUpdate2nd = (Preference) mContainer.findViewById(R.id.item_2nd_logo_update);
         StatePreference powerMode = (StatePreference) mContainer.findViewById(R.id.item_power_mode);
 
-        customerID.setSumary(SystemProperties.get("ro.product.manufacturer", "Konka"));
+        customerID.setSumary(SystemProperties.get("ro.product.manufacturer", ByteTransformUtils.asciiToString(Constants.MANUFACTURER_KK)));
 
         Locale aDefault = LocaleList.getDefault().get(0);
         String language = String.format("%s-%s", aDefault.getLanguage(), aDefault.getCountry());
