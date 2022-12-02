@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceContainer logic="com.realtek.fullfactorymenu.sound.SoundAdjustLogic">
 
-    <SeekBarPreference id="@+id/audio_out_volume" title="@string/audio_out_volume" minValue="-72" maxValue="46" />
+    <SeekBarPreference id="@+id/audio_out_volume" title="@string/audio_out_volume" minValue="-72" maxValue="46" visible="false"/>
 
     <StatePreference id="@+id/avc_enable" title="@string/avc_enable" cycleEnabled="true">
         <entry name="@string/str_off" enabled="true" />

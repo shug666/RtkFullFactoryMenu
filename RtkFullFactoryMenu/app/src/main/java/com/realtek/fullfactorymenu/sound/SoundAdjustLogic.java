@@ -2,9 +2,6 @@ package com.realtek.fullfactorymenu.sound;
 
 import android.util.Log;
 
-import java.util.Locale;
-
-import com.realtek.tv.AQ;
 import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.R;
 import com.realtek.fullfactorymenu.api.impl.FactoryMainApi;
@@ -15,7 +12,9 @@ import com.realtek.fullfactorymenu.preference.PreferenceContainer;
 import com.realtek.fullfactorymenu.preference.SeekBarPreference;
 import com.realtek.fullfactorymenu.preference.SeekBarPreference.DisplayHelper;
 import com.realtek.fullfactorymenu.preference.StatePreference;
+import com.realtek.tv.AQ;
 
+import java.util.Locale;
 
 /**
  * Created by Administrator on 2019/1/22.
@@ -94,11 +93,7 @@ public class SoundAdjustLogic extends LogicInterface {
         mSurround.init(mSoundApi.getAudioSurroundMode());
         int spdifValue = FactoryApplication.getInstance().getAq().getSPDIFOutput();
         Log.d(TAG, "init: spdifvalue" + spdifValue);
-        if (spdifValue == TYPE_VALUE_PCM) {
-            mDigitalAudio.setEnabled(true);
-        } else {
-            mDigitalAudio.setEnabled(false);
-        }
+        mDigitalAudio.setEnabled(spdifValue == TYPE_VALUE_PCM);
     }
 
     private int getSpeakerOutput(int speaker) {
@@ -123,11 +118,11 @@ public class SoundAdjustLogic extends LogicInterface {
                 mFactoryMainApi.setIntegerValue(TvCommonManager.COMMAND_SET_AUDIO_OUT_VOLUME, progress);
                 break;
             case R.id.avc_thl:
-                if (progress >= mAvcThlMax.getProgress()){
+                /*if (progress >= mAvcThlMax.getProgress()){
                     progress = mAvcThlMax.getProgress() - 1;
                     mAvcThl.setProgress(progress);
                     return;
-                }
+                }*/
                 if (progress == 0) {
                     mAvcThl.setProgress(1);
                     return;
@@ -148,11 +143,11 @@ public class SoundAdjustLogic extends LogicInterface {
                 mFactoryMainApi.setIntegerValue(TvCommonManager.COMMAND_SET_AVC_THL_MAX, progress);
                 break;
             case R.id.drc_thl:
-                if (progress >= mDrcThlMax.getProgress()){
+                /*if (progress >= mDrcThlMax.getProgress()){
                     progress = mDrcThlMax.getProgress() - 1;
                     mDrcThl.setProgress(progress);
                     return;
-                }
+                }*/
                 if (progress == 0) {
                     mDrcThl.setProgress(1);
                     return;
