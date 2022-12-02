@@ -1,11 +1,11 @@
 package com.realtek.fullfactorymenu;
 
-import static com.realtek.fullfactorymenu.api.Constant.SHOW_FRAGMENT_ADC_ADJUST;
-import static com.realtek.fullfactorymenu.api.Constant.SHOW_FRAGMENT_PAGE;
-import static com.realtek.fullfactorymenu.api.Constant.SHOW_FRAGMENT_SW_INFO;
-import static com.realtek.fullfactorymenu.api.Constant.SHOW_FRAGMENT_SYSTEM_INFO;
-import static com.realtek.fullfactorymenu.api.Constant.SHOW_FRAGMENT_WHITE_BALANCE;
-import static com.realtek.fullfactorymenu.api.Constant.SHOW_FRAGMENT_WHITE_PATTERN;
+import static com.realtek.fullfactorymenu.utils.Constants.SHOW_FRAGMENT_ADC_ADJUST;
+import static com.realtek.fullfactorymenu.utils.Constants.SHOW_FRAGMENT_PAGE;
+import static com.realtek.fullfactorymenu.utils.Constants.SHOW_FRAGMENT_SW_INFO;
+import static com.realtek.fullfactorymenu.utils.Constants.SHOW_FRAGMENT_SYSTEM_INFO;
+import static com.realtek.fullfactorymenu.utils.Constants.SHOW_FRAGMENT_WHITE_BALANCE;
+import static com.realtek.fullfactorymenu.utils.Constants.SHOW_FRAGMENT_WHITE_PATTERN;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

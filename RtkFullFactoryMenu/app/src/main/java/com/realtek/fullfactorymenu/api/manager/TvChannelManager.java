@@ -2,7 +2,7 @@
 package com.realtek.fullfactorymenu.api.manager;
 
 
-import com.realtek.fullfactorymenu.api.Constant;
+import com.realtek.fullfactorymenu.utils.Constants;
 
 import java.util.ArrayList;
 
@@ -18,7 +18,7 @@ public class TvChannelManager {
      *
      * @see OnChannelInfoEventListener
      */
-    public final static int TVPLAYER_IMPORT_CHANNEL_COMPLETED = Constant.TVPLAYER_IMPORT_CHANNEL_COMPLETED;
+    public final static int TVPLAYER_IMPORT_CHANNEL_COMPLETED = Constants.TVPLAYER_IMPORT_CHANNEL_COMPLETED;
 
 
 

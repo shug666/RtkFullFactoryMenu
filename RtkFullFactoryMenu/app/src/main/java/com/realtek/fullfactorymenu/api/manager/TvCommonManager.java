@@ -1,12 +1,8 @@
-
 package com.realtek.fullfactorymenu.api.manager;
-
 
 import android.util.SparseArray;
 
-
-import com.realtek.fullfactorymenu.api.Constant;
-
+import com.realtek.fullfactorymenu.utils.Constants;
 
 /**
  * <b>TvCommonManager class is for purpose of general management
@@ -227,9 +223,9 @@ public class TvCommonManager {
 
     /** Events */
     /** NIT auto update scan notification */
-    public static final int EV_DTV_AUTO_UPDATE_SCAN = Constant.TVPLAYER_DTV_AUTO_UPDATE_SCAN;
+    public static final int EV_DTV_AUTO_UPDATE_SCAN = Constants.TVPLAYER_DTV_AUTO_UPDATE_SCAN;
     /** EPG update notification*/
-    public static final int EV_EPG_UPDATE = Constant.TVPLAYER_EPG_UPDATE;
+    public static final int EV_EPG_UPDATE = Constants.TVPLAYER_EPG_UPDATE;
 
     /** NIT Event sub types */
     /** NIT update type - None */
@@ -265,20 +261,20 @@ public class TvCommonManager {
     public static final int TV_PQ_RESET = 4;
     public static final int TV_OSD_RESET = 5;
 
-    private final static int TV_DIALOG_EVENT_START = Constant.TV_DIALOG_EVENT_START;
-    private final static int TV_DIALOG_EVENT_END = Constant.TV_DIALOG_EVENT_END;
-    private final static int TV_SCART_EVENT_START = Constant.TV_SCART_EVENT_START;
-    private final static int TV_SCART_EVENT_END = Constant.TV_SCART_EVENT_END;
-    private final static int TV_SIGNAL_EVENT_START = Constant.TV_SIGNAL_EVENT_START;
-    private final static int TV_SIGNAL_EVENT_END = Constant.TV_SIGNAL_EVENT_END;
-    private final static int TV_UNITY_EVENT_START = Constant.TV_UNITY_EVENT_START;
-    private final static int TV_UNITY_EVENT_END = Constant.TV_UNITY_EVENT_END;
-    private final static int TV_SCREEN_SAVER_EVENT_START = Constant.TV_SCREEN_SAVER_EVENT_START;
-    private final static int TV_SCREEN_SAVER_EVENT_END = Constant.TV_SCREEN_SAVER_EVENT_END;
-    private final static int TV_4K_UHD_EVENT_START = Constant.TV_4K_UHD_EVENT_START;
-    private final static int TV_4K_UHD_EVENT_END = Constant.TV_4K_UHD_EVENT_END;
-    private final static int TV_PREVIEW_EVENT_START = Constant.TV_PREVIEW_EVENT_START;
-    private final static int TV_PREVIEW_EVENT_END = Constant.TV_PREVIEW_EVENT_END;
+    private final static int TV_DIALOG_EVENT_START = Constants.TV_DIALOG_EVENT_START;
+    private final static int TV_DIALOG_EVENT_END = Constants.TV_DIALOG_EVENT_END;
+    private final static int TV_SCART_EVENT_START = Constants.TV_SCART_EVENT_START;
+    private final static int TV_SCART_EVENT_END = Constants.TV_SCART_EVENT_END;
+    private final static int TV_SIGNAL_EVENT_START = Constants.TV_SIGNAL_EVENT_START;
+    private final static int TV_SIGNAL_EVENT_END = Constants.TV_SIGNAL_EVENT_END;
+    private final static int TV_UNITY_EVENT_START = Constants.TV_UNITY_EVENT_START;
+    private final static int TV_UNITY_EVENT_END = Constants.TV_UNITY_EVENT_END;
+    private final static int TV_SCREEN_SAVER_EVENT_START = Constants.TV_SCREEN_SAVER_EVENT_START;
+    private final static int TV_SCREEN_SAVER_EVENT_END = Constants.TV_SCREEN_SAVER_EVENT_END;
+    private final static int TV_4K_UHD_EVENT_START = Constants.TV_4K_UHD_EVENT_START;
+    private final static int TV_4K_UHD_EVENT_END = Constants.TV_4K_UHD_EVENT_END;
+    private final static int TV_PREVIEW_EVENT_START = Constants.TV_PREVIEW_EVENT_START;
+    private final static int TV_PREVIEW_EVENT_END = Constants.TV_PREVIEW_EVENT_END;
 
     public static final String MIRROR_NORMAL = "NORMAL";
 
@@ -426,84 +422,84 @@ public class TvCommonManager {
      *
      * @see OnDialogEventListener
      */
-    public final static int TV_DTV_READY_POPUP_DIALOG = Constant.TV_DTV_READY_POPUP_DIALOG;
+    public final static int TV_DTV_READY_POPUP_DIALOG = Constants.TV_DTV_READY_POPUP_DIALOG;
 
     /**
      * When ATSC system notify to pop-up a dialog event received
      *
      * @see OnDialogEventListener
      */
-    public final static int TV_ATSC_POPUP_DIALOG = Constant.TV_ATSC_POPUP_DIALOG;
+    public final static int TV_ATSC_POPUP_DIALOG = Constants.TV_ATSC_POPUP_DIALOG;
 
     /**
      * When a osd scart mute notify event received
      *
      * @see OnScartEventListener
      */
-    public final static int TV_SCART_MUTE_OSD_MODE = Constant.TV_SCART_MUTE_OSD_MODE;
+    public final static int TV_SCART_MUTE_OSD_MODE = Constants.TV_SCART_MUTE_OSD_MODE;
 
     /**
      * When a signal unlock notify event received
      *
      * @see OnSignalEventListener
      */
-    public final static int TV_SIGNAL_UNLOCK = Constant.TV_SIGNAL_UNLOCK;
+    public final static int TV_SIGNAL_UNLOCK = Constants.TV_SIGNAL_UNLOCK;
 
     /**
      * When a signal lock notify event received
      *
      * @see OnSignalEventListener
      */
-    public final static int TV_SIGNAL_LOCK = Constant.TV_SIGNAL_LOCK;
+    public final static int TV_SIGNAL_LOCK = Constants.TV_SIGNAL_LOCK;
 
     /**
      * When a unity notify event received
      *
      * @see OnUnityEventListener
      */
-    public final static int TV_UNITY_EVENT = Constant.TV_UNITY_EVENT;
+    public final static int TV_UNITY_EVENT = Constants.TV_UNITY_EVENT;
 
     /**
      * When a screen save notify event received
      *
      * @see OnScreenSaverEventListener
      */
-    public final static int TV_SCREEN_SAVER_MODE = Constant.TV_SCREEN_SAVER_MODE;
+    public final static int TV_SCREEN_SAVER_MODE = Constants.TV_SCREEN_SAVER_MODE;
 
     /**
      * When a disable PIP under HDMI event received
      *
      * @see On4kUhdEventListener
      */
-    public final static int TV_4K_UHD_HDMI_DISABLE_PIP = Constant.TV_4K_UHD_HDMI_DISABLE_PIP;
+    public final static int TV_4K_UHD_HDMI_DISABLE_PIP = Constants.TV_4K_UHD_HDMI_DISABLE_PIP;
 
     /**
      * When a disable POP under HDMI event received
      *
      * @see On4kUhdEventListener
      */
-    public final static int TV_4K_UHD_HDMI_DISABLE_POP = Constant.TV_4K_UHD_HDMI_DISABLE_POP;
+    public final static int TV_4K_UHD_HDMI_DISABLE_POP = Constants.TV_4K_UHD_HDMI_DISABLE_POP;
 
     /**
      * When a disable dual view under HDMI event received
      *
      * @see On4kUhdEventListener
      */
-    public final static int TV_4K_UHD_HDMI_DISABLE_DUAL_VIEW = Constant.TV_4K_UHD_HDMI_DISABLE_DUAL_VIEW;
+    public final static int TV_4K_UHD_HDMI_DISABLE_DUAL_VIEW = Constants.TV_4K_UHD_HDMI_DISABLE_DUAL_VIEW;
 
     /**
      * When a disable traveling mode under HDMI event received
      *
      * @see On4kUhdEventListener
      */
-    public final static int TV_4K_UHD_HDMI_DISABLE_TRAVELING_MODE = Constant.TV_4K_UHD_HDMI_DISABLE_TRAVELING_MODE;
+    public final static int TV_4K_UHD_HDMI_DISABLE_TRAVELING_MODE = Constants.TV_4K_UHD_HDMI_DISABLE_TRAVELING_MODE;
 
     /**
      * When refresh preview mode event received
      *
      * @see OnPreviewEventListener
      */
-    public final static int TV_REFRESH_PREVIEW_MODE_WINDOW = Constant.TV_REFRESH_PREVIEW_MODE_WINDOW;
+    public final static int TV_REFRESH_PREVIEW_MODE_WINDOW = Constants.TV_REFRESH_PREVIEW_MODE_WINDOW;
 
     public final static String TVOS_COMMON_CMD_AGING_START = "StartLedRedToGreen";
     public final static String TVOS_COMMON_CMD_AGING_STOP = "StopLedRedToGreen";

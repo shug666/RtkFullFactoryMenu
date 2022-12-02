@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.R;
-import com.realtek.fullfactorymenu.api.Constant;
+import com.realtek.fullfactorymenu.utils.Constants;
 import com.realtek.fullfactorymenu.api.impl.PictureApi;
 import com.realtek.fullfactorymenu.api.manager.TvCommonManager;
 import com.realtek.fullfactorymenu.api.manager.TvPictureManager;
@@ -72,7 +72,7 @@ public class PicturePageLogic extends LogicInterface {
         md5DV = (SumaryPreference) mContainer.findPreferenceById(R.id.md5_dv);
         initMD5();
         backlight_default = mPictureApi.getVideoItem(TvPictureManager.PICTURE_BACKLIGHT);
-        int rtkDreamTime = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, Constant.DEFAULT_DREAM_TIME_MS);
+        int rtkDreamTime = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, Constants.DEFAULT_DREAM_TIME_MS);
         dream_time.setSumary(rtkDreamTime + " ms");
         pic_backlight.setSumary(mPictureApi.getVideoItem(TvPictureManager.PICTURE_BACKLIGHT)+"");
     }

@@ -1,4 +1,4 @@
-package com.realtek.fullfactorymenu.api.utils;
+package com.realtek.fullfactorymenu.utils;
 
 import android.content.Context;
 import android.os.storage.StorageManager;
