@@ -3,7 +3,7 @@ package com.realtek.fullfactorymenu.chdefault;
 import static com.realtek.fullfactorymenu.utils.Constants.EXTRA_M_MODE_STATUS;
 import static com.realtek.fullfactorymenu.utils.Constants.MSG_ACTION_START_CH_MMODE;
 import static com.realtek.fullfactorymenu.utils.Constants.MSG_ACTION_STOP_CH_MMODE;
-import static com.realtek.fullfactorymenu.utils.Constants.PACKAGE_M_MODE;
+import static com.realtek.fullfactorymenu.utils.Constants.SERVICE_MKEY_EVENT;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -46,7 +46,7 @@ public class DefaultLogic extends LogicInterface {
         if (preference.getId() == R.id.ch_default_m_mode) {
             Settings.System.putInt(mContext.getContentResolver(), "MMode", current);
 
-            ComponentName componentName = ComponentName.unflattenFromString(PACKAGE_M_MODE);
+            ComponentName componentName = ComponentName.unflattenFromString(SERVICE_MKEY_EVENT);
             Intent service = PackageUtils.getServiceIntentByComponentName(preference.getContext(), componentName);
             if (service != null) {
                 service.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -43,7 +43,7 @@ public class UserLogic extends LogicInterface {
     private StatePreference mPvrEnable = null;
     private StatePreference mPvrRecordAll = null;
     private StatePreference mUartEnable = null;
-    private StatePreference mBoeCmdEnable = null;
+    private StatePreference mBvtCmdEnable = null;
     private StatePreference mFactoryRemoteControlEnable = null;
     private StatePreference mTeletextEnable = null;
     private SumaryPreference mTotalRunTime = null;
@@ -78,8 +78,8 @@ public class UserLogic extends LogicInterface {
             mFactoryRemoteControlEnable.init(mUserApi.getFactoryRemoteControlOnOff() ? 1 : 0);
             mPvrRecordAll.init(0);
         }
-        mBoeCmdEnable = (StatePreference) mContainer.findPreferenceById(R.id.BOE_cmd_enable);
-        mBoeCmdEnable.init(mUserApi.getBOEOnOff() ? 1 : 0);
+        mBvtCmdEnable = (StatePreference) mContainer.findPreferenceById(R.id.BVT_cmd_enable);
+        mBvtCmdEnable.init(mUserApi.getBVTOnOff() ? 1 : 0);
         mMuteColor = (StatePreference) mContainer.findPreferenceById(R.id.mute_color);
         mPowerMode = (StatePreference) mContainer.findPreferenceById(R.id.power_mode);
         mFactoryTest = (StatePreference) mContainer.findPreferenceById(R.id.factory_test);
@@ -155,8 +155,8 @@ public class UserLogic extends LogicInterface {
         case R.id.uart_enable:
             mUserApi.setUartOnOff((0 == current) ? false : true);
             break;
-        case R.id.BOE_cmd_enable:
-            mUserApi.setBOECmdOnOff((0 == current) ? false : true, true);
+        case R.id.BVT_cmd_enable:
+            mUserApi.setBVTCmdOnOff(0 != current, true);
             if (0 != current) {
                 ((Activity)mContext).finish();
             }

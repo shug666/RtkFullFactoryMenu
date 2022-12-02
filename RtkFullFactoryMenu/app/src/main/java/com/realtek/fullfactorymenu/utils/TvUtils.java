@@ -1,5 +1,7 @@
 package com.realtek.fullfactorymenu.utils;
 
+import static com.realtek.fullfactorymenu.utils.Constants.MANUFACTURER_TT;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,7 +19,7 @@ import android.view.WindowManager;
 public class TvUtils {
     private static boolean DEBUG = true;
     private static String TAG = "TvUtils";
-    public static final String AUTHORITY_TV_SERVICE = "com.toptech.tv.service";
+    public static final String AUTHORITY_TV_SERVICE = "com." + ByteTransformUtils.asciiToString(MANUFACTURER_TT) + ".tv.service";
 
     private TvUtils() {
     }

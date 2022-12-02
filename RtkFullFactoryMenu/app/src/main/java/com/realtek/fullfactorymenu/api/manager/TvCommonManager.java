@@ -1,7 +1,10 @@
 package com.realtek.fullfactorymenu.api.manager;
 
+import static com.realtek.fullfactorymenu.utils.Constants.MANUFACTURER_TT;
+
 import android.util.SparseArray;
 
+import com.realtek.fullfactorymenu.utils.ByteTransformUtils;
 import com.realtek.fullfactorymenu.utils.Constants;
 
 /**
@@ -368,7 +371,7 @@ public class TvCommonManager {
 
     public static final String AGING_MODE_TEST = "Misc_AgingMod_AgingModTest";
 
-    public static final String GET_INI_FILE_TEST_MODE = "toptech_factory_test";
+    public static final String GET_INI_FILE_TEST_MODE = ByteTransformUtils.asciiToString(MANUFACTURER_TT) + "_factory_test";
 
     public static final String UART_SWITCH_PORT = "UART_SWITCH_PORT";
 

@@ -1,5 +1,7 @@
 package com.realtek.fullfactorymenu.api.impl;
 
+import static com.realtek.fullfactorymenu.utils.Constants.MANUFACTURER_BVT;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +14,8 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
+
+import com.realtek.fullfactorymenu.utils.ByteTransformUtils;
 import com.realtek.tv.Factory;
 import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.api.listener.ICommandCallback;
@@ -1678,10 +1682,10 @@ public class UpgradeApi implements Callback {
     private String getPlatform() {
         String platform = SystemProperties.get("ro.board.platform", "rtd2851a");
         if (platform.equalsIgnoreCase("rtd2851a")) {
-            return "BOEVT_2851A_";
+            return ByteTransformUtils.asciiToString(MANUFACTURER_BVT) + "_2851A_";
         }
         if (platform.equalsIgnoreCase("rtd2841a")) {
-            return "BOEVT_2841A_";
+            return ByteTransformUtils.asciiToString(MANUFACTURER_BVT) + "_2841A_";
         }
         return platform.toUpperCase();
     }

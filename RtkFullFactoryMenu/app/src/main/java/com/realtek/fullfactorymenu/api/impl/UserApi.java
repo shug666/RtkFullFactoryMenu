@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.realtek.fullfactorymenu.utils.ByteTransformUtils;
 import com.realtek.system.RtkProjectConfigs;
 import com.realtek.tv.TVMediaTypeConstants;
 import com.realtek.tv.TvContractEx;
@@ -29,6 +30,9 @@ import com.realtek.fullfactorymenu.utils.TvUtils;
 import java.util.List;
 
 import static com.realtek.fullfactorymenu.FactoryApplication.MSG_KILL_PROCESS;
+import static com.realtek.fullfactorymenu.utils.Constants.ACTIVITY_MAIN;
+import static com.realtek.fullfactorymenu.utils.Constants.PACKAGE_NAME_AUTO_TEST;
+import static com.realtek.fullfactorymenu.utils.Constants.RECEIVER_GLOBAL_KEY;
 
 
 public class UserApi implements Callback {
@@ -134,10 +138,10 @@ public class UserApi implements Callback {
 
     public boolean getUartOnOff() {
         int result = mFactoryApplication.getExtTv().extTv_tv001_GetValueInt("Misc_Register_UART");
-        return result == 1 ? true : false;
+        return result == 1;
     }
 
-    public boolean getBOEOnOff() {
+    public boolean getBVTOnOff() {
         int result = isBackground(mContext);
         return result == 1;
     }
@@ -150,19 +154,17 @@ public class UserApi implements Callback {
     public static int isBackground(Context context) {
         ActivityManager activityManager = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
-        String packageName = "com.toptech.factorytoolsboe";
 
-
-        String boeMainActivityClassName = "com.toptech.factorytoolsboe.MainActivity";
+        String mainActivityClassName = PACKAGE_NAME_AUTO_TEST + "." + ACTIVITY_MAIN;
         List<ActivityManager.RunningTaskInfo> tasksInfo = activityManager.getRunningTasks(4);
         if (tasksInfo.size() > 0) {
             for (int i = 0; i < tasksInfo.size(); i++) {
                 ComponentName topComponent = tasksInfo.get(i).topActivity;
                 LogHelper.d(TAG, "topComponent.getPackageName()..." + topComponent.getPackageName());
-                if (packageName.equals(topComponent.getPackageName())) {
+                if (PACKAGE_NAME_AUTO_TEST.equals(topComponent.getPackageName())) {
                     LogHelper.d(TAG, "isBackground: " + topComponent.getPackageName());
-                    if (topComponent.getClassName().equals(boeMainActivityClassName)) {
-                        LogHelper.d(TAG, boeMainActivityClassName + " is running");
+                    if (topComponent.getClassName().equals(mainActivityClassName)) {
+                        LogHelper.d(TAG, mainActivityClassName + " is running");
                         return 1;
                     }
                 }
@@ -255,9 +257,9 @@ public class UserApi implements Callback {
         }
     }
 
-    public boolean setBOECmdOnOff(boolean isEnable, boolean isManual) {
+    public boolean setBVTCmdOnOff(boolean isEnable, boolean isManual) {
         if (isEnable) {
-            ComponentName name = new ComponentName("com.toptech.factorytoolsboe", "com.toptech.factorytoolsboe.MainActivity");
+            ComponentName name = new ComponentName(PACKAGE_NAME_AUTO_TEST, PACKAGE_NAME_AUTO_TEST + "." + ACTIVITY_MAIN);
             Intent intent = new Intent();
             intent.setComponent(name);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -268,7 +270,7 @@ public class UserApi implements Callback {
             intent.putExtra("finish",true);
             intent.putExtra("manual", isManual);
             intent.setAction("android.intent.action.GLOBAL_BUTTON");
-            intent.setComponent(new ComponentName("com.toptech.factorytoolsboe","com.toptech.factorytoolsboe.GlobalKeyReceiver"));
+            intent.setComponent(new ComponentName(PACKAGE_NAME_AUTO_TEST,PACKAGE_NAME_AUTO_TEST + "." + RECEIVER_GLOBAL_KEY));
             mContext.sendBroadcast(intent);
             return true;
         }

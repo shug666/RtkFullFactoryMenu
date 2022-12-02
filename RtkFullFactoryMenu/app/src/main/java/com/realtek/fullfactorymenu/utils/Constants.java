@@ -302,9 +302,14 @@ public final class Constants {
 
     public static final String BRAND = SystemProperties.get("ro.product.vendor.brand", "");
 
-    public static final String PACKAGE_M_MODE = "com.realtek.rtkfactoryirautotest/.mmode.service.MKeyEventService";
-    public static final String ACTION_SERVICE_M_MODE = "android.intent.action.MKeyEventService";
+    public static final String ACTIVITY_AGING = "AgingActivity";
+    public static final String ACTIVITY_MAIN = "MainActivity";
+    public static final String ACTIVITY_MMODE = "MModeActivity";
+    public static final String ACTIVITY_RTK_MENU_MAIN = "com.realtek.menu/.MainActivity";
     public static final String EXTRA_M_MODE_STATUS = "M_MODE_STATUS";
+    public static final String PACKAGE_NAME_AUTO_TEST = "com.realtek.rtkfactoryirautotest";
+    public static final String RECEIVER_GLOBAL_KEY = "GlobalKeyReceiver";
+    public static final String SERVICE_MKEY_EVENT = "com.realtek.rtkfactoryirautotest/.mmode.service.MKeyEventService";
     public static final int MSG_ACTION_START_CH_MMODE = 0x01;
     public static final int MSG_ACTION_STOP_CH_MMODE = 0x02;
 
@@ -314,4 +319,5 @@ public final class Constants {
     public static final String MANUFACTURER_BVT = "424F455654";
     public static final String MANUFACTURER_CH = "4348414E47484F4E47";
     public static final String MANUFACTURER_KK = "4b4f4e4b41";
+    public static final String MANUFACTURER_TT = "746f7074656368";
 }

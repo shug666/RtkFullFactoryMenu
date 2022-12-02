@@ -63,7 +63,7 @@
         <entry name="@string/str_on" enabled="true" />
     </StatePreference>
 
-    <StatePreference id="@+id/BOE_cmd_enable" title="@string/str_uart_cmd_enable" cycleEnabled="true">
+    <StatePreference id="@+id/BVT_cmd_enable" title="@string/str_uart_cmd_enable" cycleEnabled="true">
         <entry name="@string/str_off" enabled="true" />
         <entry name="@string/str_on" enabled="true" />
     </StatePreference>
