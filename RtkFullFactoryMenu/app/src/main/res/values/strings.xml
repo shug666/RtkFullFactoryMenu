@@ -237,7 +237,6 @@
     <string name="str_offRSorJB_Menu">OffRS/JB Menu</string>
 
     <!--User-->
-    <string name="str_mute_color">Mute Color</string>
     <string name="str_black">Black</string>
     <string name="str_white">White</string>
     <string name="str_red">Red</string>
@@ -655,4 +654,11 @@
     <string name="str_select_Panel_Sel">Panel Sel</string>
     <string name="str_select_panel_setting">Panel Setting</string>
     <string name="str_select_Project">Project Select</string>
+    <!--Tuning Setting-->
+    <string name="str_tuning_setting">Tuning Setting</string>
+    <string name="str_tv_search">TV Search</string>
+    <string name="str_export_channel">Export Channel</string>
+    <string name="str_import_channel">Import Channel</string>
+    <string name="str_mute_color">Mute Color</string>
+    <string name="str_record_all">Record All</string>
 </resources>

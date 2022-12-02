@@ -314,6 +314,15 @@ public final class Constants {
     public static final int MSG_ACTION_STOP_CH_MMODE = 0x02;
 
     /**
+     * Import Channel and Export Channel MSG
+     */
+    public static final int REQUEST_IMPORT_SETTINGS = 1;
+    public static final int REQUEST_EXPORT_SETTINGS = 2;
+    public static final int REQUEST_EXPORT_PRESET_FILE = 3;
+    public static final int MSG_IMPORT_SETTINGS = 1;
+    public static final int MSG_EXPORT_SETTINGS = 2;
+
+    /**
      * manufacturer
      */
     public static final String MANUFACTURER_BVT = "424F455654";

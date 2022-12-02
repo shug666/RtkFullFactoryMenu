@@ -33,6 +33,7 @@ import com.realtek.fullfactorymenu.sound.SoundPageFragment;
 import com.realtek.fullfactorymenu.ssc.SSCFragment;
 import com.realtek.fullfactorymenu.swInfo.SwInfoFragment;
 import com.realtek.fullfactorymenu.systemInfo.SystemInfoFragment;
+import com.realtek.fullfactorymenu.tune.TuningSettingFragment;
 import com.realtek.fullfactorymenu.user.UserPageFragment;
 
 import java.io.IOException;
@@ -226,6 +227,9 @@ public class MainPageFragment extends BaseFragment implements PreferenceItemClic
                 break;
             case R.id.page_sound:
                 showPage(SoundPageFragment.class, R.string.str_sound);
+                break;
+            case R.id.page_tune:
+                showPage(TuningSettingFragment.class, R.string.str_tuning_setting);
                 break;
             case R.id.page_user:
                 showPage(UserPageFragment.class, R.string.str_user);

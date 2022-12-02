@@ -10,9 +10,12 @@ import java.nio.channels.FileChannel;
 
 import com.realtek.fullfactorymenu.api.manager.TvCommonManager;
 
+import android.hardware.input.InputManager;
 import android.net.Uri;
 import android.net.Uri.Builder;
+import android.os.SystemClock;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -186,5 +189,14 @@ public class TvUtils {
             if(DEBUG) Log.d(TAG, "fromFile did not exists "+fromeFilePath);
             //Toast.makeText(context, context.getResources().getString(R.string.toast_source_file_not_exist), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static void sendVirtualKey(int keyCode){
+        long now = SystemClock.uptimeMillis();
+        KeyEvent down = new KeyEvent(now, now, KeyEvent.ACTION_DOWN, keyCode, 0);
+        KeyEvent up = new KeyEvent(now, now, KeyEvent.ACTION_UP, keyCode, 0);
+        int mode = InputManager.INJECT_INPUT_EVENT_MODE_ASYNC;
+        InputManager.getInstance().injectInputEvent(down, mode);
+        InputManager.getInstance().injectInputEvent(up, mode);
     }
 }

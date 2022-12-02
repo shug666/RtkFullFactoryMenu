@@ -12,15 +12,6 @@
         <entry name="@string/str_black" index="5"  enabled="true" />
     </StatePreference>
 
-    <StatePreference id="@+id/mute_color" title="@string/str_mute_color" cycleEnabled="true">
-        <entry name="@string/str_black" enabled="true" />
-        <entry name="@string/str_white" enabled="true" />
-        <entry name="@string/str_red" enabled="true" />
-        <entry name="@string/str_green" enabled="true" />
-        <entry name="@string/str_blue" enabled="true" />
-        <entry name="@string/str_user" enabled="false" />
-    </StatePreference>
-
     <Preference id="@+id/volume_curve" title="@string/str_volume_curve" visible="false"/>
 
     <StatePreference id="@+id/power_mode" title="@string/str_power_mode" cycleEnabled="true">
@@ -43,20 +34,7 @@
         <entry name="@string/str_on" enabled="true" />
     </StatePreference>
 
-    <Preference id="@+id/program_preset" title="@string/str_program_preset" />
-
     <Preference id="@+id/project_id" title="@string/str_project_id" />
-
-
-    <StatePreference id="@+id/pvr_enable" title="@string/str_pvr_enable" cycleEnabled="true" visible="false">
-        <entry name="@string/str_off" enabled="true" />
-        <entry name="@string/str_on" enabled="true" />
-    </StatePreference>
-
-    <StatePreference id="@+id/pvr_record_all" title="@string/str_pvr_record_all" cycleEnabled="true">
-        <entry name="@string/str_off" enabled="true" />
-        <entry name="@string/str_on" enabled="true" />
-    </StatePreference>
 
     <StatePreference id="@+id/uart_enable" title="@string/str_uart_enable" cycleEnabled="true">
         <entry name="@string/str_off" enabled="true" />

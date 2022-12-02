@@ -18,6 +18,7 @@ import com.realtek.fullfactorymenu.preference.Preference;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;
 import com.realtek.fullfactorymenu.preference.PreferenceFragment;
 import com.realtek.fullfactorymenu.select.PanelPageFragment;
+import com.realtek.fullfactorymenu.tune.TuningSettingFragment;
 import com.realtek.fullfactorymenu.utils.ByteTransformUtils;
 
 public class UserPageFragment extends PreferenceFragment{
@@ -61,9 +62,6 @@ public class UserPageFragment extends PreferenceFragment{
                     UserApi.getInstance().setBVTCmdOnOff(false, false);
                 }
                 getActivity().finish();
-                break;
-            case R.id.program_preset:
-                showPage(ProgramPresetFragment.class, R.string.str_program_preset);
                 break;
             case R.id.volume_curve:
                 showPage(VolumeCurveFragment.class, R.string.str_volume_curve);

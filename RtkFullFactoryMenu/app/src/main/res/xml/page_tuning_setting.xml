@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceContainer logic="com.realtek.fullfactorymenu.tune.TuningSettingLogic">
+    <Preference id="@+id/tv_search" title="@string/str_tv_search"/>
+
+    <SumaryPreference id="@+id/factory_program_reset" title="@string/factory_program_reset" visible="false"/>
+
+    <SumaryPreference id="@+id/export_channel" title="@string/str_export_channel"/>
+
+    <SumaryPreference id="@+id/import_channel" title="@string/str_import_channel"/>
+
+    <SumaryPreference id="@+id/export_preset_file_to_usb" title="@string/export_preset_file_to_usb" visible="false"/>
+
+    <SumaryPreference id="@+id/enter_customer_factory_mode" title="@string/enter_customer_factory_mode" visible="false"/>
+
+    <StatePreference id="@+id/mute_color" title="@string/str_mute_color" cycleEnabled="true">
+        <entry name="@string/str_black" enabled="true" />
+        <entry name="@string/str_white" enabled="true" />
+        <entry name="@string/str_red" enabled="true" />
+        <entry name="@string/str_green" enabled="true" />
+        <entry name="@string/str_blue" enabled="true" />
+        <entry name="@string/str_user" enabled="false" />
+    </StatePreference>
+
+    <StatePreference id="@+id/pvr_enable" title="@string/str_pvr_enable" cycleEnabled="true" visible="false">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+
+    <StatePreference id="@+id/record_all" title="@string/str_record_all" cycleEnabled="true">
+        <entry name="@string/str_off" enabled="true" />
+        <entry name="@string/str_on" enabled="true" />
+    </StatePreference>
+</PreferenceContainer>

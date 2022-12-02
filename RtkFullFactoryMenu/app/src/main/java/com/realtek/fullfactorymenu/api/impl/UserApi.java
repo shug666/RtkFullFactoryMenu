@@ -31,6 +31,8 @@ import java.util.List;
 
 import static com.realtek.fullfactorymenu.FactoryApplication.MSG_KILL_PROCESS;
 import static com.realtek.fullfactorymenu.utils.Constants.ACTIVITY_MAIN;
+import static com.realtek.fullfactorymenu.utils.Constants.MSG_EXPORT_SETTINGS;
+import static com.realtek.fullfactorymenu.utils.Constants.MSG_IMPORT_SETTINGS;
 import static com.realtek.fullfactorymenu.utils.Constants.PACKAGE_NAME_AUTO_TEST;
 import static com.realtek.fullfactorymenu.utils.Constants.RECEIVER_GLOBAL_KEY;
 
@@ -44,8 +46,6 @@ public class UserApi implements Callback {
 
     private final static int COPY_DB_DIRECTION_TO_USB = 1;
     private final static int COPY_DB_DIRECTION_TO_PROVIDER = 2;
-    private final static int MSG_IMPORT_SETTINGS = 1;
-    private final static int MSG_EXPORT_SETTINGS = 2;
     private final static String COPY_DB_STATUS_CHANGE = "com.rtk.engmenu.copytvdb.STATUS_CHANGE";
     private final static String KEY_DIRECT = "Direct";
     private final static String KEY_FROM_PATH = "FromPath";//String-String

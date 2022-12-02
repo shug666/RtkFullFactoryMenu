@@ -1,4 +1,4 @@
-package com.realtek.fullfactorymenu.user;
+package com.realtek.fullfactorymenu.tune;
 
 import android.app.Activity;
 import android.os.PowerManager;
@@ -10,10 +10,12 @@ import android.widget.Toast;
 
 import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.R;
+import com.realtek.fullfactorymenu.api.impl.FactoryMainApi;
 import com.realtek.fullfactorymenu.api.impl.UserApi;
 import com.realtek.fullfactorymenu.api.listener.IActionCallback;
 import com.realtek.fullfactorymenu.api.manager.TvFactoryManager;
 import com.realtek.fullfactorymenu.logic.LogicInterface;
+import com.realtek.fullfactorymenu.preference.Preference;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;
 import com.realtek.fullfactorymenu.preference.SeekBarPreference;
 import com.realtek.fullfactorymenu.preference.StatePreference;
@@ -21,39 +23,48 @@ import com.realtek.fullfactorymenu.preference.SumaryPreference;
 import com.realtek.fullfactorymenu.utils.AppToast;
 import com.realtek.fullfactorymenu.utils.ProgressDialog;
 import com.realtek.fullfactorymenu.utils.TvInputUtils;
+import com.realtek.fullfactorymenu.utils.Utils;
 
 import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_DVBS;
 
-public class ProgramPresetLogic extends LogicInterface {
+public class TuningSettingLogic extends LogicInterface {
 
-    private final String TAG = "ProgramePresetLogic";
+    private final String TAG = TuningSettingLogic.class.getSimpleName();
     private SumaryPreference mFactoryProgramReset;
-    private SumaryPreference mBackupDBToUSB;
-    private SumaryPreference mRestoreDBFromUSB;
+    private SumaryPreference mExportChannel;
+    private SumaryPreference mImportChannel;
     private SumaryPreference mExportPresetFileToUSB;
     private SumaryPreference mEnterCustomerFactoryMode;
 
     private UserApi mUserApi;
     private ProgressDialog mProgressDialog;
+    private FactoryMainApi mFactoryMainApi;
 
-    public ProgramPresetLogic(PreferenceContainer container) {
+    public TuningSettingLogic(PreferenceContainer container) {
         super(container);
     }
 
     @Override
     public void init() {
         mUserApi = UserApi.getInstance();
+        mFactoryMainApi = FactoryMainApi.getInstance();
+        StatePreference mMuteColor = (StatePreference) mContainer.findPreferenceById(R.id.mute_color);
         mFactoryProgramReset = (SumaryPreference) mContainer.findPreferenceById(R.id.factory_program_reset);
-        mBackupDBToUSB = (SumaryPreference) mContainer.findPreferenceById(R.id.backup_db_to_usb);
-        mRestoreDBFromUSB = (SumaryPreference) mContainer.findPreferenceById(R.id.restore_db_from_usb);
+        mExportChannel = (SumaryPreference) mContainer.findPreferenceById(R.id.export_channel);
+        mImportChannel = (SumaryPreference) mContainer.findPreferenceById(R.id.import_channel);
         mExportPresetFileToUSB = (SumaryPreference) mContainer.findPreferenceById(R.id.export_preset_file_to_usb);
         mEnterCustomerFactoryMode = (SumaryPreference) mContainer.findPreferenceById(R.id.enter_customer_factory_mode);
+        StatePreference mPvrEnable = (StatePreference) mContainer.findPreferenceById(R.id.pvr_enable);
+        StatePreference mRecordAll = (StatePreference) mContainer.findPreferenceById(R.id.record_all);
 
+        mMuteColor.init(mUserApi.getVideoMuteColor());
         mFactoryProgramReset.setSumary(mContext.getString(R.string.item_operation_text_fail));
-        mBackupDBToUSB.setSumary(mContext.getString(R.string.item_operation_text_fail));
-        mRestoreDBFromUSB.setSumary(mContext.getString(R.string.item_operation_text_fail));
+        mExportChannel.setSumary(mContext.getString(R.string.item_operation_text_fail));
+        mImportChannel.setSumary(mContext.getString(R.string.item_operation_text_fail));
         mExportPresetFileToUSB.setSumary(mContext.getString(R.string.item_operation_text_fail));
         mEnterCustomerFactoryMode.setSumary(mContext.getString(R.string.item_operation_text_fail));
+        mPvrEnable.init(mFactoryMainApi.getBooleanValue("PVR_FUNCTION_ENABLED") ? 1 : 0);
+        mRecordAll.init(0);
 
         if (SystemProperties.getBoolean("persist.sys.preset.scan.enable", false)) {
             mExportPresetFileToUSB.setVisibility(View.VISIBLE);
@@ -80,7 +91,23 @@ public class ProgramPresetLogic extends LogicInterface {
 
     @Override
     public void onPreferenceIndexChange(StatePreference preference, int previous, int current) {
-
+        switch (preference.getId()) {
+            case R.id.mute_color:
+                mUserApi.setVideoMuteColor(current);
+                break;
+            case R.id.pvr_enable: {
+                boolean status = 0 != current;
+                mFactoryMainApi.setBooleanValue("PVR_FUNCTION_ENABLED", status);
+                break;
+            }
+            case R.id.record_all: {
+                boolean status = 0 != current;
+                mUserApi.setPvrRecordAll(status, Utils.getUSBInternalPath(mContext));
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     public void setFactoryProgramResetValue(String value) {
@@ -88,11 +115,11 @@ public class ProgramPresetLogic extends LogicInterface {
     }
 
     public void setBackupDBToUSBValue(String value) {
-        mBackupDBToUSB.setSumary(value);
+        mExportChannel.setSumary(value);
     }
 
     public void setRestoreDBFromUSB(String value) {
-        mRestoreDBFromUSB.setSumary(value);
+        mImportChannel.setSumary(value);
     }
 
     public void setExportPresetFileToUSB(String value) {
