@@ -90,13 +90,15 @@ public class SoundModeLogic extends LogicInterface {
             int mEqCount = soundEqualList.getCount();
             Log.d(TAG, "mGainList=" + mGainList);
             Log.d(TAG, "mFreqList=" + mFreqList);
+            if (mEqCount > ids.length) {
+                Log.e(TAG, String.format("mEqCount(%d) is too large", mEqCount));
+                mEqCount = ids.length;
+            }
             for (int index = 0; index < mEqCount; index++) {
-                if (index < ids.length) {
-                    SeekBarPreference seekBarPreference = (SeekBarPreference) mContainer.findPreferenceById(ids[index]);
-                    seekBarPreference.setProgress(mGainList.get(index));
-                    seekBarPreference.setTitle(mFreqList.get(index) + "Hz");
-                    seekBarPreference.setVisibility(View.VISIBLE);
-                }
+                SeekBarPreference seekBarPreference = (SeekBarPreference) mContainer.findPreferenceById(ids[index]);
+                seekBarPreference.setProgress(mGainList.get(index));
+                seekBarPreference.setTitle(mFreqList.get(index) + "Hz");
+                seekBarPreference.setVisibility(View.VISIBLE);
             }
         } else {
             Log.e(TAG, "soundEqualList=null");
