@@ -1,4 +1,0 @@
-#Wed Nov 30 14:44:27 CST 2022
-base.0=E\:\\androidProject\\RtkFullFactoryMenu(1)\\RtkFullFactoryMenu\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
