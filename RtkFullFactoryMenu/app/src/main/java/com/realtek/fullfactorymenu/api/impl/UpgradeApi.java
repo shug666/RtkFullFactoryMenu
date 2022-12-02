@@ -1320,13 +1320,10 @@ public class UpgradeApi implements Callback {
     }
 
     private String getRMCAMatchName() {
-        if (FactoryApplication.CUSTOMER_IS_KK) {
-            if ("rtd2841a".equals(SystemProperties.get("ro.board.platform", "rtd2851a"))) {
-                return "RMCA_2K";
-            }
-            return "RMCA_4K";
+        if ("rtd2841a".equals(SystemProperties.get("ro.board.platform", "rtd2851a"))) {
+            return "RMCA_2K";
         }
-        return "RMCA";
+        return "RMCA_4K";
     }
 
     private String loadOEMValue(String filePath) {
