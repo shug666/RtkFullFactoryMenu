@@ -1,12 +1,16 @@
 package com.realtek.fullfactorymenu.tune;
 
+import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_DVBS;
+
 import android.app.Activity;
+import android.os.Handler;
+import android.os.Message;
 import android.os.PowerManager;
 import android.os.RemoteException;
-import android.os.SystemProperties;
 import android.provider.Settings;
-import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.R;
@@ -15,7 +19,6 @@ import com.realtek.fullfactorymenu.api.impl.UserApi;
 import com.realtek.fullfactorymenu.api.listener.IActionCallback;
 import com.realtek.fullfactorymenu.api.manager.TvFactoryManager;
 import com.realtek.fullfactorymenu.logic.LogicInterface;
-import com.realtek.fullfactorymenu.preference.Preference;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;
 import com.realtek.fullfactorymenu.preference.SeekBarPreference;
 import com.realtek.fullfactorymenu.preference.StatePreference;
@@ -25,11 +28,15 @@ import com.realtek.fullfactorymenu.utils.ProgressDialog;
 import com.realtek.fullfactorymenu.utils.TvInputUtils;
 import com.realtek.fullfactorymenu.utils.Utils;
 
-import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_DVBS;
+import java.lang.ref.WeakReference;
 
 public class TuningSettingLogic extends LogicInterface {
 
     private final String TAG = TuningSettingLogic.class.getSimpleName();
+
+    private static final int MSG_ACTION_UPDATE_EXPORT_CHANNEL_UI = 0x01;
+    private static final int MSG_ACTION_UPDATE_IMPORT_CHANNEL_UI = 0x02;
+
     private SumaryPreference mFactoryProgramReset;
     private SumaryPreference mExportChannel;
     private SumaryPreference mImportChannel;
@@ -39,6 +46,7 @@ public class TuningSettingLogic extends LogicInterface {
     private UserApi mUserApi;
     private ProgressDialog mProgressDialog;
     private FactoryMainApi mFactoryMainApi;
+    private UpdateViewHandler mUpdateViewHandler;
 
     public TuningSettingLogic(PreferenceContainer container) {
         super(container);
@@ -48,6 +56,8 @@ public class TuningSettingLogic extends LogicInterface {
     public void init() {
         mUserApi = UserApi.getInstance();
         mFactoryMainApi = FactoryMainApi.getInstance();
+        mUpdateViewHandler = new UpdateViewHandler(this);
+
         StatePreference mMuteColor = (StatePreference) mContainer.findPreferenceById(R.id.mute_color);
         mFactoryProgramReset = (SumaryPreference) mContainer.findPreferenceById(R.id.factory_program_reset);
         mExportChannel = (SumaryPreference) mContainer.findPreferenceById(R.id.export_channel);
@@ -66,6 +76,7 @@ public class TuningSettingLogic extends LogicInterface {
         mPvrEnable.init(mFactoryMainApi.getBooleanValue("PVR_FUNCTION_ENABLED") ? 1 : 0);
         mRecordAll.init(0);
 
+        /*
         if (SystemProperties.getBoolean("persist.sys.preset.scan.enable", false)) {
             mExportPresetFileToUSB.setVisibility(View.VISIBLE);
         } else {
@@ -77,6 +88,7 @@ public class TuningSettingLogic extends LogicInterface {
         } else {
             mEnterCustomerFactoryMode.setVisibility(View.GONE);
         }
+        */
     }
 
     @Override
@@ -176,6 +188,7 @@ public class TuningSettingLogic extends LogicInterface {
                                 mProgressDialog.dismiss();
                                 Settings.Secure.putInt(mContext.getContentResolver(), "tv_user_setup_complete", 1);
                             }
+                            mUpdateViewHandler.sendMessage(mUpdateViewHandler.obtainMessage(MSG_ACTION_UPDATE_EXPORT_CHANNEL_UI, R.string.item_operation_text_pass, -1));
                             AppToast.showToast(mContext, R.string.str_success, Toast.LENGTH_SHORT);
                         }
                     });
@@ -188,6 +201,7 @@ public class TuningSettingLogic extends LogicInterface {
                                 mProgressDialog.dismiss();
                                 Settings.Secure.putInt(mContext.getContentResolver(), "tv_user_setup_complete", 1);
                             }
+                            mUpdateViewHandler.sendMessage(mUpdateViewHandler.obtainMessage(MSG_ACTION_UPDATE_IMPORT_CHANNEL_UI, R.string.item_operation_text_pass, -1));
                             AppToast.showToast(mContext, R.string.str_success, Toast.LENGTH_SHORT);
                             int tvInput = FactoryApplication.getInstance().getInputSource(TvInputUtils.getCurrentInput(mContext));
                             if(tvInput == INPUT_SOURCE_DVBS){
@@ -198,6 +212,11 @@ public class TuningSettingLogic extends LogicInterface {
                     });
                     break;
                 default:
+                    if (result == TvFactoryManager.EXPORT_SETTINGS_RESULT_FAIL) {
+                        mUpdateViewHandler.sendMessage(mUpdateViewHandler.obtainMessage(MSG_ACTION_UPDATE_EXPORT_CHANNEL_UI, R.string.item_operation_text_fail, -1));
+                    } else if (result == TvFactoryManager.IMPORT_SETTINGS_RESULT_FAIL) {
+                        mUpdateViewHandler.sendMessage(mUpdateViewHandler.obtainMessage(MSG_ACTION_UPDATE_IMPORT_CHANNEL_UI, R.string.item_operation_text_fail, -1));
+                    }
                     ((Activity)mContext).runOnUiThread(new Runnable() {
 
                         @Override
@@ -213,4 +232,38 @@ public class TuningSettingLogic extends LogicInterface {
             }
         }
     };
+
+    final static class UpdateViewHandler extends Handler {
+        private final WeakReference<TuningSettingLogic> weakReference;
+
+        public UpdateViewHandler(TuningSettingLogic logic) {
+            weakReference = new WeakReference<>(logic);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            TuningSettingLogic logic = weakReference.get();
+            if (logic == null)
+                return;
+            switch (msg.what) {
+                case MSG_ACTION_UPDATE_EXPORT_CHANNEL_UI: {
+                    int resId = msg.arg1;
+                    if (resId > 0) {
+                        logic.setBackupDBToUSBValue(logic.mContext.getString(resId));
+                    }
+                    break;
+                }
+                case MSG_ACTION_UPDATE_IMPORT_CHANNEL_UI: {
+                    int resId = msg.arg1;
+                    if (resId > 0) {
+                        logic.setRestoreDBFromUSB(logic.mContext.getString(resId));
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    }
 }

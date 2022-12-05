@@ -321,6 +321,7 @@ public final class Constants {
     public static final int REQUEST_EXPORT_PRESET_FILE = 3;
     public static final int MSG_IMPORT_SETTINGS = 1;
     public static final int MSG_EXPORT_SETTINGS = 2;
+    public static final String IMPORT_EXPORT_PATH = "/Channel_list";
 
     /**
      * manufacturer

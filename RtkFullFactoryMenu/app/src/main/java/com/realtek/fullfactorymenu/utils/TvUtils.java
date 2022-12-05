@@ -2,22 +2,23 @@ package com.realtek.fullfactorymenu.utils;
 
 import static com.realtek.fullfactorymenu.utils.Constants.MANUFACTURER_TT;
 
+import android.hardware.input.InputManager;
+import android.net.Uri;
+import android.net.Uri.Builder;
+import android.os.SystemClock;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Window;
+import android.view.WindowManager;
+
+import com.realtek.fullfactorymenu.api.manager.TvCommonManager;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-
-import com.realtek.fullfactorymenu.api.manager.TvCommonManager;
-
-import android.hardware.input.InputManager;
-import android.net.Uri;
-import android.net.Uri.Builder;
-import android.os.SystemClock;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Window;
-import android.view.WindowManager;
 
 public class TvUtils {
     private static boolean DEBUG = true;
@@ -124,27 +125,29 @@ public class TvUtils {
         }*/
     }
 
-    public static void copyTvDBToUSB(String path){
+    public static boolean copyTvDBToUSB(String path){
         String db = path + "/" + "tv.db";
         String dbShm = path + "/" + "tv.db-shm";
         String dbWal = path + "/" + "tv.db-wal";
 
-        copyFile("/data/data/com.android.providers.tv/databases/tv.db", db);
-        copyFile("/data/data/com.android.providers.tv/databases/tv.db-shm", dbShm);
-        copyFile("/data/data/com.android.providers.tv/databases/tv.db-wal", dbWal);
+        boolean copyStatus = copyFile("/data/data/com.android.providers.tv/databases/tv.db", db);
+        copyStatus = copyStatus && copyFile("/data/data/com.android.providers.tv/databases/tv.db-shm", dbShm);
+        copyStatus = copyStatus && copyFile("/data/data/com.android.providers.tv/databases/tv.db-wal", dbWal);
+        return copyStatus;
     }
 
-    public static void copyTvDBToProvider(String path){
+    public static boolean copyTvDBToProvider(String path){
         String db = path + "/" + "tv.db";
         String dbShm = path + "/" + "tv.db-shm";
         String dbWal = path + "/" + "tv.db-wal";
 
-        copyFile(db, "/data/data/com.android.providers.tv/databases/tv.db");
-        copyFile(dbShm, "/data/data/com.android.providers.tv/databases/tv.db-shm");
-        copyFile(dbWal, "/data/data/com.android.providers.tv/databases/tv.db-wal");
+        boolean copyStatus = copyFile(db, "/data/data/com.android.providers.tv/databases/tv.db");
+        copyStatus = copyStatus && copyFile(dbShm, "/data/data/com.android.providers.tv/databases/tv.db-shm");
+        copyStatus = copyStatus && copyFile(dbWal, "/data/data/com.android.providers.tv/databases/tv.db-wal");
+        return copyStatus;
     }
 
-    public static void copyFile(String fromeFilePath, String toTilePath){
+    public static boolean copyFile(String fromeFilePath, String toTilePath){
         File fromFile   = new File(fromeFilePath);
         File toFile = new File(toTilePath);
         FileChannel inChannel = null;
@@ -153,9 +156,37 @@ public class TvUtils {
         if(fromFile.exists()){
             try {
                 if(toFile.exists()){
+                    FileUtils.chmodFile(toFile, 0777);
                     toFile.delete();
+                    toFile.createNewFile();
+                } else {
+                    try {
+                        toFile.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        if(DEBUG) Log.d(TAG, "createNewFile:"+e);
+                        String path = toFile.getParent();
+                        if(DEBUG) Log.d(TAG, "getParent:"+path);
+                        if (path == null || TextUtils.isEmpty(path))
+                            return false;
+                        toFile = new File(path);
+                        if (toFile.exists() && toFile.isFile()) {
+                            boolean isDelete = toFile.delete();
+                            Log.d(TAG, String.format("delete file(%s) success!", isDelete));
+                        }
+                        if (toFile.mkdirs()) {
+                            if (DEBUG) Log.d(TAG, "mkdirs success!");
+                            toFile = new File(toTilePath);
+                            if (!toFile.createNewFile()) {
+                                if(DEBUG) Log.e(TAG, "create " + toTilePath + " failed!");
+                                return false;
+                            }
+                        } else {
+                            if(DEBUG) Log.e(TAG, "mkdirs " + path + " failed!");
+                            return false;
+                        }
+                    }
                 }
-                toFile.createNewFile();
                 inChannel = new FileInputStream(fromFile).getChannel();
                 outChannel = new FileOutputStream(toFile).getChannel();
                 if(DEBUG) Log.d(TAG, fromeFilePath+" file position: "+inChannel.position());
@@ -165,21 +196,25 @@ public class TvUtils {
                 success = true;
                 //Toast.makeText(context,"copy dtv data done", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
-                if(DEBUG) Log.d(TAG, "toFile error: "+toTilePath);
+                if(DEBUG) Log.e(TAG, "toFile error: "+toTilePath);
                 e.printStackTrace();
-            }finally{
-                try {
-                    if (inChannel != null) {
+            } finally {
+                if (inChannel != null) {
+                    try {
                         inChannel.close();
-                        inChannel = null;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        if(DEBUG) Log.e(TAG, "inChannel close error:"+toTilePath);
                     }
-                    if(outChannel != null){
+                }
+
+                if(outChannel != null){
+                    try {
                         outChannel.close();
-                        outChannel = null;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        if(DEBUG) Log.e(TAG, "outChannel close error:"+e);
                     }
-                } catch (IOException e) {
-                    if(DEBUG) Log.d(TAG, "file close error:"+toTilePath);
-                    e.printStackTrace();
                 }
             }
             if(success){
@@ -189,6 +224,7 @@ public class TvUtils {
             if(DEBUG) Log.d(TAG, "fromFile did not exists "+fromeFilePath);
             //Toast.makeText(context, context.getResources().getString(R.string.toast_source_file_not_exist), Toast.LENGTH_SHORT).show();
         }
+        return success;
     }
 
     public static void sendVirtualKey(int keyCode){

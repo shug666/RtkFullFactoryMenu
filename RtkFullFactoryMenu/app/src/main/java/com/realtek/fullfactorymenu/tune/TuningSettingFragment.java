@@ -1,7 +1,5 @@
 package com.realtek.fullfactorymenu.tune;
 
-
-
 import static com.realtek.fullfactorymenu.utils.Constants.ACTIVITY_RTK_MENU_MAIN;
 import static com.realtek.fullfactorymenu.utils.Constants.REQUEST_EXPORT_PRESET_FILE;
 import static com.realtek.fullfactorymenu.utils.Constants.REQUEST_EXPORT_SETTINGS;
@@ -12,20 +10,20 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.IPowerManager;
+import android.os.PowerManager;
 import android.os.RemoteException;
+import android.os.ServiceManager;
+import android.os.SystemProperties;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
-import android.os.IPowerManager;
-import android.os.ServiceManager;
-import android.os.PowerManager;
-import android.os.SystemProperties;
 
 import com.realtek.fullfactorymenu.R;
 import com.realtek.fullfactorymenu.api.impl.FactoryMainApi;
 import com.realtek.fullfactorymenu.api.impl.UserApi;
 import com.realtek.fullfactorymenu.api.manager.TvChannelManager;
-import com.realtek.fullfactorymenu.api.manager.TvChannelManager.*;
+import com.realtek.fullfactorymenu.api.manager.TvChannelManager.OnChannelInfoEventListener;
 import com.realtek.fullfactorymenu.preference.Preference;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;
 import com.realtek.fullfactorymenu.preference.PreferenceFragment;
@@ -130,13 +128,13 @@ public class TuningSettingFragment extends PreferenceFragment {
                         String path = data.getStringExtra(UsbSelectorActivity.EXTRA_PATH);
                         TvChannelManager.getInstance().registerOnChannelInfoEventListener(onChannelInfoEventListener);
                         mTuningSettingLogic.importChannelTable(path);
-                        updateItem(requestCode, true);
+                        //updateItem(requestCode, true);
                         break;
                     }
                     case REQUEST_EXPORT_SETTINGS: {
                         String path = data.getStringExtra(UsbSelectorActivity.EXTRA_PATH);
                         mTuningSettingLogic.exportChannelTable(path);
-                        updateItem(requestCode, true);
+                        //updateItem(requestCode, true);
                         break;
                     }
                     case REQUEST_EXPORT_PRESET_FILE:
@@ -151,6 +149,16 @@ public class TuningSettingFragment extends PreferenceFragment {
                     default:
                         break;
                 }
+            }
+        } else {
+            switch (requestCode) {
+                case REQUEST_IMPORT_SETTINGS:
+                case REQUEST_EXPORT_SETTINGS:
+                    AppToast.showToast(getActivity(), R.string.str_fail, Toast.LENGTH_SHORT);
+                    updateItem(requestCode, false);
+                    break;
+                default:
+                    break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -1,10 +1,17 @@
 package com.realtek.fullfactorymenu.api.impl;
 
+import static com.realtek.fullfactorymenu.FactoryApplication.MSG_KILL_PROCESS;
+import static com.realtek.fullfactorymenu.utils.Constants.ACTIVITY_MAIN;
+import static com.realtek.fullfactorymenu.utils.Constants.IMPORT_EXPORT_PATH;
+import static com.realtek.fullfactorymenu.utils.Constants.MSG_EXPORT_SETTINGS;
+import static com.realtek.fullfactorymenu.utils.Constants.MSG_IMPORT_SETTINGS;
+import static com.realtek.fullfactorymenu.utils.Constants.PACKAGE_NAME_AUTO_TEST;
+import static com.realtek.fullfactorymenu.utils.Constants.RECEIVER_GLOBAL_KEY;
+
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
@@ -15,26 +22,20 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.realtek.fullfactorymenu.utils.ByteTransformUtils;
-import com.realtek.system.RtkProjectConfigs;
-import com.realtek.tv.TVMediaTypeConstants;
-import com.realtek.tv.TvContractEx;
 import com.realtek.fullfactorymenu.FactoryApplication;
-import com.realtek.fullfactorymenu.FactoryApplication.*;
+import com.realtek.fullfactorymenu.FactoryApplication.ChannelHandler;
 import com.realtek.fullfactorymenu.api.listener.IActionCallback;
 import com.realtek.fullfactorymenu.api.manager.TvFactoryManager;
 import com.realtek.fullfactorymenu.utils.LogHelper;
 import com.realtek.fullfactorymenu.utils.TvUtils;
+import com.realtek.system.RtkProjectConfigs;
+import com.realtek.tv.TVMediaTypeConstants;
+import com.realtek.tv.TvContractEx;
 
+import java.io.File;
 import java.util.List;
-
-import static com.realtek.fullfactorymenu.FactoryApplication.MSG_KILL_PROCESS;
-import static com.realtek.fullfactorymenu.utils.Constants.ACTIVITY_MAIN;
-import static com.realtek.fullfactorymenu.utils.Constants.MSG_EXPORT_SETTINGS;
-import static com.realtek.fullfactorymenu.utils.Constants.MSG_IMPORT_SETTINGS;
-import static com.realtek.fullfactorymenu.utils.Constants.PACKAGE_NAME_AUTO_TEST;
-import static com.realtek.fullfactorymenu.utils.Constants.RECEIVER_GLOBAL_KEY;
 
 
 public class UserApi implements Callback {
@@ -62,7 +63,29 @@ public class UserApi implements Callback {
                 if (msg.obj instanceof IActionCallback) {
                     IActionCallback callback = (IActionCallback) msg.obj;
                     String usbPath = msg.getData().getString("path", "null");
+                    if (TextUtils.isEmpty(usbPath) || "null".equals(usbPath)) {
+                        Toast.makeText(mContext, "No USB Device found.", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                    usbPath += IMPORT_EXPORT_PATH;
                     Log.d(TAG, "handleMessage: usbPath " + usbPath);
+                    File file = new File(usbPath);
+                    if (file.exists() && file.isFile()) {
+                        boolean isDelete = file.delete();
+                        Log.d(TAG, String.format("delete file(%s) success!", isDelete));
+                    }
+                    if (!file.exists()) {
+                        try {
+                            if (file.mkdirs()) {
+                                Log.d(TAG, String.format("createNewFile(%s) success!", usbPath));
+                            } else {
+                                Log.e(TAG, String.format("createNewFile(%s) failed!", usbPath));
+                            }
+                        } catch (RuntimeException e) {
+                            e.printStackTrace();
+                            Log.e(TAG, String.format("Error:%s!", e));
+                        }
+                    }
                     boolean ret = msg.getData().getBoolean("ret", false);
                     Log.d(TAG, "handleMessage: ret " + ret);
                     // Intent intent = new Intent(COPY_DB_STATUS_CHANGE);
@@ -70,7 +93,8 @@ public class UserApi implements Callback {
                     // intent.putExtra(KEY_DIRECT, COPY_DB_DIRECTION_TO_USB);
                     // intent.putExtra(KEY_FROM_PATH, usbPath);
                     // mContext.sendBroadcast(intent);
-                    TvUtils.copyTvDBToUSB(usbPath);
+                    ret = ret && TvUtils.copyTvDBToUSB(usbPath);
+                    Log.d(TAG, "copyTvDBToUSB: ret " + ret);
                     try {
                         if (ret) {
                             callback.onCompleted(TvFactoryManager.EXPORT_SETTINGS_RESULT_SUCCESS);
@@ -86,18 +110,29 @@ public class UserApi implements Callback {
                 if (msg.obj instanceof IActionCallback) {
                     IActionCallback callback = (IActionCallback) msg.obj;
                     String usbPath = msg.getData().getString("path", "null");
-                    if (TextUtils.isEmpty(usbPath)) {
+                    if (TextUtils.isEmpty(usbPath) || "null".equals(usbPath)) {
+                        Toast.makeText(mContext, "No USB Device found.", Toast.LENGTH_SHORT).show();
                         return false;
                     }
+                    usbPath += IMPORT_EXPORT_PATH;
                     Log.d(TAG, "loadChannels,usbPath : " + usbPath);
                     if (mChannelHandler.hasMessages(MSG_KILL_PROCESS)) {
                         mChannelHandler.removeMessages(MSG_KILL_PROCESS);
                     }
-                    boolean ret = importTvChFiles(usbPath);
-                    //copyTvDBFromUSBToTVProvider(usbPath);
-                    TvUtils.copyTvDBToProvider(usbPath);
-                    mChannelHandler.removeMessages(MSG_KILL_PROCESS);
-                    mChannelHandler.sendEmptyMessageDelayed(MSG_KILL_PROCESS, 1000);
+                    boolean ret =  false;
+                    File file = new File(usbPath);
+                    if (file.exists()) {
+                        ret = importTvChFiles(usbPath);
+                        Log.d(TAG, "importTvChFiles, ret : " + ret);
+                        //copyTvDBFromUSBToTVProvider(usbPath);
+                        ret = TvUtils.copyTvDBToProvider(usbPath);
+                        Log.d(TAG, "copyTvDBToProvider, ret : " + ret);
+                        mChannelHandler.removeMessages(MSG_KILL_PROCESS);
+                        mChannelHandler.sendEmptyMessageDelayed(MSG_KILL_PROCESS, 1000);
+                    } else {
+                        Log.e(TAG, String.format("has no file(%s)!", usbPath));
+                        Toast.makeText(mContext, "No channel database file found.", Toast.LENGTH_SHORT).show();
+                    }
                     try {
                         if (ret) {
                             callback.onCompleted(TvFactoryManager.IMPORT_SETTINGS_RESULT_SUCCESS);
