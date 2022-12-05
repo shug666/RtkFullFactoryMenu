@@ -17,13 +17,13 @@
 
     <Preference id="@+id/page_tune" title="@string/str_tuning_setting" />
 
-    <Preference id="@+id/page_user" title="@string/str_user" />
+    <Preference id="@+id/page_user" title="@string/str_user" visible="false"/>
 
     <Preference id="@+id/page_others" title="@string/str_others" visible="false"/>
 
     <Preference id="@+id/page_ssc" title="@string/str_ssc_title" />
 
-    <Preference id="@+id/page_ch_default" title="@string/str_ch_default" visible="false"/>
+    <Preference id="@+id/page_ch_default" title="@string/str_ch_default"/>
 
     <Preference id="@+id/reset" title="@string/str_reset" />
 

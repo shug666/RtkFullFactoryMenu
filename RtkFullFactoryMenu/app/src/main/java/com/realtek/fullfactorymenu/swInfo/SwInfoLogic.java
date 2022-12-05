@@ -113,12 +113,7 @@ public class SwInfoLogic extends LogicInterface {
 
         swVersion.setSumary(getSwVersion());
         builtTime.setSumary(getBuiltTime());
-        if (FactoryApplication.CUSTOMER_IS_CH) {
-            tvConfigVersion.setVisibility(View.GONE);
-        } else {
-            tvConfigVersion.setVisibility(View.VISIBLE);
-            tvConfigVersion.setSumary(getTvConfigVersion());
-        }
+        tvConfigVersion.setSumary(getTvConfigVersion());
 
 
         if(Build.VERSION.SDK_INT == Build.VERSION_CODES.R){
