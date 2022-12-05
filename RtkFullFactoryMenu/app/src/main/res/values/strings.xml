@@ -383,6 +383,7 @@
     <string name="item_paneldata_upgrade">Panel Data update</string>
     <string name="item_customer_upgrade">Customer Update</string>
 
+    <string name="input_mac_invalid">Mac address is invalid!</string>
 
     <!-- Others -->
     <string name="item_watch_dog">Watch Dog</string>

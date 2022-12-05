@@ -1,22 +1,6 @@
 package com.realtek.fullfactorymenu.systemInfo;
 
-import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_Attestation;
-import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_BOOTLOGO;
-import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_CI_KEY;
-import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_HDCP;
-import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_HDCP22;
-import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_MAC;
-import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_Netflix_ESN;
-import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_OEM;
-import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_PLAYREADY;
-import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_PQ;
-import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_RMCA;
-import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_WIDEVINE;
-
-import android.content.Context;
-import android.os.Bundle;
-import android.os.storage.StorageManager;
-import android.os.storage.VolumeInfo;
+import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.*;
 
 import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.R;
@@ -24,6 +8,13 @@ import com.realtek.fullfactorymenu.preference.Preference;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;
 import com.realtek.fullfactorymenu.preference.PreferenceFragment;
 import com.realtek.fullfactorymenu.utils.Tools;
+
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.storage.StorageManager;
+import android.os.storage.VolumeInfo;
 
 import java.util.List;
 
@@ -77,7 +68,20 @@ public class SystemInfoFragment extends PreferenceFragment {
 
     @Override
     public void onPreferenceItemClick(Preference preference) {
-        mSystemInfoLogic = (SystemInfoLogic) mPreferenceContainer.getPreferenceLogic(R.id.upgrede_mac);
+        if (preference.getId() == R.id.check_network) {
+            mSystemInfoLogic = (SystemInfoLogic) mPreferenceContainer.getPreferenceLogic(R.id.upgrede_mac);
+            mSystemInfoLogic.checkNetwork(getContext());
+            return;
+        }
+        if (preference.getId() == R.id.upgrede_mac_manual) {
+            ComponentName name = new ComponentName("com.realtek.fullfactorymenu", "com.realtek.fullfactorymenu.systemInfo.InputMacActivity");
+            Intent intent = new Intent();
+            intent.setComponent(name);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(intent);
+            return;
+        }
+
         String initUsb = initUsbList();
         if (initUsb == null) {
             Tools.showDialog(getActivity(), getString(R.string.str_error), getString(R.string.str_cannot_find));
@@ -85,59 +89,53 @@ public class SystemInfoFragment extends PreferenceFragment {
         }
 
         switch (preference.getId()) {
-        case R.id.check_network:
-            mSystemInfoLogic.checkNetwork(getContext());
-            break;
         case R.id.upgrede_all_key:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_MAC, initUsb + PATH_MAC);
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_OEM, initUsb + PATH_OEM);
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_Netflix_ESN, initUsb + PATH_NETFLIX_ESN);
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_PLAYREADY, initUsb + PATH_PLAYREADY);
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_HDCP, initUsb + PATH_HDCP);
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_HDCP22, initUsb + PATH_HDCP22);
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_WIDEVINE, initUsb + PATH_WIDEVINE);
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_CI_KEY, initUsb + PATH_CI_KEY);
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_Attestation, initUsb + PATH_ATTESTATION_KEY);
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_RMCA, initUsb + PATH_RMCA);
-            break;
-        case R.id.upgrede_mac_manual:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_MAC, initUsb + PATH_MAC);
+            sendSyncCommand(CMD_UPGRADE_MAC, initUsb + PATH_MAC);
+            sendSyncCommand(CMD_UPGRADE_OEM, initUsb + PATH_OEM);
+            sendSyncCommand(CMD_UPGRADE_Netflix_ESN, initUsb + PATH_NETFLIX_ESN);
+            sendSyncCommand(CMD_UPGRADE_PLAYREADY, initUsb + PATH_PLAYREADY);
+            sendSyncCommand(CMD_UPGRADE_HDCP, initUsb + PATH_HDCP);
+            sendSyncCommand(CMD_UPGRADE_HDCP22, initUsb + PATH_HDCP22);
+            sendSyncCommand(CMD_UPGRADE_WIDEVINE, initUsb + PATH_WIDEVINE);
+            sendSyncCommand(CMD_UPGRADE_CI_KEY, initUsb + PATH_CI_KEY);
+            sendSyncCommand(CMD_UPGRADE_Attestation, initUsb + PATH_ATTESTATION_KEY);
+            sendSyncCommand(CMD_UPGRADE_RMCA, initUsb + PATH_RMCA);
             break;
         case R.id.upgrede_mac:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_MAC, initUsb + PATH_MAC);
+            sendSyncCommand(CMD_UPGRADE_MAC, initUsb + PATH_MAC);
             break;
         case R.id.upgrade_oem:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_OEM, initUsb + PATH_OEM);
+            sendSyncCommand(CMD_UPGRADE_OEM, initUsb + PATH_OEM);
             break;
         case R.id.upgrade_netflix_esn:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_Netflix_ESN, initUsb + PATH_NETFLIX_ESN);
+            sendSyncCommand(CMD_UPGRADE_Netflix_ESN, initUsb + PATH_NETFLIX_ESN);
             break;
         case R.id.upgrade_playready:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_PLAYREADY, initUsb + PATH_PLAYREADY);
+            sendSyncCommand(CMD_UPGRADE_PLAYREADY, initUsb + PATH_PLAYREADY);
             break;
         case R.id.upgrade_hdcp:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_HDCP, initUsb + PATH_HDCP);
+            sendSyncCommand(CMD_UPGRADE_HDCP, initUsb + PATH_HDCP);
             break;
         case R.id.upgrade_hdcp2:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_HDCP22, initUsb + PATH_HDCP22);
+            sendSyncCommand(CMD_UPGRADE_HDCP22, initUsb + PATH_HDCP22);
             break;
         case R.id.upgrade_widevine:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_WIDEVINE, initUsb + PATH_WIDEVINE);
+            sendSyncCommand(CMD_UPGRADE_WIDEVINE, initUsb + PATH_WIDEVINE);
             break;
         case R.id.upgrade_ci:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_CI_KEY, initUsb + PATH_CI_KEY);
+            sendSyncCommand(CMD_UPGRADE_CI_KEY, initUsb + PATH_CI_KEY);
             break;
         case R.id.upgrade_attestation:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_Attestation, initUsb + PATH_ATTESTATION_KEY);
+            sendSyncCommand(CMD_UPGRADE_Attestation, initUsb + PATH_ATTESTATION_KEY);
             break;
         case R.id.upgrade_rmca:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_RMCA, initUsb + PATH_RMCA);
+            sendSyncCommand(CMD_UPGRADE_RMCA, initUsb + PATH_RMCA);
             break;
         case R.id.upgrade_pq:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_PQ, initUsb);
+            sendSyncCommand(CMD_UPGRADE_PQ, initUsb);
             break;
         case R.id.upgrade_bootlogo:
-            mSystemInfoLogic.sendSyncCommand(CMD_UPGRADE_BOOTLOGO, initUsb);
+            sendSyncCommand(CMD_UPGRADE_BOOTLOGO, initUsb);
             break;
         default:
             break;

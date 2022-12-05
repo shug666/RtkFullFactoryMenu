@@ -20,7 +20,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.SparseArray;
 
 public class SystemInfoLogic extends LogicInterface implements Handler.Callback {
@@ -58,6 +57,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
     public static final int CMD_UPGRADE_WIDEVINE_ATT = 30;
     public static final int CMD_UPGRADE_OEM = 32;
     public static final int CMD_GET_OEM = 33;
+    public static final int CMD_UPGRADE_MAC_MANUAL = 34;
 
     public static final SparseArray<String> sCommands = new SparseArray<>();
 
@@ -95,11 +95,13 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
         sCommands.put(CMD_UPGRADE_WIDEVINE_ATT, "UPGRADE_WIDEVINE_ATT");
         sCommands.put(CMD_UPGRADE_OEM, "UPGRADE_OEM");
         sCommands.put(CMD_GET_OEM, "GET_OEM");
+        sCommands.put(CMD_UPGRADE_MAC_MANUAL, "UPGRADE_MAC_MANUAL");
     }
 
-    private Handler mHandler;
+    private static Handler mHandler;
 
     private SumaryPreference mCheckNetwork;
+    private SumaryPreference mMACUpgradeManual;
     private SumaryPreference mMACUpgrade;
     private SumaryPreference mOemUpgrade;
     private SumaryPreference mNetflixEsnUpgrade;
@@ -119,6 +121,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
     @Override
     public void init() {
         mCheckNetwork = (SumaryPreference) mContainer.findPreferenceById(R.id.check_network);
+        mMACUpgradeManual = (SumaryPreference) mContainer.findPreferenceById(R.id.upgrede_mac_manual);
         mMACUpgrade = (SumaryPreference) mContainer.findPreferenceById(R.id.upgrede_mac);
         mOemUpgrade = (SumaryPreference) mContainer.findPreferenceById(R.id.upgrade_oem);
         mNetflixEsnUpgrade = (SumaryPreference) mContainer.findPreferenceById(R.id.upgrade_netflix_esn);
@@ -163,12 +166,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                     AlertDialog dialog = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
                             .setTitle(mContext.getResources().getString(R.string.item_upgrade_main))
                             .setMessage(mContext.getResources().getString(R.string.item_restart))
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    sendSyncCommand(CMD_UPGRADE_USB_CLICK);
-                                }
-                            }).create();
+                            .setPositiveButton("Yes", (dialog1, which) -> sendSyncCommand(CMD_UPGRADE_USB_CLICK)).create();
                     dialog.show();
                 } else if (msg.arg1 == 0) {
                     Tools.showDialog(mContext, mContext.getString(R.string.str_error),
@@ -180,12 +178,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                     AlertDialog dialog = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
                             .setTitle(mContext.getResources().getString(R.string.item_upgrade_bootlogo))
                             .setMessage(mContext.getResources().getString(R.string.item_restart))
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    sendSyncCommand(CMD_UPGRADE_BOOTLOGO_CLICK);
-                                }
-                            }).create();
+                            .setPositiveButton("Yes", (dialog12, which) -> sendSyncCommand(CMD_UPGRADE_BOOTLOGO_CLICK)).create();
                     dialog.show();
                 } else if (msg.arg1 == 0) {
                     Tools.showDialog(mContext, mContext.getString(R.string.str_error),
@@ -197,12 +190,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                     AlertDialog dialog = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
                             .setTitle(mContext.getResources().getString(R.string.item_upgrade_bootvideo))
                             .setMessage(mContext.getResources().getString(R.string.item_restart))
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    sendSyncCommand(CMD_UPGRADE_BOOTVIDEO_CLICK);
-                                }
-                            }).create();
+                            .setPositiveButton("Yes", (dialog13, which) -> sendSyncCommand(CMD_UPGRADE_BOOTVIDEO_CLICK)).create();
                     dialog.show();
                 } else if (msg.arg1 == 0) {
                     Tools.showDialog(mContext, mContext.getString(R.string.str_error),
@@ -238,6 +226,21 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                     Tools.showDialog(mContext, mContext.getString(R.string.str_failed), bundle.getString("Failed"));
                 } else if (msg.arg1 == 2) {
                     mHDCPUpgrade2.setSumary(mContext.getString(R.string.str_ng));
+                    Tools.showDialog(mContext, mContext.getString(R.string.str_error), bundle.getString("Cannot"));
+                }
+                break;
+            case CMD_UPGRADE_MAC_MANUAL:
+                if (msg.arg1 == 1) {
+                    mMACUpgradeManual.setSumary(mContext.getString(R.string.str_ok));
+                    Tools.showDialog(mContext, mContext.getString(R.string.str_success), bundle.getString("Success"));
+                } else if (msg.arg1 == 0) {
+                    mMACUpgradeManual.setSumary(mContext.getString(R.string.str_ng));
+                    Tools.showDialog(mContext, mContext.getString(R.string.str_failed), bundle.getString("Failed"));
+                } else if (msg.arg1 == 2) {
+                    mMACUpgradeManual.setSumary(mContext.getString(R.string.str_ng));
+                    Tools.showDialog(mContext, mContext.getString(R.string.str_failed), bundle.getString("Failed"));
+                } else if (msg.arg1 == 3) {
+                    mMACUpgradeManual.setSumary(mContext.getString(R.string.str_ng));
                     Tools.showDialog(mContext, mContext.getString(R.string.str_error), bundle.getString("Cannot"));
                 }
                 break;
@@ -365,7 +368,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
         return false;
     }
 
-    public void sendSyncCommand(final int command, String... args) {
+    public static void sendSyncCommand(final int command, String... args) {
         String sCommand = sCommands.get(command);
         if (TextUtils.isEmpty(sCommand)) {
             return;

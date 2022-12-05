@@ -29,8 +29,22 @@
             </intent-filter>
         </activity>
 
+	<activity
+		android:name=".user.UsbSelectorActivity"
+	        android:theme="@style/TranslucentActivity"/>
+
         <activity
-            android:name=".user.UsbSelectorActivity"
+            android:name=".systemInfo.InputMacActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.toptech.factory.action.FACTORY_MAC_ADDRESS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.realtek.fullfactorymenu.user.UsbSelectorActivity"
             android:theme="@style/TranslucentActivity"/>
 
         <service
