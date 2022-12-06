@@ -94,6 +94,11 @@ public class SoundAdjustLogic extends LogicInterface {
         int spdifValue = FactoryApplication.getInstance().getAq().getSPDIFOutput();
         Log.d(TAG, "init: spdifvalue" + spdifValue);
         mDigitalAudio.setEnabled(spdifValue == TYPE_VALUE_PCM);
+
+        mAvcThl.setEnabled(soundAdjustInfo[1] == 1);
+        mAvcThl.setFocusable(soundAdjustInfo[1] == 1);
+        mDrcThl.setEnabled(soundAdjustInfo[4] == 1);
+        mDrcThl.setFocusable(soundAdjustInfo[4] == 1);
     }
 
     private int getSpeakerOutput(int speaker) {
@@ -181,9 +186,13 @@ public class SoundAdjustLogic extends LogicInterface {
         switch (preference.getId()){
             case R.id.avc_enable:
                 mFactoryMainApi.setIntegerValue(TvCommonManager.COMMAND_SET_AVC_ENABLE, current);
+                mAvcThl.setEnabled(current == 1);
+                mAvcThl.setFocusable(current == 1);
                 break;
             case R.id.drc_enable:
                 mFactoryMainApi.setIntegerValue(TvCommonManager.COMMAND_SET_DRC_ENABLE, current);
+                mDrcThl.setEnabled(current == 1);
+                mDrcThl.setFocusable(current == 1);
                 break;
             case R.id.effect:
                 mFactoryMainApi.setIntegerValue(TvCommonManager.COMMAND_SET_EFFECT, current);
