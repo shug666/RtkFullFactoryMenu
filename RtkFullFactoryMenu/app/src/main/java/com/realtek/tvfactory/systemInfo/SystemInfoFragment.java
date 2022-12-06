@@ -7,6 +7,7 @@ import com.realtek.tvfactory.R;
 import com.realtek.tvfactory.preference.Preference;
 import com.realtek.tvfactory.preference.PreferenceContainer;
 import com.realtek.tvfactory.preference.PreferenceFragment;
+import com.realtek.tvfactory.utils.PackageUtils;
 import com.realtek.tvfactory.utils.Tools;
 
 import android.app.AlertDialog;
@@ -14,13 +15,17 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.storage.StorageManager;
 import android.os.storage.VolumeInfo;
+import android.util.Log;
 
 import java.util.List;
 
 public class SystemInfoFragment extends PreferenceFragment {
+    private static final String TAG = SystemInfoFragment.class.getSimpleName();
 
     private SystemInfoLogic mSystemInfoLogic;
 
@@ -75,6 +80,15 @@ public class SystemInfoFragment extends PreferenceFragment {
         if (preference.getId() == R.id.check_network) {
             mSystemInfoLogic = (SystemInfoLogic) mPreferenceContainer.getPreferenceLogic(R.id.upgrede_mac);
             mSystemInfoLogic.checkNetwork(getContext());
+            ComponentName network =
+                    ComponentName.unflattenFromString("com.android.tv.settings/.connectivity.NetworkActivity");
+            Intent networkIntent = PackageUtils.getActivityIntentByComponentName(getActivity(), network);
+            if (networkIntent != null) {
+                getActivity().startActivity(networkIntent);
+                getActivity().finish();
+            } else {
+                Log.e(TAG, String.format("start %s fail, because not exist!", network.getClassName()));
+            }
             return;
         }
         if (preference.getId() == R.id.upgrede_mac_manual) {
