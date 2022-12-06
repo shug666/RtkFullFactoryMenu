@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.R;
 import com.realtek.fullfactorymenu.logic.LogicInterface;
 import com.realtek.fullfactorymenu.preference.PreferenceContainer;
@@ -29,6 +30,10 @@ public class DefaultLogic extends LogicInterface {
     public void init() {
         StatePreference mMode = (StatePreference) mContainer.findPreferenceById(R.id.ch_default_m_mode);
         mMode.init(Settings.System.getInt(mContext.getContentResolver(), "MMode", 0));
+        if (!FactoryApplication.CUSTOMER_IS_CH) {
+            mMode.setEnabled(false);
+            mMode.setFocusable(false);
+        }
     }
 
     @Override
