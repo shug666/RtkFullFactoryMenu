@@ -1,5 +1,9 @@
 package com.realtek.tvfactory.designMode;
 
+import static com.realtek.tvfactory.utils.Constants.ACTIVITY_AGING;
+import static com.realtek.tvfactory.utils.Constants.ACTIVITY_MMODE;
+import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_AUTO_TEST;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -19,14 +23,12 @@ import androidx.annotation.NonNull;
 import com.realtek.tvfactory.BaseFragment;
 import com.realtek.tvfactory.FactoryMenuFragment;
 import com.realtek.tvfactory.R;
-import com.realtek.tvfactory.api.impl.FactoryMainApi;
 import com.realtek.tvfactory.api.impl.UserApi;
 import com.realtek.tvfactory.picture.WhiteBalanceAdjustFragment;
 import com.realtek.tvfactory.preference.Preference;
 import com.realtek.tvfactory.preference.PreferenceContainer;
 import com.realtek.tvfactory.preference.PreferenceFragment;
 import com.realtek.tvfactory.user.LogPageFragment;
-import com.realtek.tvfactory.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -130,7 +132,7 @@ public class DesignModeFragment extends PreferenceFragment {
         switch (preference.getId()) {
             case R.id.aging_mode:
                 PackageManager pm = getActivity().getPackageManager();
-                ComponentName name = new ComponentName("com.toptech.factorytoolsgtv", "com.toptech.factorytoolsgtv.AgingActivity");
+                ComponentName name = new ComponentName(PACKAGE_NAME_AUTO_TEST, PACKAGE_NAME_AUTO_TEST + "." + ACTIVITY_AGING);
                 int state = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
                 pm.setComponentEnabledSetting(name, state, PackageManager.DONT_KILL_APP);
 
@@ -145,7 +147,7 @@ public class DesignModeFragment extends PreferenceFragment {
                 break;
             case R.id.m_mode:
                 Intent mMode = new Intent();
-                ComponentName mModeComp = new ComponentName("com.toptech.factorytoolsboe", "com.toptech.factorytoolsboe.MModeActivity");
+                ComponentName mModeComp = new ComponentName(PACKAGE_NAME_AUTO_TEST, PACKAGE_NAME_AUTO_TEST + "." + ACTIVITY_MMODE);
                 mMode.setComponent(mModeComp);
                 mMode.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().startActivity(mMode);

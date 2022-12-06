@@ -1,30 +1,14 @@
 package com.realtek.tvfactory.designMode;
 
-import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_Attestation;
-import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_CI_KEY;
-import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_HDCP;
-import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_HDCP22;
-import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_MAC;
-import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_Netflix_ESN;
-import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_OEM;
-import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_PLAYREADY;
-import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_RMCA;
-import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_WIDEVINE;
+import static com.realtek.tvfactory.utils.Constants.ACTIVITY_AGING;
+import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_AUTO_TEST;
 
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.os.Message;
-import android.os.RemoteException;
 import android.os.SystemProperties;
-import android.os.storage.StorageManager;
-import android.os.storage.VolumeInfo;
 import android.provider.Settings;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.R;
@@ -32,19 +16,13 @@ import com.realtek.tvfactory.api.impl.FactoryMainApi;
 import com.realtek.tvfactory.api.impl.PictureApi;
 import com.realtek.tvfactory.api.impl.UpgradeApi;
 import com.realtek.tvfactory.api.impl.UserApi;
-import com.realtek.tvfactory.api.listener.ICommandCallback;
 import com.realtek.tvfactory.api.manager.TvFactoryManager;
 import com.realtek.tvfactory.logic.LogicInterface;
 import com.realtek.tvfactory.preference.Preference;
 import com.realtek.tvfactory.preference.PreferenceContainer;
 import com.realtek.tvfactory.preference.SeekBarPreference;
 import com.realtek.tvfactory.preference.StatePreference;
-import com.realtek.tvfactory.systemInfo.SystemInfoFragment;
-import com.realtek.tvfactory.systemInfo.SystemInfoLogic;
 import com.realtek.tvfactory.utils.Tools;
-
-import java.io.File;
-import java.util.List;
 
 public class DesignModeLogic extends LogicInterface {
 
@@ -131,7 +109,7 @@ public class DesignModeLogic extends LogicInterface {
             case R.id.AgingMode:
                 if (current == 1){
                     PackageManager pm = mContext.getPackageManager();
-                    ComponentName name = new ComponentName("com.toptech.factorytoolsgtv", "com.toptech.factorytoolsgtv.AgingActivity");
+                    ComponentName name = new ComponentName(PACKAGE_NAME_AUTO_TEST, PACKAGE_NAME_AUTO_TEST + "." + ACTIVITY_AGING);
                     int state = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
                     pm.setComponentEnabledSetting(name, state, PackageManager.DONT_KILL_APP);
 
