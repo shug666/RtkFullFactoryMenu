@@ -107,7 +107,6 @@ public class UserLogic extends LogicInterface {
     }
 
     public void deinit() {
-        mUserApi.setPvrRecordAll(false, Utils.getUSBInternalPath(mContext));
         if (FactoryApplication.CUSTOMER_IS_KK) {
             Log.d(TAG, String.format("name:%s value:%s", mTestPattern.getCurrentEntryName(), mTestPattern.getCurrentEntryValue()));
             if (!mContext.getResources().getString(R.string.str_off).equals(mTestPattern.getCurrentEntryName())) {

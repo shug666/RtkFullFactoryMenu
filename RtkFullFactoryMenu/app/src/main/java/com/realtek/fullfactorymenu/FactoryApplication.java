@@ -1,9 +1,24 @@
 package com.realtek.fullfactorymenu;
 
+import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_ATSC;
+import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_ATV;
+import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_CVBS;
+import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_DVBC;
+import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_DVBS;
+import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_DVBT;
+import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_HDMI;
+import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_HDMI2;
+import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_HDMI3;
+import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_ISDB;
+import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_VGA;
+import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.INPUT_SOURCE_YPBPR;
+import static com.realtek.fullfactorymenu.utils.Constants.MANUFACTURER_BVT;
+import static com.realtek.fullfactorymenu.utils.Constants.MANUFACTURER_CH;
+import static com.realtek.fullfactorymenu.utils.Constants.MANUFACTURER_KK;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-
 import android.media.tv.TvInputInfo;
 import android.media.tv.TvInputManager;
 import android.os.Handler;
@@ -15,7 +30,11 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import com.exttv.tv.ExtTv;
+import com.realtek.fullfactorymenu.api.impl.UserApi;
 import com.realtek.fullfactorymenu.utils.ByteTransformUtils;
+import com.realtek.fullfactorymenu.utils.Constants;
+import com.realtek.fullfactorymenu.utils.TvInputUtils;
+import com.realtek.fullfactorymenu.utils.Utils;
 import com.realtek.tv.AQ;
 import com.realtek.tv.DTVVideoAvailability;
 import com.realtek.tv.Factory;
@@ -23,19 +42,12 @@ import com.realtek.tv.PQ;
 import com.realtek.tv.SystemControl;
 import com.realtek.tv.Tv;
 import com.realtek.tv.VSC;
-import com.realtek.fullfactorymenu.utils.TvInputUtils;
-import com.realtek.fullfactorymenu.utils.Utils;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import static com.realtek.fullfactorymenu.api.manager.TvCommonManager.*;
-import static com.realtek.fullfactorymenu.utils.Constants.MANUFACTURER_BVT;
-import static com.realtek.fullfactorymenu.utils.Constants.MANUFACTURER_CH;
-import static com.realtek.fullfactorymenu.utils.Constants.MANUFACTURER_KK;
 
 public class FactoryApplication extends Application {
     private static final String TAG = "FactoryApplication";
@@ -90,6 +102,11 @@ public class FactoryApplication extends Application {
     public void onCreate() {
         instance = this;
         initInputList();
+        /**
+         * stop record
+         */
+        UserApi.getInstance().setPvrRecordAll(false, Utils.getUSBInternalPath(this.getApplicationContext()));
+        Settings.Global.putInt(getContentResolver(), Constants.RECORD_ALL_ENABLE, 0);
         if (TextUtils.isEmpty(TvInputUtils.getCurrentInput(this))) {
             if (TvInputUtils.isATSC()) {
                 TvInputUtils.setCurrentInput(this, INPUT_ID_ATSC);

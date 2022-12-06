@@ -323,6 +323,8 @@ public final class Constants {
     public static final int MSG_EXPORT_SETTINGS = 2;
     public static final String IMPORT_EXPORT_PATH = "/Channel_list";
 
+    public static final String RECORD_ALL_ENABLE = "RECORD_ALL_ENABLE";
+
     /**
      * manufacturer
      */

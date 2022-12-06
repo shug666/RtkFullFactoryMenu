@@ -3,6 +3,7 @@ package com.realtek.fullfactorymenu;
 import java.util.Objects;
 import java.util.Stack;
 
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -14,6 +15,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.realtek.fullfactorymenu.tune.TuningSettingFragment;
+import com.realtek.fullfactorymenu.utils.Constants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -229,6 +234,13 @@ public class FactoryMenuFragment extends BaseFragment {
 
     public boolean popCurrentPage() {
         if (mFragments.size() > 1) {
+             if (mFragments.peek().fragment instanceof TuningSettingFragment) {
+                int recordAllEnable = Settings.Global.getInt(rootView.getContext().getContentResolver(), Constants.RECORD_ALL_ENABLE, 0);
+                if (recordAllEnable == 1) {
+                    Toast.makeText(rootView.getContext(), "Now recording, please stop record before exit!", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            }
             mFragments.pop();
 
             Record next = mFragments.peek();

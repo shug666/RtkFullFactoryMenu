@@ -31,6 +31,7 @@ public class SoundPageLogic extends LogicInterface {
     private final int[] volume = {30, 0, 50, 100};
     private int default_volume;
     private SumaryPreference mBalanceCurr;
+    private boolean isMute;
 
     private AQ getAq() {
         if (mAq == null) {
@@ -64,6 +65,7 @@ public class SoundPageLogic extends LogicInterface {
         mInputSource.init(inputNames, inputValues, currentIndex);
         mInputSource.setEnabled(false);
         mInputSource.setFocusable(false);
+        isMute = isStreamMute(mContext);
         default_volume = getVolume(mContext);
         volume[0] = default_volume;
 
@@ -73,6 +75,7 @@ public class SoundPageLogic extends LogicInterface {
         SeekBarPreference mBalanceSeekbar = (SeekBarPreference) mContainer.findPreferenceById(R.id.balance_seekbar);
 
         mVolume.init(0);
+        getAq().setBalanceLevel(0);
         mBalance.init(1);
         mBalanceCurr.setSumary(getAq().getBalanceLevel() + "");
         mBalanceSeekbar.init(getAq().getBalanceLevel());
@@ -80,7 +83,11 @@ public class SoundPageLogic extends LogicInterface {
 
     @Override
     public void deinit() {
-        setVolume(mContext, default_volume, false);
+        if (!isMute) {
+            setVolume(mContext, default_volume, false);
+        } else {
+            setStreamMute(mContext, true);
+        }
         getAq().setBalanceLevel(0);
     }
 
@@ -136,5 +143,19 @@ public class SoundPageLogic extends LogicInterface {
         if (audioManager == null)
             return 0;
         return audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+    }
+
+    private boolean isStreamMute(Context context) {
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager == null)
+            return false;
+        return audioManager.isStreamMute(AudioManager.STREAM_MUSIC);
+    }
+
+    private void setStreamMute(Context context, boolean isMute) {
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager == null)
+            return;
+        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, isMute);
     }
 }
