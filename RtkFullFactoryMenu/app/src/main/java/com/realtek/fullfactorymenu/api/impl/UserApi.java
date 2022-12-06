@@ -64,28 +64,10 @@ public class UserApi implements Callback {
                     IActionCallback callback = (IActionCallback) msg.obj;
                     String usbPath = msg.getData().getString("path", "null");
                     if (TextUtils.isEmpty(usbPath) || "null".equals(usbPath)) {
-                        Toast.makeText(mContext, "No USB Device found.", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "handleMessage: usbPath " + usbPath);
                         return false;
                     }
-                    usbPath += IMPORT_EXPORT_PATH;
                     Log.d(TAG, "handleMessage: usbPath " + usbPath);
-                    File file = new File(usbPath);
-                    if (file.exists() && file.isFile()) {
-                        boolean isDelete = file.delete();
-                        Log.d(TAG, String.format("delete file(%s) success!", isDelete));
-                    }
-                    if (!file.exists()) {
-                        try {
-                            if (file.mkdirs()) {
-                                Log.d(TAG, String.format("createNewFile(%s) success!", usbPath));
-                            } else {
-                                Log.e(TAG, String.format("createNewFile(%s) failed!", usbPath));
-                            }
-                        } catch (RuntimeException e) {
-                            e.printStackTrace();
-                            Log.e(TAG, String.format("Error:%s!", e));
-                        }
-                    }
                     boolean ret = msg.getData().getBoolean("ret", false);
                     Log.d(TAG, "handleMessage: ret " + ret);
                     // Intent intent = new Intent(COPY_DB_STATUS_CHANGE);
@@ -111,10 +93,9 @@ public class UserApi implements Callback {
                     IActionCallback callback = (IActionCallback) msg.obj;
                     String usbPath = msg.getData().getString("path", "null");
                     if (TextUtils.isEmpty(usbPath) || "null".equals(usbPath)) {
-                        Toast.makeText(mContext, "No USB Device found.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "No Channel List Folder Found.", Toast.LENGTH_SHORT).show();
                         return false;
                     }
-                    usbPath += IMPORT_EXPORT_PATH;
                     Log.d(TAG, "loadChannels,usbPath : " + usbPath);
                     if (mChannelHandler.hasMessages(MSG_KILL_PROCESS)) {
                         mChannelHandler.removeMessages(MSG_KILL_PROCESS);
@@ -344,11 +325,12 @@ public class UserApi implements Callback {
         if (mBackgroundHandler.hasMessages(MSG_IMPORT_SETTINGS)) {
             return false;
         }
+        final String channelListFolder = usbPath + IMPORT_EXPORT_PATH;
         Message msg = mBackgroundHandler.obtainMessage();
         msg.obj = callback;
         msg.what = MSG_IMPORT_SETTINGS;
         Bundle bundle = new Bundle();
-        bundle.putString("path", usbPath);
+        bundle.putString("path", channelListFolder);
         msg.setData(bundle);
         mBackgroundHandler.sendMessage(msg);
         return true;
@@ -375,13 +357,32 @@ public class UserApi implements Callback {
         if (mBackgroundHandler.hasMessages(MSG_EXPORT_SETTINGS)) {
             return false;
         }
+        final String channelListFolder = usbPath + IMPORT_EXPORT_PATH;
+        Log.d(TAG, "exportChannelTable: Channel_list Path " + channelListFolder);
+        File file = new File(channelListFolder);
+        if (file.exists() && file.isFile()) {
+            boolean isDelete = file.delete();
+            Log.d(TAG, String.format("delete file(%s) success!", isDelete));
+        }
+        if (!file.exists()) {
+            try {
+                if (file.mkdirs()) {
+                    Log.d(TAG, String.format("mkdirs(%s) success!", channelListFolder));
+                } else {
+                    Log.e(TAG, String.format("mkdirs(%s) failed!", channelListFolder));
+                }
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                Log.e(TAG, String.format("Error:%s!", e));
+            }
+        }
         new Thread(() -> {
-            boolean ret = mFactoryApplication.getTv().exportTVChFiles(usbPath);
+            boolean ret = mFactoryApplication.getTv().exportTVChFiles(channelListFolder);
             Message msg = mBackgroundHandler.obtainMessage();
             msg.obj = callback;
             msg.what = MSG_EXPORT_SETTINGS;
             Bundle bundle = new Bundle();
-            bundle.putString("path", usbPath);
+            bundle.putString("path", channelListFolder);
             bundle.putBoolean("ret", ret);
             msg.setData(bundle);
             mBackgroundHandler.sendMessage(msg);
