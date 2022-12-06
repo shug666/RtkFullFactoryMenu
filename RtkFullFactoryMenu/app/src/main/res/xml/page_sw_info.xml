@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.swInfo.SwInfoLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.swInfo.SwInfoLogic">
     <SumaryPreference id="@+id/display_project_id" title="@string/str_project_id" />
     <SumaryPreference id="@+id/display_panel" title="@string/str_panel_info" />
     <SumaryPreference id="@+id/display_mac_address" title="@string/str_max_address" />

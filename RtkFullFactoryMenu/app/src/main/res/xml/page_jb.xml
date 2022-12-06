@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.oled.JBLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.oled.JBLogic">
 
     <Preference id="@+id/Run_JB" title="@string/str_Run_JB" />
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.user.UserLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.user.UserLogic">
 
     <StatePreference id="@+id/test_pattern" title="@string/str_test_pattern" index="0" cycleEnabled="true" visible="false">
         <entry name="@string/str_off" index="0" enabled="true" >

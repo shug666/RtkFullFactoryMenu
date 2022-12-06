@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.picture.PQLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.picture.PQLogic">
 
     <SeekBarPreference id="@+id/comb_brightness" title="@string/str_comb_brightness" minValue="0" maxValue="255" />
 

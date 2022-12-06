@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.realtek.fullfactorymenu"
+    package="com.realtek.tvfactory"
     android:sharedUserId="android.uid.system">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -29,9 +29,9 @@
             </intent-filter>
         </activity>
 
-	<activity
-		android:name=".user.UsbSelectorActivity"
-	        android:theme="@style/TranslucentActivity"/>
+        <activity
+            android:name=".user.UsbSelectorActivity"
+            android:theme="@style/TranslucentActivity"/>
 
         <activity
             android:name=".systemInfo.InputMacActivity"

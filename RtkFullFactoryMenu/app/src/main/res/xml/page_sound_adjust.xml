@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.sound.SoundAdjustLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.sound.SoundAdjustLogic">
 
     <SeekBarPreference id="@+id/audio_out_volume" title="@string/audio_out_volume" minValue="-72" maxValue="46" visible="false"/>
 

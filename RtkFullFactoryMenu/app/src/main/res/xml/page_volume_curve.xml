@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.user.VolumeCurveLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.user.VolumeCurveLogic">
 
     <StatePreference id = "@+id/volume_source" title="@string/volume_source">
         <entry name="@string/source_atv" enabled="true" />

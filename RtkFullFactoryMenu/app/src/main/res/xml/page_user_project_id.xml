@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.select.ProjectIdLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.select.ProjectIdLogic">
 
 </PreferenceContainer>

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.ssc.SSCLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.ssc.SSCLogic">
     <Preference id="@+id/page_ssc_adjust" title="@string/str_ssc_adjust" />
 </PreferenceContainer>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.systemInfo.SystemInfoLogic">
 
     <SumaryPreference id="@+id/check_network" title="@string/item_check_network" />
 

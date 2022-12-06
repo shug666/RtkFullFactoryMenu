@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.picture.PicturePageLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.picture.PicturePageLogic">
 
     <Preference id="@+id/page_picture_mode" title="@string/str_picture_mode" />
 

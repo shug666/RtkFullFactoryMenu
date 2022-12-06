@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.designMode.DesignModeLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.designMode.DesignModeLogic">
 
 <!--    <Preference id="@+id/page_offrs" title="@string/str_OffRS_Mode" />-->
 

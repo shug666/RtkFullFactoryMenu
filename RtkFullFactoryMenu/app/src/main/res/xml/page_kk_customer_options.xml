@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.kk.CustomerOptionsLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.kk.CustomerOptionsLogic">
 
     <SumaryPreference id="@+id/item_id" title="@string/str_customer_id" />
 

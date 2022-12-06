@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.sound.SoundModeLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.sound.SoundModeLogic">
 
     <StatePreference id="@+id/sound_mode" title="@string/str_sound_mode" cycleEnabled="true">
         <entry name="@string/sound_mode_news" index="0" enabled="true" />

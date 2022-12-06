@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.user.LogLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.user.LogLogic">
 
     <StatePreference id="@+id/item_log_options" title="@string/str_log_Options" cycleEnabled="true">
         <entry name="@string/str_logcat" enabled="true" />

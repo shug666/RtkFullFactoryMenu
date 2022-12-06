@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.debug.DebugLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.debug.DebugLogic">
 
     <StatePreference id="@+id/uart_enable" title="@string/str_uart_enable" cycleEnabled="true">
         <entry name="@string/str_off" enabled="true" />

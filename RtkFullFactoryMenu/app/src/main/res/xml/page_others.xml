@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.others.OthersLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.others.OthersLogic">
 
     <StatePreference id="@+id/others_watchDog" title="@string/item_watch_dog" cycleEnabled="true">
         <entry name="@string/str_off" enabled="true" />

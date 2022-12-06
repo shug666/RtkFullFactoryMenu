@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.ssc.SscAdjustLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.ssc.SscAdjustLogic">
 
     <StatePreference id="@+id/ssc_lvds_enable" title="@string/str_ssc_lvdsenable" cycleEnabled="true">
         <entry name="@string/str_off" enabled="true" />

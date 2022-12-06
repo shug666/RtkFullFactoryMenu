@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PreferenceContainer logic="com.realtek.fullfactorymenu.oled.OffRSLogic">
+<PreferenceContainer logic="com.realtek.tvfactory.oled.OffRSLogic">
 
     <Preference id="@+id/RunOffRS" title="@string/str_RunOffRS" />
 
