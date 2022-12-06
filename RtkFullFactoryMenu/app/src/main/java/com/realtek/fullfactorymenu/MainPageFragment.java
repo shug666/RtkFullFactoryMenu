@@ -22,6 +22,7 @@ import com.realtek.fullfactorymenu.api.impl.FactoryMainApi;
 import com.realtek.fullfactorymenu.api.manager.TvCommonManager;
 import com.realtek.fullfactorymenu.chdefault.DefaultFragment;
 import com.realtek.fullfactorymenu.debug.DeBugPageFragment;
+import com.realtek.fullfactorymenu.designMode.DesignModeFragment;
 import com.realtek.fullfactorymenu.oled.OledFragment;
 import com.realtek.fullfactorymenu.others.OthersPageFragment;
 import com.realtek.fullfactorymenu.picture.PicturePageFragment;
@@ -224,6 +225,9 @@ public class MainPageFragment extends BaseFragment implements PreferenceItemClic
                 break;
             case R.id.page_picture:
                 showPage(PicturePageFragment.class, R.string.str_picture);
+                break;
+            case R.id.page_design_mode:
+                showPage(DesignModeFragment.class, R.string.str_design_mode);
                 break;
             case R.id.page_sound:
                 showPage(SoundPageFragment.class, R.string.str_sound);

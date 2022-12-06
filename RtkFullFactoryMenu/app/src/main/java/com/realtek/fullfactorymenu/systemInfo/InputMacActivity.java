@@ -5,6 +5,7 @@ import static android.view.KeyEvent.KEYCODE_DPAD_DOWN;
 import static android.view.KeyEvent.KEYCODE_DPAD_LEFT;
 import static android.view.KeyEvent.KEYCODE_DPAD_RIGHT;
 import static android.view.KeyEvent.KEYCODE_DPAD_UP;
+import static com.realtek.fullfactorymenu.api.impl.UpgradeApi.KEYS_MAC_TYPE;
 import static com.realtek.fullfactorymenu.systemInfo.SystemInfoLogic.CMD_UPGRADE_MAC_MANUAL;
 
 import android.annotation.SuppressLint;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.R;
 import com.realtek.fullfactorymenu.utils.AppToast;
 import com.realtek.fullfactorymenu.utils.Utils;
@@ -53,7 +55,7 @@ public class InputMacActivity extends FragmentActivity {
 
         inputMac = findViewById(R.id.input_mac);
 
-        String macAddress = Utils.getMACAddress("eth0");
+        String macAddress = FactoryApplication.getInstance().getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_MAC_TYPE);
 
         List<String> list = new ArrayList<>();
         for (String s : macAddress.split("")) {

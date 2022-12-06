@@ -625,6 +625,17 @@
     <string name="str_tvConfig_version">TvConfig Version</string>
     <string name="str_tv_work_time">Tv Work Time</string>
     <string name="str_default">default</string>
+    <string name="str_design_mode">Design Mode</string>
+    <string name="str_import_export">Import/Export</string>
+    <string name="str_factory_remote">Factory Remote Control Enable</string>
+    <string name="str_key_upgrade_force">Key Upgrade Force</string>
+    <string name="str_wb_adjust">WB Adjust</string>
+    <string name="str_wb_switch">WB Switch</string>
+    <string name="str_uart">Uart</string>
+    <string name="str_white_pattern">80% White Pattern</string>
+    <string name="str_cancel_pattern">Cancel Pattern</string>
+    <string name="str_clear_app">Clear App</string>
+
     <!--SSC-->
     <string name="str_ssc_title">SSC(EMC)</string>
     <string name="str_ssc_adjust">SSC Adjust</string>

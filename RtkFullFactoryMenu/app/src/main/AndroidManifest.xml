@@ -43,10 +43,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.realtek.fullfactorymenu.user.UsbSelectorActivity"
-            android:theme="@style/TranslucentActivity"/>
-
         <service
             android:name=".user.LogCatService"
             android:exported="true"

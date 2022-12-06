@@ -1,11 +1,13 @@
 package com.realtek.fullfactorymenu.utils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.SystemProperties;
 import android.os.storage.DiskInfo;
 import android.os.storage.StorageManager;
 import android.os.storage.VolumeInfo;
@@ -13,6 +15,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.realtek.fullfactorymenu.FactoryApplication;
 
 public class Tools {
 	private static final String TAG = "Tools";
@@ -138,6 +142,22 @@ public class Tools {
 	        toast.setText(message);
 	    }
 	    toast.show();
+	}
+
+	public static boolean isKeyUpgradeForce(Context mContext){
+		int flag = SystemProperties.getInt("persist.sys.key_upgrade_force", 0);
+		if (flag != 0) return true;
+		String usbPath = getFisrtUsbStroagePath(mContext);
+		String filePath;
+		if (FactoryApplication.CUSTOMER_IS_CH){
+			filePath = usbPath + "/CH_SYSTEM_KEYS/FORCE_UPGRADE_KEYS.txt";
+			File file = new File(filePath);
+			boolean exists = file.exists();
+			if (!exists) return false;
+			SystemProperties.set("persist.sys.key_upgrade_force", "1");
+			return true;
+		}
+		return false;
 	}
 
 }

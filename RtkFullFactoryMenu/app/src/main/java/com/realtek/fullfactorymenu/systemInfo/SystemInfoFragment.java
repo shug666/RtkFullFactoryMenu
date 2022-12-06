@@ -9,8 +9,10 @@ import com.realtek.fullfactorymenu.preference.PreferenceContainer;
 import com.realtek.fullfactorymenu.preference.PreferenceFragment;
 import com.realtek.fullfactorymenu.utils.Tools;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.storage.StorageManager;
@@ -22,16 +24,18 @@ public class SystemInfoFragment extends PreferenceFragment {
 
     private SystemInfoLogic mSystemInfoLogic;
 
-    private static final String PATH_MAC;
-    private static final String PATH_OEM;
-    private static final String PATH_NETFLIX_ESN;
-    private static final String PATH_PLAYREADY;
-    private static final String PATH_HDCP;
-    private static final String PATH_HDCP22;
-    private static final String PATH_WIDEVINE;
-    private static final String PATH_CI_KEY;
-    private static final String PATH_ATTESTATION_KEY;
-    private static final String PATH_RMCA;
+    private AlertDialog mAlertDialog = null;
+
+    public static final String PATH_MAC;
+    public static final String PATH_OEM;
+    public static final String PATH_NETFLIX_ESN;
+    public static final String PATH_PLAYREADY;
+    public static final String PATH_HDCP;
+    public static final String PATH_HDCP22;
+    public static final String PATH_WIDEVINE;
+    public static final String PATH_CI_KEY;
+    public static final String PATH_ATTESTATION_KEY;
+    public static final String PATH_RMCA;
 
     static {
         if (FactoryApplication.CUSTOMER_IS_CH) {
@@ -90,16 +94,10 @@ public class SystemInfoFragment extends PreferenceFragment {
 
         switch (preference.getId()) {
         case R.id.upgrede_all_key:
-            sendSyncCommand(CMD_UPGRADE_MAC, initUsb + PATH_MAC);
-            sendSyncCommand(CMD_UPGRADE_OEM, initUsb + PATH_OEM);
-            sendSyncCommand(CMD_UPGRADE_Netflix_ESN, initUsb + PATH_NETFLIX_ESN);
-            sendSyncCommand(CMD_UPGRADE_PLAYREADY, initUsb + PATH_PLAYREADY);
-            sendSyncCommand(CMD_UPGRADE_HDCP, initUsb + PATH_HDCP);
-            sendSyncCommand(CMD_UPGRADE_HDCP22, initUsb + PATH_HDCP22);
-            sendSyncCommand(CMD_UPGRADE_WIDEVINE, initUsb + PATH_WIDEVINE);
-            sendSyncCommand(CMD_UPGRADE_CI_KEY, initUsb + PATH_CI_KEY);
-            sendSyncCommand(CMD_UPGRADE_Attestation, initUsb + PATH_ATTESTATION_KEY);
-            sendSyncCommand(CMD_UPGRADE_RMCA, initUsb + PATH_RMCA);
+            mSystemInfoLogic = (SystemInfoLogic) mPreferenceContainer.getPreferenceLogic(R.id.upgrede_all_key);
+//            mSystemInfoLogic.openDialog();
+            mSystemInfoLogic.keyAllUpgrade();
+
             break;
         case R.id.upgrede_mac:
             sendSyncCommand(CMD_UPGRADE_MAC, initUsb + PATH_MAC);

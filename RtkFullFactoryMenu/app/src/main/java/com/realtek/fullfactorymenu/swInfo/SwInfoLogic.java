@@ -1,5 +1,7 @@
 package com.realtek.fullfactorymenu.swInfo;
 
+import static com.realtek.fullfactorymenu.api.impl.UpgradeApi.KEYS_MAC_TYPE;
+
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.TimeZone;
 import android.os.Build;
@@ -114,7 +116,7 @@ public class SwInfoLogic extends LogicInterface {
         swVersion.setSumary(getSwVersion());
         builtTime.setSumary(getBuiltTime());
         tvConfigVersion.setSumary(getTvConfigVersion());
-
+        deviceId.setSumary(Build.DEVICE);
 
         if(Build.VERSION.SDK_INT == Build.VERSION_CODES.R){
             if (TvInputUtils.isISDB()){

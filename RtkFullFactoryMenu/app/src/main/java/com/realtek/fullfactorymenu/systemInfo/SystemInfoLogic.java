@@ -1,5 +1,6 @@
 package com.realtek.fullfactorymenu.systemInfo;
 
+import com.realtek.fullfactorymenu.FactoryApplication;
 import com.realtek.fullfactorymenu.R;
 import com.realtek.fullfactorymenu.api.impl.UpgradeApi;
 import com.realtek.fullfactorymenu.api.listener.ICommandCallback;
@@ -10,17 +11,31 @@ import com.realtek.fullfactorymenu.preference.StatePreference;
 import com.realtek.fullfactorymenu.preference.SumaryPreference;
 import com.realtek.fullfactorymenu.utils.Tools;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.os.SystemProperties;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseArray;
+import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class SystemInfoLogic extends LogicInterface implements Handler.Callback {
 
@@ -101,7 +116,6 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
     private static Handler mHandler;
 
     private SumaryPreference mCheckNetwork;
-    private SumaryPreference mMACUpgradeManual;
     private SumaryPreference mMACUpgrade;
     private SumaryPreference mOemUpgrade;
     private SumaryPreference mNetflixEsnUpgrade;
@@ -112,6 +126,12 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
     private SumaryPreference mCiUpgrade;
     private SumaryPreference mAttestationUpgrade;
     private SumaryPreference mRmcaUpgrade;
+    private AlertDialog mAlertDialog;
+    private boolean allKeyUpgrade = false;
+    private StringBuilder successfulKey;
+    private StringBuilder failedKey;
+    private StringBuilder alreadyKey;
+    private TextView mMessageView;
 
     public SystemInfoLogic(PreferenceContainer containter) {
         super(containter);
@@ -121,7 +141,6 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
     @Override
     public void init() {
         mCheckNetwork = (SumaryPreference) mContainer.findPreferenceById(R.id.check_network);
-        mMACUpgradeManual = (SumaryPreference) mContainer.findPreferenceById(R.id.upgrede_mac_manual);
         mMACUpgrade = (SumaryPreference) mContainer.findPreferenceById(R.id.upgrede_mac);
         mOemUpgrade = (SumaryPreference) mContainer.findPreferenceById(R.id.upgrade_oem);
         mNetflixEsnUpgrade = (SumaryPreference) mContainer.findPreferenceById(R.id.upgrade_netflix_esn);
@@ -132,6 +151,17 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
         mCiUpgrade = (SumaryPreference) mContainer.findPreferenceById(R.id.upgrade_ci);
         mAttestationUpgrade = (SumaryPreference) mContainer.findPreferenceById(R.id.upgrade_attestation);
         mRmcaUpgrade = (SumaryPreference) mContainer.findPreferenceById(R.id.upgrade_rmca);
+
+        sendSyncCommand(CMD_GET_MAC);
+        sendSyncCommand(CMD_GET_OEM);
+        sendSyncCommand(CMD_GET_Netflix_ESN);
+        sendSyncCommand(CMD_GET_PLAYREADY);
+        sendSyncCommand(CMD_GET_HDCP);
+        sendSyncCommand(COM_GET_UPGRADE_HDCP);
+        sendSyncCommand(CMD_GET_WIDEVINE);
+        sendSyncCommand(CMD_GET_CI_KEY);
+        sendSyncCommand(CMD_GET_Attestation);
+        sendSyncCommand(CMD_GET_RMCA);
     }
 
     @Override
@@ -206,8 +236,13 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 }
                 break;
             case CMD_UPGRADE_HDCP:
+                if (keyMessages("HDCP",msg.arg1,mHDCPUpgrade,bundle.getString("displayHDCP14"))) break;
+
                 if (msg.arg1 == 1) {
-                    mHDCPUpgrade.setSumary(mContext.getString(R.string.str_ok));
+                    String displayHDCP14 = bundle.getString("displayHDCP14");
+                    if (displayHDCP14 != null) {
+                        mHDCPUpgrade.setSumary(displayHDCP14);
+                    }
                     Tools.showDialog(mContext, mContext.getString(R.string.str_success), bundle.getString("Success"));
                 } else if (msg.arg1 == 0) {
                     mHDCPUpgrade.setSumary(mContext.getString(R.string.str_ng));
@@ -217,9 +252,20 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                     Tools.showDialog(mContext, mContext.getString(R.string.str_error), bundle.getString("Cannot"));
                 }
                 break;
+            case CMD_GET_HDCP:
+                String displayHDCP14 = bundle.getString("displayHDCP14");
+                if (displayHDCP14 != null) {
+                    mHDCPUpgrade.setSumary(displayHDCP14);
+                }
+                break;
             case CMD_UPGRADE_HDCP22:
+                if (keyMessages("HDCP2",msg.arg1,mHDCPUpgrade2,bundle.getString("displayHDCP22"))) break;
+
                 if (msg.arg1 == 1) {
-                    mHDCPUpgrade2.setSumary(mContext.getString(R.string.str_ok));
+                    String displayHDCP22 = bundle.getString("displayHDCP22");
+                    if (displayHDCP22 != null) {
+                        mHDCPUpgrade2.setSumary(displayHDCP22);
+                    }
                     Tools.showDialog(mContext, mContext.getString(R.string.str_success), bundle.getString("Success"));
                 } else if (msg.arg1 == 0) {
                     mHDCPUpgrade2.setSumary(mContext.getString(R.string.str_ng));
@@ -227,26 +273,40 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 } else if (msg.arg1 == 2) {
                     mHDCPUpgrade2.setSumary(mContext.getString(R.string.str_ng));
                     Tools.showDialog(mContext, mContext.getString(R.string.str_error), bundle.getString("Cannot"));
+                }
+                break;
+            case COM_GET_UPGRADE_HDCP:
+                String displayHDCP22 = bundle.getString("displayHDCP22");
+                if (displayHDCP22 != null) {
+                    mHDCPUpgrade2.setSumary(displayHDCP22);
                 }
                 break;
             case CMD_UPGRADE_MAC_MANUAL:
                 if (msg.arg1 == 1) {
-                    mMACUpgradeManual.setSumary(mContext.getString(R.string.str_ok));
+                    String displayMacAddr = bundle.getString("displayMacAddr");
+                    if (displayMacAddr != null) {
+                        mMACUpgrade.setSumary(displayMacAddr);
+                    }
                     Tools.showDialog(mContext, mContext.getString(R.string.str_success), bundle.getString("Success"));
                 } else if (msg.arg1 == 0) {
-                    mMACUpgradeManual.setSumary(mContext.getString(R.string.str_ng));
+                    mMACUpgrade.setSumary(mContext.getString(R.string.str_ng));
                     Tools.showDialog(mContext, mContext.getString(R.string.str_failed), bundle.getString("Failed"));
                 } else if (msg.arg1 == 2) {
-                    mMACUpgradeManual.setSumary(mContext.getString(R.string.str_ng));
+                    mMACUpgrade.setSumary(mContext.getString(R.string.str_ng));
                     Tools.showDialog(mContext, mContext.getString(R.string.str_failed), bundle.getString("Failed"));
                 } else if (msg.arg1 == 3) {
-                    mMACUpgradeManual.setSumary(mContext.getString(R.string.str_ng));
+                    mMACUpgrade.setSumary(mContext.getString(R.string.str_ng));
                     Tools.showDialog(mContext, mContext.getString(R.string.str_error), bundle.getString("Cannot"));
                 }
                 break;
             case CMD_UPGRADE_MAC:
+                if (keyMessages("MAC",msg.arg1,mMACUpgrade,bundle.getString("displayMacAddr"))) break;
+
                 if (msg.arg1 == 1) {
-                    mMACUpgrade.setSumary(mContext.getString(R.string.str_ok));
+                    String displayMacAddr = bundle.getString("displayMacAddr");
+                    if (displayMacAddr != null) {
+                        mMACUpgrade.setSumary(displayMacAddr);
+                    }
                     Tools.showDialog(mContext, mContext.getString(R.string.str_success), bundle.getString("Success"));
                 } else if (msg.arg1 == 0) {
                     mMACUpgrade.setSumary(mContext.getString(R.string.str_ng));
@@ -259,9 +319,20 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                     Tools.showDialog(mContext, mContext.getString(R.string.str_error), bundle.getString("Cannot"));
                 }
                 break;
+            case CMD_GET_MAC:
+                String displayMacAddr = bundle.getString("displayMacAddr");
+                if (displayMacAddr != null) {
+                    mMACUpgrade.setSumary(displayMacAddr);
+                }
+                break;
             case CMD_UPGRADE_WIDEVINE:
+                if (keyMessages("Widevine",msg.arg1,mWidevineUpgrade,bundle.getString("displayWvKey"))) break;
+
                 if (msg.arg1 == 1) {
-                    mWidevineUpgrade.setSumary(mContext.getString(R.string.str_ok));
+                    String displayWvKey = bundle.getString("displayWvKey");
+                    if (displayWvKey != null) {
+                        mWidevineUpgrade.setSumary(displayWvKey);
+                    }
                     Tools.showDialog(mContext, mContext.getString(R.string.str_success), bundle.getString("Success"));
                 } else if (msg.arg1 == 0) {
                     mWidevineUpgrade.setSumary(mContext.getString(R.string.str_ng));
@@ -271,9 +342,20 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                     Tools.showDialog(mContext, mContext.getString(R.string.str_failed), bundle.getString("Cannot"));
                 }
                 break;
+            case CMD_GET_WIDEVINE:
+                String displayWvKey = bundle.getString("displayWvKey");
+                if (displayWvKey != null) {
+                    mWidevineUpgrade.setSumary(displayWvKey);
+                }
+                break;
             case CMD_UPGRADE_CI_KEY:
+                if (keyMessages("Ci",msg.arg1,mCiUpgrade,bundle.getString("displayCIKey"))) break;
+
                 if (msg.arg1 == 1) {
-                    mCiUpgrade.setSumary(mContext.getString(R.string.str_ok));
+                    String displayCIKey = bundle.getString("displayCIKey");
+                    if (displayCIKey != null) {
+                        mCiUpgrade.setSumary(displayCIKey);
+                    }
                     Tools.showDialog(mContext, mContext.getString(R.string.str_success), bundle.getString("Success"));
                 } else if (msg.arg1 == 0) {
                     mCiUpgrade.setSumary(mContext.getString(R.string.str_ng));
@@ -281,6 +363,12 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 } else if (msg.arg1 == 2) {
                     mCiUpgrade.setSumary(mContext.getString(R.string.str_ng));
                     Tools.showDialog(mContext, mContext.getString(R.string.str_error), bundle.getString("Cannot"));
+                }
+                break;
+            case CMD_GET_CI_KEY:
+                String displayCIKey = bundle.getString("displayCIKey");
+                if (displayCIKey != null) {
+                    mCiUpgrade.setSumary(displayCIKey);
                 }
                 break;
             case CMD_UPGRADE_PQ_CLICK:
@@ -294,8 +382,13 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 }
                 break;
             case CMD_UPGRADE_PLAYREADY:
+                if (keyMessages("Playready",msg.arg1,mPlayreadyUpgrade,bundle.getString("displayPrKey"))) break;
+
                 if (msg.arg1 == 1) {
-                    mPlayreadyUpgrade.setSumary(mContext.getString(R.string.str_ok));
+                    String displayPrKey = bundle.getString("displayPrKey");
+                    if (displayPrKey != null) {
+                        mPlayreadyUpgrade.setSumary(displayPrKey);
+                    }
                     Tools.showDialog(mContext, mContext.getString(R.string.str_success), bundle.getString("Success"));
                 } else if (msg.arg1 == 0) {
                     mPlayreadyUpgrade.setSumary(mContext.getString(R.string.str_ng));
@@ -305,9 +398,20 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                     Tools.showDialog(mContext, mContext.getString(R.string.str_failed), bundle.getString("Cannot"));
                 }
                 break;
+            case CMD_GET_PLAYREADY:
+                String displayPrKey = bundle.getString("displayPrKey");
+                if (displayPrKey != null) {
+                    mPlayreadyUpgrade.setSumary(displayPrKey);
+                }
+                break;
             case CMD_UPGRADE_Attestation:
+                if (keyMessages("Attestation",msg.arg1,mAttestationUpgrade,bundle.getString("displayAttestationKey"))) break;
+
                 if (msg.arg1 == 1) {
-                    mAttestationUpgrade.setSumary(mContext.getString(R.string.str_ok));
+                    String displayAttestationKey = bundle.getString("displayAttestationKey");
+                    if (displayAttestationKey != null) {
+                        mAttestationUpgrade.setSumary(displayAttestationKey);
+                    }
                     Tools.showDialog(mContext, mContext.getString(R.string.str_success), bundle.getString("Success"));
                 } else if (msg.arg1 == 0) {
                     mAttestationUpgrade.setSumary(mContext.getString(R.string.str_ng));
@@ -315,11 +419,22 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 } else if (msg.arg1 == 2) {
                     mAttestationUpgrade.setSumary(mContext.getString(R.string.str_ng));
                     Tools.showDialog(mContext, mContext.getString(R.string.str_error), bundle.getString("Cannot"));
+                }
+                break;
+            case CMD_GET_Attestation:
+                String displayAttestationKey = bundle.getString("displayPrAttestation");
+                if (displayAttestationKey != null) {
+                    mAttestationUpgrade.setSumary(displayAttestationKey);
                 }
                 break;
             case CMD_UPGRADE_Netflix_ESN:
+                if (keyMessages("Mgkid",msg.arg1,mNetflixEsnUpgrade,bundle.getString("displayNetflixESN"))) break;
+
                 if (msg.arg1 == 1) {
-                    mNetflixEsnUpgrade.setSumary(mContext.getString(R.string.str_ok));
+                    String esn = bundle.getString("displayNetflixESN");
+                    if (esn != null) {
+                        mNetflixEsnUpgrade.setSumary(esn);
+                    }
                     Tools.showDialog(mContext, mContext.getString(R.string.str_success), bundle.getString("Success"));
                 } else if (msg.arg1 == 0) {
                     mNetflixEsnUpgrade.setSumary(mContext.getString(R.string.str_ng));
@@ -329,9 +444,20 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                     Tools.showDialog(mContext, mContext.getString(R.string.str_error), bundle.getString("Cannot"));
                 }
                 break;
+            case CMD_GET_Netflix_ESN:
+                String esn = bundle.getString("displayPrNetflixESN");
+                if (esn != null) {
+                    mNetflixEsnUpgrade.setSumary(esn);
+                }
+                break;
             case CMD_UPGRADE_RMCA:
+                if (keyMessages("Rmca",msg.arg1,mRmcaUpgrade,bundle.getString("displayRMCA"))) break;
+
                 if (msg.arg1 == 1) {
-                    mRmcaUpgrade.setSumary(mContext.getString(R.string.str_ok));
+                    String rmca = bundle.getString("displayRMCA");
+                    if (rmca != null) {
+                        mRmcaUpgrade.setSumary(rmca);
+                    }
                     Tools.showDialog(mContext, mContext.getString(R.string.str_success), bundle.getString("Success"));
                 } else if (msg.arg1 == 0) {
                     mRmcaUpgrade.setSumary(mContext.getString(R.string.str_ng));
@@ -339,6 +465,12 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 } else if (msg.arg1 == 2) {
                     mRmcaUpgrade.setSumary(mContext.getString(R.string.str_ng));
                     Tools.showDialog(mContext, mContext.getString(R.string.str_error), bundle.getString("Cannot"));
+                }
+                break;
+            case CMD_GET_RMCA:
+                String rmca = bundle.getString("displayRMCA");
+                if (rmca != null) {
+                    mRmcaUpgrade.setSumary(rmca);
                 }
                 break;
             case CMD_UPGRADE_WIDEVINE_ATT:
@@ -351,8 +483,13 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 }
                 break;
             case CMD_UPGRADE_OEM:
+                if (keyMessages("Oem",msg.arg1,mOemUpgrade,bundle.getString("displayOEM"))) break;
+
                 if (msg.arg1 == 1) {
-                    mOemUpgrade.setSumary(mContext.getString(R.string.str_ok));
+                    String oem = bundle.getString("displayOEM");
+                    if (oem != null) {
+                        mOemUpgrade.setSumary(oem);
+                    }
                     Tools.showDialog(mContext, mContext.getString(R.string.str_success), bundle.getString("Success"));
                 } else if (msg.arg1 == 0) {
                     mOemUpgrade.setSumary(mContext.getString(R.string.str_ng));
@@ -360,6 +497,12 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 } else if (msg.arg1 == 2) {
                     mOemUpgrade.setSumary(mContext.getString(R.string.str_ng));
                     Tools.showDialog(mContext, mContext.getString(R.string.str_error), bundle.getString("Cannot"));
+                }
+                break;
+            case CMD_GET_OEM:
+                String oem = bundle.getString("displayOEM");
+                if (oem != null) {
+                    mOemUpgrade.setSumary(oem);
                 }
                 break;
             default:
@@ -404,4 +547,177 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
         mCheckNetwork.setSumary(mContext.getString(R.string.str_ng));
     }
 
+    public void openDialog(){
+        mAlertDialog = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
+                .setTitle("Upgrade Keys State").setMessage("").setCancelable(true).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        allKeyUpgrade = false;
+                    }
+                }).create();
+        mAlertDialog.show();
+        mAlertDialog.getButton(DialogInterface.BUTTON_POSITIVE).requestFocus();
+
+        try {
+            Field mAlert = AlertDialog.class.getDeclaredField("mAlert");
+            mAlert.setAccessible(true);
+            Object mAlertController = mAlert.get(mAlertDialog);
+            //通过反射修改message字体大小和颜色
+            Field mMessage = mAlertController.getClass().getDeclaredField("mMessageView");
+            mMessage.setAccessible(true);
+            mMessageView = (TextView) mMessage.get(mAlertController);
+        } catch (IllegalAccessException e1) {
+            e1.printStackTrace();
+        } catch (NoSuchFieldException e2) {
+            e2.printStackTrace();
+        }
+
+        allKeyUpgrade = true;
+        successfulKey = new StringBuilder("Success: ");
+        failedKey = new StringBuilder("Failed: ");
+        alreadyKey = new StringBuilder("Already: ");
+    }
+
+    @SuppressLint("SetTextI18n")
+    private boolean keyMessages(String keyStr, int msg1,SumaryPreference sumaryPreference,String result){
+        if (!allKeyUpgrade){
+            return false;
+        }
+        if (msg1 == 1){
+            successfulKey.append(keyStr).append(", ");
+            if (result != null) {
+                sumaryPreference.setSumary(result);
+            }
+        }else {
+            failedKey.append(keyStr).append(", ");
+            sumaryPreference.setSumary(mContext.getString(R.string.str_ng));
+        }
+
+        if (FactoryApplication.CUSTOMER_IS_CH){
+            mMessageView.setText(alreadyKey+"\n\n"+successfulKey + "\n\n" + failedKey);
+            return true;
+        }
+        mMessageView.setText(successfulKey + "\n\n" + failedKey);
+        return true;
+    }
+
+    private boolean getKeyState(int type) {
+        String serialNumber = UpgradeApi.getInstance().getSerialNumber(type);
+        if (serialNumber == null || serialNumber.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    private byte[] getBytesFromKey(String path, int size) {
+        File file = new File(path);
+        if (!file.exists() || !file.canRead()) {
+            return null;
+        }
+        byte[] bytes;
+        if (size <= 0) {
+            int length = (int) file.length();
+            bytes = new byte[length];
+        } else {
+            bytes = new byte[size];
+        }
+        try (InputStream inputStream = new FileInputStream(file)) {
+            inputStream.read(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
+
+    private boolean forceUpgradeKeys(Map<Integer,String> keys){
+        int forceFlag = SystemProperties.getInt("persist.sys.key_upgrade_force", 0);
+        if (forceFlag == 1 ) return true;
+        if (Tools.isKeyUpgradeForce(mContext)) return true;
+        boolean[] upgradeArr = new boolean[10];
+
+        if (getKeyState(UpgradeApi.KEYS_MAC_TYPE)){
+            alreadyKey.append("MAC, ");
+            upgradeArr[0] = false;
+        }
+        String oemKey = FactoryApplication.getInstance().getFactory().getOEMKey();
+        if (oemKey !=null && !oemKey.isEmpty()){
+            alreadyKey.append("Oem, ");
+            upgradeArr[1] = false;
+        }
+        if (getKeyState(UpgradeApi.KEYS_Netflix_ESN_TYPE)){
+            alreadyKey.append("Mgkid, ");
+            upgradeArr[2] = false;
+        }
+        if (getKeyState(UpgradeApi.KEYS_PLAYREADY_TYPE)){
+            alreadyKey.append("Playready, ");
+            upgradeArr[3] = false;
+        }
+        if (getKeyState(UpgradeApi.KEYS_HDCP1_TYPE)){
+            alreadyKey.append("HDCP, ");
+            upgradeArr[4] = false;
+        }
+        if (getKeyState(UpgradeApi.KEYS_HDCP2_TYPE)){
+            alreadyKey.append("HDCP2, ");
+            upgradeArr[5] = false;
+        }
+        if (getKeyState(UpgradeApi.KEYS_WIDEVINE_TYPE)){
+            alreadyKey.append("Widevine, ");
+            upgradeArr[6] = false;
+        }
+        if (getKeyState(UpgradeApi.KEYS_CIKEY_TYPE)){
+            alreadyKey.append("Ci, ");
+            upgradeArr[7] = false;
+        }
+        if (getKeyState(UpgradeApi.KEYS_ATTESTATION_TYPE)){
+            alreadyKey.append("Attestation, ");
+            upgradeArr[8] = false;
+        }
+        byte[] bytesFromKey = getBytesFromKey("mnt/vendor/factory/RMCA", 0);
+        if (bytesFromKey != null && bytesFromKey.length != 0 ){
+            alreadyKey.append("Rmca, ");
+            upgradeArr[9] = false;
+        }
+
+        Set<Integer> keyNames = keys.keySet();
+        int i = 0;
+        for (Integer keyName : keyNames) {
+            if (!upgradeArr[i]){
+                continue;
+            }
+            sendSyncCommand(keyName,keys.get(keyName));
+        }
+
+        mMessageView.setText(alreadyKey+"\n\n"+successfulKey + "\n\n" + failedKey);
+        return false;
+    }
+
+
+    public void keyAllUpgrade() {
+        boolean forceFlag = true;
+        String usbPath = Tools.getFisrtUsbStroagePath(mContext);
+        if (usbPath == null) return;
+        openDialog();
+
+        Map<Integer,String> keys = new HashMap<>();
+        keys.put(CMD_UPGRADE_MAC, usbPath + SystemInfoFragment.PATH_MAC);
+        keys.put(CMD_UPGRADE_OEM, usbPath + SystemInfoFragment.PATH_OEM);
+        keys.put(CMD_UPGRADE_Netflix_ESN, usbPath + SystemInfoFragment.PATH_NETFLIX_ESN);
+        keys.put(CMD_UPGRADE_PLAYREADY, usbPath + SystemInfoFragment.PATH_PLAYREADY);
+        keys.put(CMD_UPGRADE_HDCP, usbPath + SystemInfoFragment.PATH_HDCP);
+        keys.put(CMD_UPGRADE_HDCP22, usbPath + SystemInfoFragment.PATH_HDCP22);
+        keys.put(CMD_UPGRADE_WIDEVINE, usbPath + SystemInfoFragment.PATH_WIDEVINE);
+        keys.put(CMD_UPGRADE_CI_KEY, usbPath + SystemInfoFragment.PATH_CI_KEY);
+        keys.put(CMD_UPGRADE_Attestation, usbPath + SystemInfoFragment.PATH_ATTESTATION_KEY);
+        keys.put(CMD_UPGRADE_RMCA, usbPath + SystemInfoFragment.PATH_RMCA);
+
+        if (FactoryApplication.CUSTOMER_IS_CH){
+            forceFlag = forceUpgradeKeys(keys);
+        }
+        if (!forceFlag) return;
+
+        Set<Integer> keyNames = keys.keySet();
+        for (Integer keyName : keyNames) {
+            sendSyncCommand(keyName,keys.get(keyName));
+        }
+    }
 }

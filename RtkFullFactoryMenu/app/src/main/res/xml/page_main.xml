@@ -17,6 +17,8 @@
 
     <Preference id="@+id/page_tune" title="@string/str_tuning_setting" />
 
+    <Preference id="@+id/page_design_mode" title="@string/str_design_mode" />
+
     <Preference id="@+id/page_user" title="@string/str_user" visible="false"/>
 
     <Preference id="@+id/page_others" title="@string/str_others" visible="false"/>

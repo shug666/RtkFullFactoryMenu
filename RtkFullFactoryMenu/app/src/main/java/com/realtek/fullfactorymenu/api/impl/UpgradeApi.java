@@ -35,7 +35,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.nio.file.Files;
 
 public class UpgradeApi implements Callback {
     private static final String TAG = "UpgradeApi";
@@ -46,17 +45,6 @@ public class UpgradeApi implements Callback {
 
     private HandlerThread mBackgroundThread = new HandlerThread(TAG);
     private Handler mBackgroundHandler;
-
-
-    private static boolean mAlreadyUpdateMac = false;
-    private static boolean mAlreadyUpdateCi = false;
-    private static boolean mAlreadyUpdateHdcp = false;
-    private static boolean mAlreadyUpdateHdcp2 = false;
-    private static boolean mAlreadyUpdateWidevine = false;
-    private static boolean mAlreadyUpdatePlayready = false;
-    private static boolean mAlreadyUpdateAttestation = false;
-    private static boolean mAlreadyUpdateNetflixESN = false;
-    private static boolean mAlreadyUpdateRmca = false;
 
     private String effectiveStoragePath = null;
     private String mBootlogoPath;
@@ -80,7 +68,6 @@ public class UpgradeApi implements Callback {
     public static final int KEYS_CIKEY_TYPE = 9;
     public static final int KEYS_MAC_TYPE = 12;
     public static final int KEYS_RMCA = 16;
-
 
     @Override
     public boolean handleMessage(@NonNull Message msg) {
@@ -123,44 +110,27 @@ public class UpgradeApi implements Callback {
 
     private void handleSyncCommand(String command, ICommandCallback callback) {
         try {
-            LogHelper.d(TAG, "command : %s", command);
-            if (command.startsWith("UPGRADE_MAC".concat("#"))) {
+            if (command.startsWith("UPGRADE_MAC".concat("#")) || command.startsWith("UPGRADE_MAC_MANUAL".concat("#"))) {
                 Bundle bundle = new Bundle();
-                String displayMacAddr = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_MAC_TYPE);
-                if (SystemProperties.getInt("service.upgrade.mac", 0) == 1) {
-                    if (!displayMacAddr.isEmpty()) {
-                        bundle.putString("Failed", "MAC Already Upgrade!");
-                        callback.complete(0, bundle);
-                        return;
-                    }
-                }
-                if (mAlreadyUpdateMac) {
-                    bundle.putString("Failed", "MAC Already Upgrade!");
-                    callback.complete(0, bundle);
-                    return;
-                }
                 String[] parts = command.split("#");
-
-                String usbPats = parts[1];
-                String macAddress = "";
-                String macAddressWithColon = "";
-//                File internalFile = FileUtils.getInternalFile(mContext, new File(usbPats));
-                File internalFile = new File(usbPats);
-                macAddress = getMacAddressFromUsb(internalFile == null ? null : internalFile.getAbsolutePath());
+                String macAddress;
+                if (parts[1].matches("[0-9A-F]{12}")) {
+                    macAddress = parts[1];
+                } else {
+                    macAddress = getMacAddressFromUsb(parts[1]);
+                }
                 LogHelper.d(TAG, "macAddress : %s , length = %s", macAddress, macAddress.length());
                 if (macAddress.length() != 0) {
-                    macAddressWithColon = macAddress.substring(0, 2) + ":" + macAddress.substring(2, 4) + ":"
+                    String macAddressWithColon = macAddress.substring(0, 2) + ":" + macAddress.substring(2, 4) + ":"
                             + macAddress.substring(4, 6) + ":" + macAddress.substring(6, 8) + ":"
                             + macAddress.substring(8, 10) + ":" + macAddress.substring(10, 12);
                     mFactoryApplication.getExtTv().extTv_tv001_SetValueString("LoadMACfromUSB", macAddressWithColon);
                     mFactoryApplication.getExtTv().extTv_tv001_SetTrustZoneKeysSerialNumber(KEYS_MAC_TYPE, macAddressWithColon);
                     if (doFactorySaveSync("mac")) {
-                        displayMacAddr = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_MAC_TYPE);
+                        String displayMacAddr = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_MAC_TYPE);
                         if (displayMacAddr != null && !displayMacAddr.isEmpty()) {
                             bundle.putString("displayMacAddr", displayMacAddr);
                             deleteUpdateMacAddressInUsb("MAC" + macAddress + ".bin");
-                            mAlreadyUpdateMac = true;
-                            SystemProperties.set("service.upgrade.mac", "1");
                             bundle.putString("Success", "Load " + macAddressWithColon + " OK!");
                             callback.complete(1, bundle);
                         } else {
@@ -193,40 +163,21 @@ public class UpgradeApi implements Callback {
 
             if (command.startsWith("SET_HDCP_UPGRADE".concat("#"))) {
                 Bundle bundle = new Bundle();
-                String displayHDCP14 = mFactoryApplication.getExtTv().extTv_tv001_GetHdcpKeySerialNumber(KEYS_HDCP_1_4_TYPE);
-                if (SystemProperties.getInt("service.upgrade.hdcp", 0) == 1) {
-                    if (!displayHDCP14.isEmpty()) {
-                        bundle.putString("Failed", "HDCP Already Upgrade!");
-                        callback.complete(0, bundle);
-                        return;
-                    }
-                }
-                if (mAlreadyUpdateHdcp) {
-                    bundle.putString("Failed", "HDCP Already Upgrade!");
-                    callback.complete(0, bundle);
-                    return;
-                }
                 String[] parts = command.split("#");
                 String usbPats = parts[1];
-//                String[] hdcpKey = new String[2];
-//                File internalFile = FileUtils.getInternalFile(mContext, new File(usbPats));
-                File internalFile = new File(usbPats);
-                String hdcpKeyNameFromUsb = getHdcpKeyNameFromUsb(1, internalFile.getPath());
+                String hdcpKeyNameFromUsb = getHdcpKeyNameFromUsb(1, usbPats);
                 byte[] hdcpKeyFromUsb = getHdcpKeyFromUsb(hdcpKeyNameFromUsb, usbPats);
-//                hdcpKey = getHdcpKeyFromUsb(1, internalFile.getPath());
                 if (hdcpKeyFromUsb != null && hdcpKeyFromUsb.length != 0) {
                     if (mFactoryApplication.getFactory().burnHdcp1xKey(hdcpKeyFromUsb, hdcpKeyFromUsb.length)) {
                         mFactoryApplication.getExtTv().extTv_tv001_SetHdcpKeySerialNumber(
                                 hdcpKeyNameFromUsb.substring(hdcpKeyNameFromUsb.lastIndexOf("_") + 1, hdcpKeyNameFromUsb.lastIndexOf(".")), KEYS_HDCP_1_4_TYPE);
                         if (doFactorySaveSync("hdcp1.4")) {
-                            displayHDCP14 = mFactoryApplication.getExtTv().extTv_tv001_GetHdcpKeySerialNumber(KEYS_HDCP_1_4_TYPE);
+                            String displayHDCP14 = mFactoryApplication.getExtTv().extTv_tv001_GetHdcpKeySerialNumber(KEYS_HDCP_1_4_TYPE);
                             Log.d(TAG, "displayHDCP14: " + displayHDCP14);
                             if (displayHDCP14 != null && !displayHDCP14.isEmpty()) {
                                 bundle.putString("displayHDCP14", displayHDCP14);
                                 bundle.putString("Success", "Load " + hdcpKeyNameFromUsb + " OK!");
                                 deleteFileInUsb(hdcpKeyNameFromUsb);
-                                mAlreadyUpdateHdcp = true;
-                                SystemProperties.set("service.upgrade.hdcp", "1");
                                 callback.complete(1, bundle);
                             } else {
                                 bundle.putString("Failed!", "Save " + hdcpKeyNameFromUsb + " fail!");
@@ -241,10 +192,8 @@ public class UpgradeApi implements Callback {
             }
 
             if (command.startsWith("GET_HDCP")) {
-                Log.d("mmm", "command.startsWith(GET_HDCP)");
                 Bundle bundle = new Bundle();
                 String displayHDCP14 = mFactoryApplication.getExtTv().extTv_tv001_GetHdcpKeySerialNumber(KEYS_HDCP_1_4_TYPE);
-                Log.d(TAG, "displayHDCP14: " + displayHDCP14);
                 if (displayHDCP14 != null && !displayHDCP14.isEmpty()) {
                     bundle.putString("displayHDCP14", displayHDCP14);
                     callback.complete(1, bundle);
@@ -257,40 +206,21 @@ public class UpgradeApi implements Callback {
 
             if (command.startsWith("SET_HDCP_UPGRADE22".concat("#"))) {
                 Bundle bundle = new Bundle();
-                String displayHDCP22 = mFactoryApplication.getExtTv().extTv_tv001_GetHdcpKeySerialNumber(KEYS_HDCP_2_2_TYPE);
-                if (SystemProperties.getInt("service.upgrade.hdcp2", 0) == 1) {
-                    if (!displayHDCP22.isEmpty()) {
-                        bundle.putString("Failed", "HDCP2.2 Already Upgrade!");
-                        callback.complete(0, bundle);
-                        return;
-                    }
-                }
-                if (mAlreadyUpdateHdcp2) {
-                    bundle.putString("Failed", "HDCP2.2 Already Upgrade!");
-                    callback.complete(0, bundle);
-                    return;
-                }
                 String[] parts = command.split("#");
                 String usbPats = parts[1];
-//                String[] hdcp2Key = new String[2];
-//                File internalFile = FileUtils.getInternalFile(mContext, new File(usbPats));
-                File internalFile = new File(usbPats);
-                String hdcpKeyNameFromUsb = getHdcpKeyNameFromUsb(2, internalFile.getPath());
+                String hdcpKeyNameFromUsb = getHdcpKeyNameFromUsb(2, usbPats);
                 byte[] hdcpKeyFromUsb = getHdcpKeyFromUsb(hdcpKeyNameFromUsb, usbPats);
-//                hdcp2Key = getHdcpKeyFromUsb(2, internalFile.getPath());
                 if (hdcpKeyFromUsb != null && hdcpKeyFromUsb.length != 0) {
                     if (mFactoryApplication.getFactory().burnHdcp2xKey(hdcpKeyFromUsb, hdcpKeyFromUsb.length)) {
                         mFactoryApplication.getExtTv().extTv_tv001_SetHdcpKeySerialNumber(hdcpKeyNameFromUsb
                                 .substring(hdcpKeyNameFromUsb.lastIndexOf("_") + 1, hdcpKeyNameFromUsb.lastIndexOf(".")), KEYS_HDCP_2_2_TYPE);
                         if (doFactorySaveSync("hdcp2.2")) {
-                            displayHDCP22 = mFactoryApplication.getExtTv().extTv_tv001_GetHdcpKeySerialNumber(KEYS_HDCP_2_2_TYPE);
+                            String displayHDCP22 = mFactoryApplication.getExtTv().extTv_tv001_GetHdcpKeySerialNumber(KEYS_HDCP_2_2_TYPE);
                             Log.d(TAG, "displayHDCP22: " + displayHDCP22);
                             if (displayHDCP22 != null && !displayHDCP22.isEmpty()) {
                                 bundle.putString("displayHDCP22", displayHDCP22);
                                 bundle.putString("Success", "Load " + hdcpKeyNameFromUsb + " OK!");
                                 deleteFileInUsb(hdcpKeyNameFromUsb);
-                                mAlreadyUpdateHdcp2 = true;
-                                SystemProperties.set("service.upgrade.hdcp2", "1");
                                 callback.complete(1, bundle);
                             } else {
                                 bundle.putString("Failed!", "Save " + hdcpKeyNameFromUsb + " fail!");
@@ -307,7 +237,6 @@ public class UpgradeApi implements Callback {
             if (command.startsWith("GET_UPGRADE_HDCP")) {
                 Bundle bundle = new Bundle();
                 String displayHDCP22 = mFactoryApplication.getExtTv().extTv_tv001_GetHdcpKeySerialNumber(KEYS_HDCP_2_2_TYPE);
-                Log.d(TAG, "displayHDCP22: " + displayHDCP22);
                 if (displayHDCP22 != null && !displayHDCP22.isEmpty()) {
                     bundle.putString("displayHDCP22", displayHDCP22);
                     callback.complete(1, bundle);
@@ -320,22 +249,8 @@ public class UpgradeApi implements Callback {
 
             if (command.startsWith("SET_WIDEVINE_UPGRADE".concat("#"))) {
                 Bundle bundle = new Bundle();
-                String displayWvKey = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_WIDEVINE_TYPE);
-                if (SystemProperties.getInt("service.upgrade.widevine", 0) == 1) {
-                    if (!displayWvKey.isEmpty()) {
-                        bundle.putString("Failed", "WIDEVINE Already Upgrade!");
-                        callback.complete(0, bundle);
-                        return;
-                    }
-                }
-                if (mAlreadyUpdateWidevine) {
-                    bundle.putString("Failed", "WIDEVINE Already Upgrade!");
-                    callback.complete(0, bundle);
-                    return;
-                }
                 String[] parts = command.split("#");
                 String usbPats = parts[1];
-                //String wvKeyFile = loadKeyNameFormUsb(usbPats, KEYS_WIDEVINE_TYPE);
                 String wvKeyFile = getWidevineKeyFromUsb(usbPats);
                 if (wvKeyFile != null && !wvKeyFile.isEmpty()) {
                     if (mFactoryApplication.getExtTv().extTv_tv001_BurnTrustZoneKeys(KEYS_WIDEVINE_TYPE, usbPats + File.separator + wvKeyFile)) {
@@ -343,9 +258,7 @@ public class UpgradeApi implements Callback {
                         Log.d(TAG, "name:" + name);
                         if (mFactoryApplication.getExtTv().extTv_tv001_SetTrustZoneKeysSerialNumber(KEYS_WIDEVINE_TYPE, name)) {
                             bundle.putString("displayWvKey", name);
-                            bundle.putString("Success", "Already upgrade " + wvKeyFile + " OK!");
-                            mAlreadyUpdateWidevine = true;
-                            SystemProperties.set("service.upgrade.widevine", "1");
+                            bundle.putString("Success", "Load " + wvKeyFile + " OK!");
                             callback.complete(1, bundle);
                             deleteFileInPath(usbPats, wvKeyFile);
                             return;
@@ -358,8 +271,8 @@ public class UpgradeApi implements Callback {
                     callback.complete(2, bundle);
                 }
             }
+
             if (command.startsWith("SET_WIDEVINE_CLEAR".concat("#"))) {
-                Log.d("mmm", "SET_WIDEVINE_CLEAR");
                 Bundle bundle = new Bundle();
                 String displaywvKey = mFactoryApplication.getSysCtrl().getValueString("GetWidevineKey");
                 if (displaywvKey != null && "NULL".equals(displaywvKey)) {
@@ -375,7 +288,6 @@ public class UpgradeApi implements Callback {
                         bundle.putString("displayWvKey", displayWvKey);
                     }
                     bundle.putString("Success", "Clear wv key OK!");
-                    mAlreadyUpdateWidevine = false;
                     callback.complete(1, bundle);
                 } else {
                     bundle.putString("Fail", "Clear wv key NG!");
@@ -386,7 +298,6 @@ public class UpgradeApi implements Callback {
             if (command.startsWith("GET_WIDEVINE")) {
                 Bundle bundle = new Bundle();
                 String displayWvKey = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_WIDEVINE_TYPE);
-                Log.d(TAG, "displayWvKey: " + displayWvKey);
                 if (displayWvKey != null && !displayWvKey.isEmpty()) {
                     bundle.putString("displayWvKey", displayWvKey);
                     callback.complete(1, bundle);
@@ -399,36 +310,19 @@ public class UpgradeApi implements Callback {
 
             if (command.startsWith("SET_PLAYREADY_UPGRADE".concat("#"))) {
                 Bundle bundle = new Bundle();
-                String displayPrKey = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_PLAYREADY_TYPE);
-                if (SystemProperties.getInt("service.upgrade.playready", 0) == 1) {
-                    if (!displayPrKey.isEmpty()) {
-                        bundle.putString("Failed", "PLAYREADY Already Upgrade!");
-                        callback.complete(0, bundle);
-                        return;
-                    }
-                }
-                if (mAlreadyUpdatePlayready) {
-                    bundle.putString("Failed", "PLAYREADY Already Upgrade!");
-                    callback.complete(0, bundle);
-                    return;
-                }
                 String[] parts = command.split("#");
                 String usbPats = parts[1];
-                String prKeyFile = new String();
-                File internalFile = new File(usbPats);
-                prKeyFile = getPlayreadyKeyFromUsb(internalFile == null ? null : internalFile.getAbsolutePath());
+                String prKeyFile = getPlayreadyKeyFromUsb(usbPats);
                 if (prKeyFile != null && !prKeyFile.isEmpty()) {
                     if (mFactoryApplication.getExtTv().extTv_tv001_BurnTrustZoneKeys(KEYS_PLAYREADY_TYPE,
                             effectiveStoragePath.concat(File.separator).concat(prKeyFile))) {
                         mFactoryApplication.getExtTv().extTv_tv001_SetTrustZoneKeysSerialNumber(KEYS_PLAYREADY_TYPE,
                                 prKeyFile.substring(prKeyFile.lastIndexOf("_") + 1, prKeyFile.lastIndexOf(".")));
                         if (doFactorySaveSync("PLAYREADY")) {
-                            displayPrKey = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(6);
+                            String displayPrKey = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(6);
                             if (displayPrKey != null && !displayPrKey.isEmpty()) {
                                 bundle.putString("displayPrKey", displayPrKey);
-                                bundle.putString("Success", "Already upgrade " + displayPrKey + " OK!");
-                                mAlreadyUpdatePlayready = true;
-                                SystemProperties.set("service.upgrade.playready", "1");
+                                bundle.putString("Success", "Load " + displayPrKey + " OK!");
                                 callback.complete(1, bundle);
                                 return;
                             }
@@ -458,7 +352,6 @@ public class UpgradeApi implements Callback {
                         bundle.putString("displayPrKey", displayPrKey);
                     }
                     bundle.putString("Success", "Clear pr key OK!");
-                    mAlreadyUpdatePlayready = false;
                     callback.complete(1, bundle);
                 } else {
                     bundle.putString("Fail", "Clear pr key NG!");
@@ -469,7 +362,6 @@ public class UpgradeApi implements Callback {
             if (command.startsWith("GET_PLAYREADY")) {
                 Bundle bundle = new Bundle();
                 String displayPrKey = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_PLAYREADY_TYPE);
-                Log.d(TAG, "displayPrKey: " + displayPrKey);
                 if (displayPrKey != null && !displayPrKey.isEmpty()) {
                     bundle.putString("displayPrKey", displayPrKey);
                     callback.complete(1, bundle);
@@ -482,23 +374,8 @@ public class UpgradeApi implements Callback {
 
             if (command.startsWith("SET_CI_KEY_UPGRADE".concat("#"))) {
                 Bundle bundle = new Bundle();
-                String displayCIKey = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_CIKEY_TYPE);
-                if (SystemProperties.getInt("service.upgrade.ci", 0) == 1) {
-                    if (!displayCIKey.isEmpty()) {
-                        bundle.putString("Failed", "CI_KEY Already Upgrade!");
-                        callback.complete(0, bundle);
-                        return;
-                    }
-                }
-
-                if (mAlreadyUpdateCi) {
-                    bundle.putString("Failed", "CI_KEY Already Upgrade!");
-                    callback.complete(0, bundle);
-                    return;
-                }
                 String[] parts = command.split("#");
                 String usbPats = parts[1];
-                //String CiKeyFile = loadKeyNameFormUsb(usbPats, KEYS_CIKEY_TYPE);
                 String CiKeyFile = getCiKeyFromUsb(usbPats);
                 if (CiKeyFile != null && !CiKeyFile.isEmpty()) {
                     if (mFactoryApplication.getExtTv().extTv_tv001_BurnTrustZoneKeys(KEYS_CIKEY_TYPE,usbPats + File.separator + CiKeyFile)) {
@@ -507,8 +384,6 @@ public class UpgradeApi implements Callback {
                         if (mFactoryApplication.getExtTv().extTv_tv001_SetTrustZoneKeysSerialNumber(KEYS_CIKEY_TYPE,name)) {
                             bundle.putString("displayCIKey", name);
                             bundle.putString("Success", "Load " + CiKeyFile + " OK!");
-                            SystemProperties.set("service.upgrade.ci", "1");
-                            mAlreadyUpdateCi = true;
                             callback.complete(1, bundle);
                             deleteFileInPath(usbPats, CiKeyFile);
                             return;
@@ -526,7 +401,6 @@ public class UpgradeApi implements Callback {
             if (command.startsWith("GET_CI_KEY")) {
                 Bundle bundle = new Bundle();
                 String displayCIKey = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_CIKEY_TYPE);
-                Log.d(TAG, "displayCIKey: " + displayCIKey);
                 if (displayCIKey != null && !displayCIKey.isEmpty()) {
                     bundle.putString("displayCIKey", displayCIKey);
                     callback.complete(1, bundle);
@@ -650,10 +524,10 @@ public class UpgradeApi implements Callback {
                         .getSystemService(Context.POWER_SERVICE);
                 pm.reboot(null);
             }
+
             if (command.startsWith("GET_ATTESTATION_KEY")) {
                 Bundle bundle = new Bundle();
                 String attestationKey = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_ATTESTATION_TYPE);
-                Log.d(TAG, "displayPrAttestation: " + attestationKey);
                 if (attestationKey != null && !attestationKey.isEmpty()) {
                     bundle.putString("displayPrAttestation", attestationKey);
                     callback.complete(1, bundle);
@@ -663,24 +537,11 @@ public class UpgradeApi implements Callback {
                 }
                 return;
             }
+
             if (command.startsWith("UPGRADE_ATTESTATION_KEY".concat("#"))) {
                 Bundle bundle = new Bundle();
-                String displayAttestationKey = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_ATTESTATION_TYPE);
-                if (SystemProperties.getInt("service.upgrade.Attestation", 0) == 1) {
-                    if (!displayAttestationKey.isEmpty()) {
-                        bundle.putString("Failed", "Attestation Key Already Upgrade!");
-                        callback.complete(0, bundle);
-                        return;
-                    }
-                }
-                if (mAlreadyUpdateAttestation) {
-                    bundle.putString("Failed", "Attestation Key Already Upgrade!");
-                    callback.complete(0, bundle);
-                    return;
-                }
                 String[] parts = command.split("#");
                 String usbPats = parts[1];
-                //String AttestationFile = loadKeyNameFormUsb(usbPats, KEYS_ATTESTATION_TYPE);
                 String AttestationFile = getAttestationKeyFromUsb(usbPats);
                 if (AttestationFile != null && !AttestationFile.isEmpty()) {
                     if (mFactoryApplication.getExtTv().extTv_tv001_BurnTrustZoneKeys(KEYS_ATTESTATION_TYPE, usbPats + File.separator + AttestationFile)) {
@@ -688,9 +549,7 @@ public class UpgradeApi implements Callback {
                         Log.d(TAG, "name:" + name);
                         if (mFactoryApplication.getExtTv().extTv_tv001_SetTrustZoneKeysSerialNumber(KEYS_ATTESTATION_TYPE, name)) {
                             bundle.putString("displayAttestationKey", name);
-                            bundle.putString("Success", "Already upgrade " + AttestationFile + " OK!");
-                            mAlreadyUpdateAttestation = true;
-                            SystemProperties.set("service.upgrade.Attestation", "1");
+                            bundle.putString("Success", "Load " + AttestationFile + " OK!");
                             callback.complete(1, bundle);
                             deleteFileInPath(usbPats, AttestationFile);
                             return;
@@ -703,10 +562,10 @@ public class UpgradeApi implements Callback {
                     callback.complete(2, bundle);
                 }
             }
+
             if (command.startsWith("GET_Netflix_ESN")) {
                 Bundle bundle = new Bundle();
                 String netflixESNkey = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_Netflix_ESN_TYPE);
-                Log.d(TAG, "displayPrNetflixESN key: " + netflixESNkey);
                 if (netflixESNkey != null && !netflixESNkey.isEmpty()) {
                     bundle.putString("displayPrNetflixESN", netflixESNkey);
                     callback.complete(1, bundle);
@@ -716,24 +575,11 @@ public class UpgradeApi implements Callback {
                 }
                 return;
             }
+
             if (command.startsWith("UPGRADE_Netflix_ESN".concat("#"))) {
                 Bundle bundle = new Bundle();
-                String esnKey = mFactoryApplication.getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_Netflix_ESN_TYPE);
-                if (SystemProperties.getInt("service.upgrade.NetflixESN", 0) == 1) {
-                    if (!esnKey.isEmpty()) {
-                        bundle.putString("Failed", "Netflix ESN Already Upgrade!");
-                        callback.complete(0, bundle);
-                        return;
-                    }
-                }
-                if (mAlreadyUpdateNetflixESN) {
-                    bundle.putString("Failed", "Netflix ESN Already Upgrade!");
-                    callback.complete(0, bundle);
-                    return;
-                }
                 String[] parts = command.split("#");
                 String usbPats = parts[1];
-                //String NetflixESNFile = loadKeyNameFormUsb(usbPats, KEYS_Netflix_ESN_TYPE);
                 String NetflixESNFile = getNetflixESNFromUsb(usbPats);
                 if (NetflixESNFile != null && !NetflixESNFile.isEmpty()) {
                     if (mFactoryApplication.getExtTv().extTv_tv001_BurnTrustZoneKeys(KEYS_Netflix_ESN_TYPE,usbPats + File.separator + NetflixESNFile)) {
@@ -741,15 +587,12 @@ public class UpgradeApi implements Callback {
                         Log.d(TAG, "name:" + name);
                         if (mFactoryApplication.getExtTv().extTv_tv001_SetTrustZoneKeysSerialNumber(KEYS_Netflix_ESN_TYPE,name)) {
                             bundle.putString("displayNetflixESN", name);
-                            bundle.putString("Success", "Already upgrade " + NetflixESNFile + " OK!");
-                            mAlreadyUpdateNetflixESN = true;
-                            SystemProperties.set("service.upgrade.NetflixESN", "1");
+                            bundle.putString("Success", "Load " + NetflixESNFile + " OK!");
                             callback.complete(1, bundle);
                             deleteFileInPath(usbPats, NetflixESNFile);
                             return;
                         }
                     }
-                    Log.d(TAG, "burned,bug get fail " + NetflixESNFile);
                     bundle.putString("Failed!", "Save " + NetflixESNFile + " fail!");
                     callback.complete(0, bundle);
                 } else {
@@ -757,11 +600,11 @@ public class UpgradeApi implements Callback {
                     callback.complete(2, bundle);
                 }
             }
+
             if (command.startsWith("GET_RMCA")) {
                 Bundle bundle = new Bundle();
                 String rmcaKey = isRmcaUpgrade() ? "RMCA" : null;
-                Log.d(TAG, "displayRMCA key: " + rmcaKey);
-                if (rmcaKey != null && !rmcaKey.isEmpty()) {
+                if (rmcaKey != null) {
                     bundle.putString("displayRMCA", rmcaKey);
                     callback.complete(1, bundle);
                 } else {
@@ -770,38 +613,21 @@ public class UpgradeApi implements Callback {
                 }
                 return;
             }
+
             if (command.startsWith("UPGRADE_RMCA".concat("#"))) {
                 Bundle bundle = new Bundle();
-                String rmcaKey = isRmcaUpgrade() ? "RMCA" : null;
-                if (SystemProperties.getInt("service.upgrade.RMCA", 0) == 1) {
-                    if (!rmcaKey.isEmpty()) {
-                        bundle.putString("Failed", "RMCA Already Upgrade!");
-                        callback.complete(0, bundle);
-                        return;
-                    }
-                }
-                if (mAlreadyUpdateRmca) {
-                    bundle.putString("Failed", "RMCA Already Upgrade!");
-                    callback.complete(0, bundle);
-                    return;
-                }
                 String[] parts = command.split("#");
                 String usbPats = parts[1];
-                String RmcaFile = new String();
-                File internalFile = new File(usbPats);
-                RmcaFile = getRmcaFromUsb(internalFile == null ? null : internalFile.getAbsolutePath());
+                String RmcaFile = getRmcaFromUsb(usbPats);
                 if (RmcaFile != null && !RmcaFile.isEmpty()) {
                     if (writeCapabilityBin(effectiveStoragePath.concat(File.separator).concat(RmcaFile))) {
                         if (doFactorySaveSync("RMCA")) {
-                            rmcaKey = isRmcaUpgrade() ? "RMCA" : null;
-                            if (rmcaKey != null && !rmcaKey.isEmpty()) {
+                            String rmcaKey = isRmcaUpgrade() ? "RMCA" : null;
+                            if (rmcaKey != null) {
                                 bundle.putString("displayRMCA", rmcaKey);
-                                bundle.putString("Success", "Already upgrade " + rmcaKey + " OK!");
-                                mAlreadyUpdateRmca = true;
-                                SystemProperties.set("service.upgrade.RMCA", "1");
+                                bundle.putString("Success", "Load " + rmcaKey + " OK!");
                                 callback.complete(1, bundle);
                             } else {
-                                Log.d(TAG, "burned,bug get fail " + RmcaFile);
                                 bundle.putString("Failed!", "Save " + RmcaFile + " fail!");
                                 callback.complete(0, bundle);
                             }
@@ -812,13 +638,12 @@ public class UpgradeApi implements Callback {
                     callback.complete(2, bundle);
                 }
             }
+
             if (command.startsWith("UPGRADE_WIDEVINE_ATT".concat("#"))) {
                 Bundle bundle = new Bundle();
                 String[] parts = command.split("#");
                 String usbPats = parts[1] + File.separator + "WIDEVINE_ATT";
-                String WVATTFile = new String();
-                File internalFile = new File(usbPats);
-                WVATTFile = getWVATTFromUsb(internalFile == null ? null : internalFile.getAbsolutePath());
+                String WVATTFile = getWVATTFromUsb(usbPats);
                 if (WVATTFile != null && !WVATTFile.isEmpty() && splitToWvAndAtt(effectiveStoragePath + File.separator + WVATTFile)) {
                     String wvPath = fileSearch(keyTemporary, "^KEYBOX_\\w+\\.bin$");
                     String attPath = fileSearch(keyTemporary, "^VINSMART_\\w+\\.bin$");
@@ -842,11 +667,9 @@ public class UpgradeApi implements Callback {
                             deleteFileInUsb(WVATTFile);
                             bundle.putString("displayWINDEVINEATT_WV", wvSerNum);
                             bundle.putString("displayWINDEVINEATT_ATT", attSerNum);
-                            bundle.putString("Success", "Already upgrade " + WVATTFile + " OK!");
-                            SystemProperties.set("service.upgrade.RMCA", "1");
+                            bundle.putString("Success", "Load " + WVATTFile + " OK!");
                             callback.complete(1, bundle);
                         } else {
-                            Log.d(TAG, "burned,bug get fail " + WVATTFile);
                             bundle.putString("Failed!", "Save " + WVATTFile + " fail!");
                             callback.complete(0, bundle);
                         }
@@ -856,10 +679,10 @@ public class UpgradeApi implements Callback {
                     callback.complete(2, bundle);
                 }
             }
+
             if (command.startsWith("GET_OEM")) {
                 Bundle bundle = new Bundle();
                 String oemKey = mFactoryApplication.getFactory().getOEMKey();
-                Log.d(TAG, "displayOEM key: " + oemKey);
                 if (oemKey != null && !oemKey.isEmpty()) {
                     bundle.putString("displayOEM", oemKey);
                     callback.complete(1, bundle);
@@ -869,22 +692,19 @@ public class UpgradeApi implements Callback {
                 }
                 return;
             }
+
             if (command.startsWith("UPGRADE_OEM".concat("#"))) {
                 Bundle bundle = new Bundle();
                 String[] parts = command.split("#");
                 String usbPats = parts[1];
-                String OEMKeyFile = new String();
-                File internalFile = new File(usbPats);
-                OEMKeyFile = getOEMKeyFromUsb(internalFile.getAbsolutePath());
+                String OEMKeyFile = getOEMKeyFromUsb(usbPats);
                 if (OEMKeyFile != null && !OEMKeyFile.isEmpty()) {
-                    String value = loadOEMValue(internalFile + File.separator + OEMKeyFile);
+                    String value = loadOEMValue(usbPats + File.separator + OEMKeyFile);
                     if (mFactoryApplication.getFactory().setOEMKey(value)) {
                         bundle.putString("displayOEM", value);
-                        bundle.putString("Success", "Already upgrade " + OEMKeyFile + " OK!");
-                        SystemProperties.set("service.upgrade.OEM", "1");
+                        bundle.putString("Success", "Load " + OEMKeyFile + " OK!");
                         callback.complete(1, bundle);
                     } else {
-                        Log.d(TAG, "burn fail " + OEMKeyFile);
                         bundle.putString("Failed!", "Save " + OEMKeyFile + " fail!");
                         callback.complete(0, bundle);
                     }
@@ -914,7 +734,6 @@ public class UpgradeApi implements Callback {
         File capabilityBinFile = new File(filePath);
         Long fileLength = capabilityBinFile.length();
         byte[] fileData = new byte[fileLength.intValue()];
-        //Files.readAllBytes(path(file));
 
         try (FileInputStream in = new FileInputStream(capabilityBinFile)) {
             in.read(fileData);
