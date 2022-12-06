@@ -6,17 +6,20 @@ import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_AUTO_TEST;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.IPackageDataObserver;
+import android.content.pm.IPackageDeleteObserver;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Process;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -30,14 +33,13 @@ import com.realtek.tvfactory.preference.PreferenceContainer;
 import com.realtek.tvfactory.preference.PreferenceFragment;
 import com.realtek.tvfactory.user.LogPageFragment;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DesignModeFragment extends PreferenceFragment {
 
     private final String TAG = "DesignModeFragment";
+    private ProgressDialog progressDialog;
 
     @Override
     public PreferenceContainer onCreatePreferenceContainer(Bundle savedInstanceState) {
@@ -66,18 +68,23 @@ public class DesignModeFragment extends PreferenceFragment {
             if (Process.SYSTEM_UID == pak.uid){
                 continue;
             }
-            // if()里的值如果<=0则为自己装的程序，否则为系统工程自带
             if ((pak.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
-                // 添加自己已经安装的应用程序
                 continue;
             }
             apps.add(pak.packageName);
-            // Log.d(TAG,pak.packageName);
         }
         return apps;
     }
 
-    private void clearApplicationUserData(List<String> packages, final Runnable callback) {
+    private void uninstallApps(List<String> packages){
+        PackageManager pkgManager = getContext().getPackageManager();
+        PackageDeleteObserver observer = new PackageDeleteObserver(packages.size());
+        for (String app : packages) {
+            pkgManager.deletePackage(app, observer, 0);
+        }
+    }
+
+    private void clearApplicationUserData(List<String> packages) {
         final List<String> tasks = new ArrayList<>(packages);
         IPackageDataObserver observer = new IPackageDataObserver.Stub() {
 
@@ -86,7 +93,7 @@ public class DesignModeFragment extends PreferenceFragment {
                 Log.d(TAG, String.format("clear %s %b", packageName, succeeded));
                 if (tasks.remove(packageName)) {
                     if (tasks.isEmpty()) {
-                        callback.run();
+                        uninstallApps(packages);
                     }
                 }
             }
@@ -98,34 +105,40 @@ public class DesignModeFragment extends PreferenceFragment {
         }
     }
 
-    public static boolean deleteAllFile(String path, boolean isIncludeRoot) {
-        File file = new File(path);
-        if (!file.exists()) {
-            return false;
+    private class PackageDeleteObserver extends IPackageDeleteObserver.Stub {
+        private int size;
+        private int position = 0;
+
+        public PackageDeleteObserver(int size) {
+            this.size = size;
         }
 
-        if(file.isFile()) {
-            return file.delete();
-        }
-
-        File[] fileList = file.listFiles();
-        boolean res = true;
-        for (File f : fileList) {
-            if(f.isFile()) {
-                res = res && f.delete();
-            } else if(f.isDirectory()) {
-                res = res && deleteAllFile(f.getAbsolutePath(), true);
+        @Override
+        public void packageDeleted(String arg0, int arg1)
+                throws RemoteException {
+            // TODO Auto-generated method stub
+            position ++;
+            if (position == size) {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+                Toast.makeText(getContext(),"Cleaning Successful!",Toast.LENGTH_SHORT).show();
             }
         }
-
-        if(isIncludeRoot) {
-            res = res && file.delete();
-        }
-
-        return res;
     }
 
+    private void showProgressDialog(String title, String message) {
+        if (progressDialog == null) {
+            progressDialog = ProgressDialog.show(getContext(),
+                    title, message, true, false);
+        } else if (progressDialog.isShowing()) {
+            progressDialog.setTitle(title);
+            progressDialog.setMessage(message);
+        }
 
+        progressDialog.show();
+
+    }
 
     @Override
     public void onPreferenceItemClick(Preference preference) {
@@ -164,31 +177,12 @@ public class DesignModeFragment extends PreferenceFragment {
                 break;
             case R.id.clear_app:
                 List<String> apps = getNotSystemApps(getContext());
-
-                clearApplicationUserData(apps,() -> {
-                    Thread thr = new Thread("ResetActivity") {
-                        @Override
-                        public void run() {
-                            Log.d(TAG, "clear data and reboot");
-                            try {
-                                Thread.sleep(300);
-                            } catch (Exception e) {
-                            }
-                            try {
-                                Runtime.getRuntime().exec("reboot");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    thr.start();
-                    // Wait for us to tell the power manager to shutdown.
-                    try {
-                        thr.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                });
+                if (apps.isEmpty()){
+                    Toast.makeText(getContext(),"Not Needs Cleaning!",Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                showProgressDialog("Clear APP","Processing Information,please wait...");
+                clearApplicationUserData(apps);
                 Log.d("shugan","apps = "+ apps.toString());
                 break;
             case R.id.logcat_tools:

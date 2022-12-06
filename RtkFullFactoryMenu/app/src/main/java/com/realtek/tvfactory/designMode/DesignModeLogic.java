@@ -103,6 +103,9 @@ public class DesignModeLogic extends LogicInterface {
     @Override
     public void onPreferenceIndexChange(StatePreference preference, int previous, int current) {
         switch (preference.getId()) {
+            case R.id.item_power_mode:
+                mFactoryMainApi.setAcPowerOnMode(current);
+                break;
             case R.id.test_pattern:
                 mPictureApi.setVideoTestPattern(current);
                 break;
