@@ -30,7 +30,9 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import com.exttv.tv.ExtTv;
+import com.realtek.fullfactorymenu.api.impl.UserApi;
 import com.realtek.fullfactorymenu.utils.ByteTransformUtils;
+import com.realtek.fullfactorymenu.utils.Constants;
 import com.realtek.fullfactorymenu.utils.TvInputUtils;
 import com.realtek.fullfactorymenu.utils.Utils;
 import com.realtek.tv.AQ;
@@ -100,6 +102,11 @@ public class FactoryApplication extends Application {
     public void onCreate() {
         instance = this;
         initInputList();
+        /**
+         * stop record
+         */
+        UserApi.getInstance().setPvrRecordAll(false, Utils.getUSBInternalPath(this.getApplicationContext()));
+        Settings.Global.putInt(getContentResolver(), Constants.RECORD_ALL_ENABLE, 0);
         if (TextUtils.isEmpty(TvInputUtils.getCurrentInput(this))) {
             if (TvInputUtils.isATSC()) {
                 TvInputUtils.setCurrentInput(this, INPUT_ID_ATSC);

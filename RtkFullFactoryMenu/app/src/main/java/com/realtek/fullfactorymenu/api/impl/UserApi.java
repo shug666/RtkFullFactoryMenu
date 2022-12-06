@@ -223,17 +223,17 @@ public class UserApi implements Callback {
 
     public boolean setPvrRecordAll(boolean arg0, String usbPath) {
         if (arg0) {
-            Log.d(TAG, "Debug_RecordTs_Start/Stop_Record" + "+" + usbPath + "start record");
+            Log.d(TAG, "Debug_RecordTs_Start/Stop_Record" + "+" + usbPath + ", start record");
             if (mFactoryApplication.getExtTv() != null && usbPath != null) {
-                mFactoryApplication.getExtTv().extTv_tv001_DumpTS(usbPath, "start record");
+                return mFactoryApplication.getExtTv().extTv_tv001_DumpTS(usbPath, "start record");
             }
         } else {
-            Log.d(TAG, "Debug_RecordTs_Start/Stop_Record" + "+" + usbPath + "start record");
+            Log.d(TAG, "Debug_RecordTs_Start/Stop_Record" + "+" + usbPath + ", stop record");
             if (mFactoryApplication.getExtTv() != null && usbPath != null) {
-                mFactoryApplication.getExtTv().extTv_tv001_DumpTS(usbPath, "stop record");
+                return mFactoryApplication.getExtTv().extTv_tv001_DumpTS(usbPath, "stop record");
             }
         }
-        return true;
+        return false;
     }
 
     public boolean setVideoMuteColor(int color) {

@@ -8,6 +8,8 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.provider.Settings;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +26,7 @@ import com.realtek.fullfactorymenu.preference.SeekBarPreference;
 import com.realtek.fullfactorymenu.preference.StatePreference;
 import com.realtek.fullfactorymenu.preference.SumaryPreference;
 import com.realtek.fullfactorymenu.utils.AppToast;
+import com.realtek.fullfactorymenu.utils.Constants;
 import com.realtek.fullfactorymenu.utils.ProgressDialog;
 import com.realtek.fullfactorymenu.utils.TvInputUtils;
 import com.realtek.fullfactorymenu.utils.Utils;
@@ -47,6 +50,7 @@ public class TuningSettingLogic extends LogicInterface {
     private ProgressDialog mProgressDialog;
     private FactoryMainApi mFactoryMainApi;
     private UpdateViewHandler mUpdateViewHandler;
+    private StatePreference mRecordAll;
 
     public TuningSettingLogic(PreferenceContainer container) {
         super(container);
@@ -65,7 +69,7 @@ public class TuningSettingLogic extends LogicInterface {
         mExportPresetFileToUSB = (SumaryPreference) mContainer.findPreferenceById(R.id.export_preset_file_to_usb);
         mEnterCustomerFactoryMode = (SumaryPreference) mContainer.findPreferenceById(R.id.enter_customer_factory_mode);
         StatePreference mPvrEnable = (StatePreference) mContainer.findPreferenceById(R.id.pvr_enable);
-        StatePreference mRecordAll = (StatePreference) mContainer.findPreferenceById(R.id.record_all);
+        mRecordAll = (StatePreference) mContainer.findPreferenceById(R.id.record_all);
 
         mMuteColor.init(mUserApi.getVideoMuteColor());
         mFactoryProgramReset.setSumary(mContext.getString(R.string.item_operation_text_fail));
@@ -74,7 +78,7 @@ public class TuningSettingLogic extends LogicInterface {
         mExportPresetFileToUSB.setSumary(mContext.getString(R.string.item_operation_text_fail));
         mEnterCustomerFactoryMode.setSumary(mContext.getString(R.string.item_operation_text_fail));
         mPvrEnable.init(mFactoryMainApi.getBooleanValue("PVR_FUNCTION_ENABLED") ? 1 : 0);
-        mRecordAll.init(0);
+        mRecordAll.init(Settings.Global.getInt(mContext.getContentResolver(), Constants.RECORD_ALL_ENABLE, 0));
 
         /*
         if (SystemProperties.getBoolean("persist.sys.preset.scan.enable", false)) {
@@ -93,7 +97,12 @@ public class TuningSettingLogic extends LogicInterface {
 
     @Override
     public void deinit() {
-        mUserApi.setPvrRecordAll(false, Utils.getUSBInternalPath(mContext));
+        int recordAllEnable = Settings.Global.getInt(mContext.getContentResolver(), Constants.RECORD_ALL_ENABLE, 0);
+        if (recordAllEnable == 1) {
+            Log.d(TAG, "deinit stop record.");
+            mUserApi.setPvrRecordAll(false, Utils.getUSBInternalPath(mContext));
+            Settings.Global.putInt(mContext.getContentResolver(), Constants.RECORD_ALL_ENABLE, 0);
+        }
     }
 
     @Override
@@ -113,8 +122,20 @@ public class TuningSettingLogic extends LogicInterface {
                 break;
             }
             case R.id.record_all: {
-                boolean status = 0 != current;
-                mUserApi.setPvrRecordAll(status, Utils.getUSBInternalPath(mContext));
+                boolean isRecord = current == 1;
+                String usbPath = Utils.getUSBInternalPath(mContext);
+                if (usbPath == null || TextUtils.isEmpty(usbPath)) {
+                    mRecordAll.init(0);
+                    Toast.makeText(mContext, "No USB device Found.", Toast.LENGTH_SHORT).show();
+                } else {
+                    boolean status = mUserApi.setPvrRecordAll(isRecord, Utils.getUSBInternalPath(mContext));
+                    if (isRecord) {
+                        Settings.Global.putInt(mContext.getContentResolver(), Constants.RECORD_ALL_ENABLE, status ? 1 : 0);
+                    } else {
+                        Settings.Global.putInt(mContext.getContentResolver(), Constants.RECORD_ALL_ENABLE, status ? 0 : 1);
+                    }
+                    Toast.makeText(mContext, String.format("%s record %s!", (isRecord ? "start" : "stop"), (status ? "OK" : "NG")), Toast.LENGTH_SHORT).show();
+                }
                 break;
             }
             default:
