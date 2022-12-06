@@ -37,7 +37,7 @@
             android:name=".systemInfo.InputMacActivity"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.toptech.factory.action.FACTORY_MAC_ADDRESS" />
+                <action android:name="com.realtek.factory.action.FACTORY_MAC_ADDRESS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
