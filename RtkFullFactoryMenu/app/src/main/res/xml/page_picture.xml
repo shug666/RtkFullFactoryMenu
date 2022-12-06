@@ -22,10 +22,10 @@
         <entry name="@string/str_black" index="5"  enabled="true" />
     </StatePreference>
     <Preference id="@+id/page_pq" title="@string/picture_mode_pq" />
-    <SumaryPreference id="@+id/md5_pq" title="@string/picture_mode_pq_md5" />
-    <SumaryPreference id="@+id/md5_pq_hdr" title="@string/picture_mode_pq_hdr_md5" />
-    <SumaryPreference id="@+id/md5_pq_osd" title="@string/picture_mode_pq_osd_md5" />
-    <SumaryPreference id="@+id/md5_dv" title="@string/picture_mode_dv_md5" />
+    <SumaryPreference id="@+id/md5_pq" title="@string/picture_mode_pq_md5" visible="false"/>
+    <SumaryPreference id="@+id/md5_pq_hdr" title="@string/picture_mode_pq_hdr_md5" visible="false"/>
+    <SumaryPreference id="@+id/md5_pq_osd" title="@string/picture_mode_pq_osd_md5" visible="false"/>
+    <SumaryPreference id="@+id/md5_dv" title="@string/picture_mode_dv_md5" visible="false"/>
     <StatePreference id="@+id/backlight_mode" title="@string/picture_mode_backlight_mode" index="0" cycleEnabled="true" >
         <entry name="@string/str_default" index="0"  enabled="true"/>
         <entry name="@string/picture_mode_backlight_0" index="1"  enabled="true" />
