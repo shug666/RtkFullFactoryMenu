@@ -1,9 +1,6 @@
 package com.realtek.fullfactorymenu;
 
-import static com.realtek.fullfactorymenu.FactoryApplication.CUSTOMER_IS_CH;
-
 import android.icu.text.SimpleDateFormat;
-import android.view.View;
 
 import com.realtek.fullfactorymenu.api.impl.FactoryMainApi;
 import com.realtek.fullfactorymenu.logic.LogicInterface;
@@ -48,9 +45,6 @@ public class MainLogic extends LogicInterface {
             mCustomerPowerOnMode.init(1);
         } else if (mFactoryMainApi.getAcPowerOnMode() == 2) {
             mCustomerPowerOnMode.init(2);
-        }
-        if (CUSTOMER_IS_CH) {
-            mContainer.findPreferenceById(R.id.page_ch_default).setVisibility(View.VISIBLE);
         }
     }
 
