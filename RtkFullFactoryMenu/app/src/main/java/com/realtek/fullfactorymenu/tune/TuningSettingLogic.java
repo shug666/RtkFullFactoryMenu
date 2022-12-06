@@ -93,7 +93,7 @@ public class TuningSettingLogic extends LogicInterface {
 
     @Override
     public void deinit() {
-
+        mUserApi.setPvrRecordAll(false, Utils.getUSBInternalPath(mContext));
     }
 
     @Override
