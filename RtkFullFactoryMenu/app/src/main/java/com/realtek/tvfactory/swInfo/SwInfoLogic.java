@@ -322,7 +322,7 @@ public class SwInfoLogic extends LogicInterface {
         }
 
         Log.d(TAG,"serialNumber = "+serialNumber);
-        return "OK";
+        return serialNumber;
     }
 
     private String getKeyToString(String fullPath) {
@@ -330,7 +330,7 @@ public class SwInfoLogic extends LogicInterface {
         if (bytes == null || bytes.length == 0) {
             return "NG";
         }
-        return "OK";
+        return "RMCA";
     }
 
     private byte[] getBytesFromKey(String path, int size) {

@@ -727,7 +727,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
         keys.put(CMD_UPGRADE_Attestation, usbPath + SystemInfoFragment.PATH_ATTESTATION_KEY);
         keys.put(CMD_UPGRADE_RMCA, usbPath + SystemInfoFragment.PATH_RMCA);
 
-        if (FactoryApplication.CUSTOMER_IS_CH && Tools.isKeyUpgradeForce(mContext)){
+        if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext)){
             forceFlag = forceUpgradeKeys(keys);
         }
         if (!forceFlag) return;
