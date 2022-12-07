@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
-
 import android.os.SystemProperties;
 import android.provider.Settings;
 import android.util.Log;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.realtek.tvfactory.FactoryApplication;
+import com.realtek.tvfactory.R;
 import com.realtek.tvfactory.api.impl.FactoryMainApi;
 import com.realtek.tvfactory.api.impl.PictureApi;
 import com.realtek.tvfactory.api.impl.UserApi;
@@ -22,12 +22,10 @@ import com.realtek.tvfactory.preference.Preference;
 import com.realtek.tvfactory.preference.PreferenceContainer;
 import com.realtek.tvfactory.preference.SeekBarPreference;
 import com.realtek.tvfactory.preference.StatePreference;
-import com.realtek.tvfactory.R;
 import com.realtek.tvfactory.preference.SumaryPreference;
 import com.realtek.tvfactory.utils.AppToast;
 import com.realtek.tvfactory.utils.TvInputUtils;
 import com.realtek.tvfactory.utils.TvUtils;
-import com.realtek.tvfactory.utils.Utils;
 
 public class UserLogic extends LogicInterface {
 

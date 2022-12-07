@@ -6,6 +6,7 @@ import static com.realtek.tvfactory.utils.Constants.IMPORT_EXPORT_PATH;
 import static com.realtek.tvfactory.utils.Constants.MSG_EXPORT_SETTINGS;
 import static com.realtek.tvfactory.utils.Constants.MSG_IMPORT_SETTINGS;
 import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_AUTO_TEST;
+import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_TT_TOOL_BVT;
 import static com.realtek.tvfactory.utils.Constants.RECEIVER_GLOBAL_KEY;
 
 import android.app.ActivityManager;
@@ -24,15 +25,17 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.realtek.system.RtkProjectConfigs;
+import com.realtek.tv.TVMediaTypeConstants;
+import com.realtek.tv.TvContractEx;
 import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.FactoryApplication.ChannelHandler;
 import com.realtek.tvfactory.api.listener.IActionCallback;
 import com.realtek.tvfactory.api.manager.TvFactoryManager;
+import com.realtek.tvfactory.utils.ByteTransformUtils;
 import com.realtek.tvfactory.utils.LogHelper;
+import com.realtek.tvfactory.utils.PackageUtils;
 import com.realtek.tvfactory.utils.TvUtils;
-import com.realtek.system.RtkProjectConfigs;
-import com.realtek.tv.TVMediaTypeConstants;
-import com.realtek.tv.TvContractEx;
 
 import java.io.File;
 import java.util.List;
@@ -171,13 +174,13 @@ public class UserApi implements Callback {
         ActivityManager activityManager = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
 
-        String mainActivityClassName = PACKAGE_NAME_AUTO_TEST + "." + ACTIVITY_MAIN;
+        String mainActivityClassName = ByteTransformUtils.asciiToString(PACKAGE_NAME_TT_TOOL_BVT) + "." + ACTIVITY_MAIN;
         List<ActivityManager.RunningTaskInfo> tasksInfo = activityManager.getRunningTasks(4);
         if (tasksInfo.size() > 0) {
             for (int i = 0; i < tasksInfo.size(); i++) {
                 ComponentName topComponent = tasksInfo.get(i).topActivity;
                 LogHelper.d(TAG, "topComponent.getPackageName()..." + topComponent.getPackageName());
-                if (PACKAGE_NAME_AUTO_TEST.equals(topComponent.getPackageName())) {
+                if (ByteTransformUtils.asciiToString(PACKAGE_NAME_TT_TOOL_BVT).equals(topComponent.getPackageName())) {
                     LogHelper.d(TAG, "isBackground: " + topComponent.getPackageName());
                     if (topComponent.getClassName().equals(mainActivityClassName)) {
                         LogHelper.d(TAG, mainActivityClassName + " is running");
@@ -275,19 +278,44 @@ public class UserApi implements Callback {
 
     public boolean setBVTCmdOnOff(boolean isEnable, boolean isManual) {
         if (isEnable) {
-            ComponentName name = new ComponentName(PACKAGE_NAME_AUTO_TEST, PACKAGE_NAME_AUTO_TEST + "." + ACTIVITY_MAIN);
-            Intent intent = new Intent();
-            intent.setComponent(name);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(intent);
+            ComponentName name = ComponentName.unflattenFromString(ByteTransformUtils.asciiToString(PACKAGE_NAME_TT_TOOL_BVT) + "/." + ACTIVITY_MAIN);
+            Intent intent = PackageUtils.getActivityIntentByComponentName(mContext, name);
+            if (intent != null) {
+                mContext.startActivity(intent);
+            } else {
+                Log.e(TAG, String.format("start %s fail, because not exist!", name.getClassName()));
+                name = ComponentName.unflattenFromString(PACKAGE_NAME_AUTO_TEST + "/." + ACTIVITY_MAIN);
+                intent = PackageUtils.getActivityIntentByComponentName(mContext, name);
+                if (intent != null) {
+                    mContext.startActivity(intent);
+                } else {
+                    Log.e(TAG, String.format("start %s fail, because not exist!", name.getClassName()));
+                    return false;
+                }
+            }
             return true;
         } else {
-            Intent intent = new Intent();
-            intent.putExtra("finish",true);
-            intent.putExtra("manual", isManual);
-            intent.setAction("android.intent.action.GLOBAL_BUTTON");
-            intent.setComponent(new ComponentName(PACKAGE_NAME_AUTO_TEST,PACKAGE_NAME_AUTO_TEST + "." + RECEIVER_GLOBAL_KEY));
-            mContext.sendBroadcast(intent);
+            ComponentName name = ComponentName.unflattenFromString(ByteTransformUtils.asciiToString(PACKAGE_NAME_TT_TOOL_BVT) + "/." + RECEIVER_GLOBAL_KEY);
+            Intent intent = PackageUtils.getActivityIntentByComponentName(mContext, name);
+            if (intent != null) {
+                intent.putExtra("finish",true);
+                intent.putExtra("manual", isManual);
+                intent.setAction("android.intent.action.GLOBAL_BUTTON");
+                mContext.startActivity(intent);
+            } else {
+                Log.e(TAG, String.format("start %s fail, because not exist!", name.getClassName()));
+                name = ComponentName.unflattenFromString(PACKAGE_NAME_AUTO_TEST + "/." + RECEIVER_GLOBAL_KEY);
+                intent = PackageUtils.getActivityIntentByComponentName(mContext, name);
+                if (intent != null) {
+                    intent.putExtra("finish",true);
+                    intent.putExtra("manual", isManual);
+                    intent.setAction("android.intent.action.GLOBAL_BUTTON");
+                    mContext.startActivity(intent);
+                } else {
+                    Log.e(TAG, String.format("start %s fail, because not exist!", name.getClassName()));
+                    return false;
+                }
+            }
             return true;
         }
     }

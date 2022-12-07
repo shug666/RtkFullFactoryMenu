@@ -310,6 +310,7 @@ public final class Constants {
     public static final String PACKAGE_NAME_AUTO_TEST = "com.realtek.rtkfactoryirautotest";
     public static final String RECEIVER_GLOBAL_KEY = "GlobalKeyReceiver";
     public static final String SERVICE_MKEY_EVENT = "com.realtek.rtkfactoryirautotest/.mmode.service.MKeyEventService";
+    public static final String PACKAGE_NAME_TT_TOOL_BVT = "636f6d2e746f70746563682e666163746f7279746f6f6c73626f65";
     public static final int MSG_ACTION_START_CH_MMODE = 0x01;
     public static final int MSG_ACTION_STOP_CH_MMODE = 0x02;
 

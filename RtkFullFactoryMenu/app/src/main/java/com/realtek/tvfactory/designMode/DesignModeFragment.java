@@ -3,6 +3,7 @@ package com.realtek.tvfactory.designMode;
 import static com.realtek.tvfactory.utils.Constants.ACTIVITY_AGING;
 import static com.realtek.tvfactory.utils.Constants.ACTIVITY_MMODE;
 import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_AUTO_TEST;
+import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_TT_TOOL_BVT;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.os.Process;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -32,6 +34,8 @@ import com.realtek.tvfactory.preference.Preference;
 import com.realtek.tvfactory.preference.PreferenceContainer;
 import com.realtek.tvfactory.preference.PreferenceFragment;
 import com.realtek.tvfactory.user.LogPageFragment;
+import com.realtek.tvfactory.utils.ByteTransformUtils;
+import com.realtek.tvfactory.utils.PackageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,29 +147,68 @@ public class DesignModeFragment extends PreferenceFragment {
     @Override
     public void onPreferenceItemClick(Preference preference) {
         switch (preference.getId()) {
-            case R.id.aging_mode:
-                PackageManager pm = getActivity().getPackageManager();
-                ComponentName name = new ComponentName(PACKAGE_NAME_AUTO_TEST, PACKAGE_NAME_AUTO_TEST + "." + ACTIVITY_AGING);
-                int state = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-                pm.setComponentEnabledSetting(name, state, PackageManager.DONT_KILL_APP);
-
-                Intent intent = new Intent();
-                intent.setComponent(name);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getActivity().startActivity(intent);
-                if (UserApi.getInstance().getBVTOnOff()) {
-                    UserApi.getInstance().setBVTCmdOnOff(false, false);
+            case R.id.aging_mode: {
+                FragmentActivity activity = getActivity();
+                if (activity == null) {
+                    Log.e(TAG, "getActivity() = null!");
+                    return;
                 }
-                getActivity().finish();
+                ComponentName aging = ComponentName.unflattenFromString(ByteTransformUtils.asciiToString(PACKAGE_NAME_TT_TOOL_BVT) + "/." + ACTIVITY_AGING);
+                Intent agingIntent = PackageUtils.getActivityIntentByComponentName(activity, aging);
+                if (agingIntent != null) {
+                    if (UserApi.getInstance().getBVTOnOff()) {
+                        UserApi.getInstance().setBVTCmdOnOff(false, false);
+                    }
+                    PackageManager pm = getActivity().getPackageManager();
+                    int state = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+                    pm.setComponentEnabledSetting(aging, state, PackageManager.DONT_KILL_APP);
+                    activity.startActivity(agingIntent);
+                    getActivity().finish();
+                } else {
+                    aging = ComponentName.unflattenFromString(PACKAGE_NAME_AUTO_TEST + "/." + ACTIVITY_AGING);
+                    agingIntent = PackageUtils.getActivityIntentByComponentName(activity, aging);
+                    if (agingIntent != null) {
+                        if (UserApi.getInstance().getBVTOnOff()) {
+                            UserApi.getInstance().setBVTCmdOnOff(false, false);
+                        }
+                        PackageManager pm = getActivity().getPackageManager();
+                        int state = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+                        pm.setComponentEnabledSetting(aging, state, PackageManager.DONT_KILL_APP);
+                        activity.startActivity(agingIntent);
+                        getActivity().finish();
+                    } else {
+                        Log.e(TAG, String.format("start %s fail, because not exist!", aging.getClassName()));
+                        Toast.makeText(activity, R.string.ch_function_not_support, Toast.LENGTH_SHORT).show();
+                    }
+                }
                 break;
-            case R.id.m_mode:
-                Intent mMode = new Intent();
-                ComponentName mModeComp = new ComponentName(PACKAGE_NAME_AUTO_TEST, PACKAGE_NAME_AUTO_TEST + "." + ACTIVITY_MMODE);
-                mMode.setComponent(mModeComp);
-                mMode.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getActivity().startActivity(mMode);
-                getActivity().finish();
+            }
+            case R.id.m_mode: {
+                Context context = getActivity();
+                if (context == null) {
+                    context = getContext();
+                    if (context == null) {
+                        Log.e(TAG, "getActivity() and getContext() are null!");
+                        return;
+                    }
+                }
+                ComponentName mode = ComponentName.unflattenFromString(ByteTransformUtils.asciiToString(PACKAGE_NAME_TT_TOOL_BVT) + "/." + ACTIVITY_MMODE);
+                Intent mMode = PackageUtils.getActivityIntentByComponentName(context, mode);
+                if (mMode != null) {
+                    context.startActivity(mMode);
+                } else {
+                    Log.e(TAG, String.format("start %s fail, because not exist!", mode.getClassName()));
+                    mode = ComponentName.unflattenFromString(PACKAGE_NAME_AUTO_TEST + "/." + ACTIVITY_MMODE);
+                    mMode = PackageUtils.getActivityIntentByComponentName(context, mode);
+                    if (mMode != null) {
+                        context.startActivity(mMode);
+                    } else {
+                        Log.e(TAG, String.format("start %s fail, because not exist!", mode.getClassName()));
+                        Toast.makeText(context, R.string.ch_function_not_support, Toast.LENGTH_SHORT).show();
+                    }
+                }
                 break;
+            }
             case R.id.wb_adjust:
                 showPage(WhiteBalanceAdjustFragment.class, R.string.str_wb_adjust);
                 break;

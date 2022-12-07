@@ -1,12 +1,6 @@
 package com.realtek.tvfactory.designMode;
 
-import static com.realtek.tvfactory.utils.Constants.ACTIVITY_AGING;
-import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_AUTO_TEST;
-
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.SystemProperties;
 import android.provider.Settings;
 
@@ -107,19 +101,6 @@ public class DesignModeLogic extends LogicInterface {
             case R.id.test_pattern:
                 mPictureApi.setVideoTestPattern(current);
                 break;
-            case R.id.AgingMode:
-                if (current == 1){
-                    PackageManager pm = mContext.getPackageManager();
-                    ComponentName name = new ComponentName(PACKAGE_NAME_AUTO_TEST, PACKAGE_NAME_AUTO_TEST + "." + ACTIVITY_AGING);
-                    int state = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-                    pm.setComponentEnabledSetting(name, state, PackageManager.DONT_KILL_APP);
-
-                    Intent intent = new Intent();
-                    intent.setComponent(name);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                }
-                break;
             case R.id.factory_test:
                 Settings.Secure.putInt(FactoryApplication.getInstance().getContentResolver(), "factory_test", current);
                 SystemProperties.set("persist.sys.factory_boot_mode", (0 == current) ? "-1": "0");
@@ -131,7 +112,7 @@ public class DesignModeLogic extends LogicInterface {
                 mUserApi.setEnvironment(TvFactoryManager.DISPLAY_LOGO, ((0 == current) ? "on" : "off"));
                 break;
             case R.id.BOE_cmd_enable:
-                mUserApi.setBVTCmdOnOff((0 == current) ? false : true, true);
+                mUserApi.setBVTCmdOnOff(0 != current, true);
                 if (0 != current) {
                     ((Activity)mContext).finish();
                 }
