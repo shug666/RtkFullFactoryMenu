@@ -1,5 +1,9 @@
 package com.realtek.tvfactory.utils;
 
+import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_AUTO_TEST;
+import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_TT_TOOL_BVT;
+import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_TT_TOOL_GTV;
+
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -40,6 +44,31 @@ public class PackageUtils {
             return intent;
         } else {
             return null;
+        }
+    }
+
+    public static Intent getIntentByActivityName(Context context, String activity_name) {
+        ComponentName name = ComponentName.unflattenFromString(ByteTransformUtils.asciiToString(PACKAGE_NAME_TT_TOOL_BVT) + "/." + activity_name);
+        Intent intent = getActivityIntentByComponentName(context, name);
+        if (intent != null) {
+            return intent;
+        } else {
+            Log.e(TAG, String.format("start %s fail, because not exist!", name.getClassName()));
+            name = ComponentName.unflattenFromString(ByteTransformUtils.asciiToString(PACKAGE_NAME_TT_TOOL_GTV) + "/." + activity_name);
+            intent = getActivityIntentByComponentName(context, name);
+            if (intent != null) {
+                return intent;
+            } else {
+                Log.e(TAG, String.format("start %s fail, because not exist!", name.getClassName()));
+                name = ComponentName.unflattenFromString(PACKAGE_NAME_AUTO_TEST + "/." + activity_name);
+                intent = getActivityIntentByComponentName(context, name);
+                if (intent != null) {
+                    return intent;
+                } else {
+                    Log.e(TAG, String.format("start %s fail, because not exist!", name.getClassName()));
+                    return null;
+                }
+            }
         }
     }
 

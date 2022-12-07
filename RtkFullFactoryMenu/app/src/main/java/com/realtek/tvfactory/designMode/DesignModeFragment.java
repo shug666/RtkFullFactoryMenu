@@ -2,13 +2,10 @@ package com.realtek.tvfactory.designMode;
 
 import static com.realtek.tvfactory.utils.Constants.ACTIVITY_AGING;
 import static com.realtek.tvfactory.utils.Constants.ACTIVITY_MMODE;
-import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_AUTO_TEST;
-import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_TT_TOOL_BVT;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -34,7 +31,6 @@ import com.realtek.tvfactory.preference.Preference;
 import com.realtek.tvfactory.preference.PreferenceContainer;
 import com.realtek.tvfactory.preference.PreferenceFragment;
 import com.realtek.tvfactory.user.LogPageFragment;
-import com.realtek.tvfactory.utils.ByteTransformUtils;
 import com.realtek.tvfactory.utils.PackageUtils;
 
 import java.util.ArrayList;
@@ -153,33 +149,18 @@ public class DesignModeFragment extends PreferenceFragment {
                     Log.e(TAG, "getActivity() = null!");
                     return;
                 }
-                ComponentName aging = ComponentName.unflattenFromString(ByteTransformUtils.asciiToString(PACKAGE_NAME_TT_TOOL_BVT) + "/." + ACTIVITY_AGING);
-                Intent agingIntent = PackageUtils.getActivityIntentByComponentName(activity, aging);
+                Intent agingIntent = PackageUtils.getIntentByActivityName(activity, ACTIVITY_AGING);
                 if (agingIntent != null) {
                     if (UserApi.getInstance().getBVTOnOff()) {
                         UserApi.getInstance().setBVTCmdOnOff(false, false);
                     }
                     PackageManager pm = getActivity().getPackageManager();
                     int state = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-                    pm.setComponentEnabledSetting(aging, state, PackageManager.DONT_KILL_APP);
+                    pm.setComponentEnabledSetting(agingIntent.getComponent(), state, PackageManager.DONT_KILL_APP);
                     activity.startActivity(agingIntent);
                     getActivity().finish();
                 } else {
-                    aging = ComponentName.unflattenFromString(PACKAGE_NAME_AUTO_TEST + "/." + ACTIVITY_AGING);
-                    agingIntent = PackageUtils.getActivityIntentByComponentName(activity, aging);
-                    if (agingIntent != null) {
-                        if (UserApi.getInstance().getBVTOnOff()) {
-                            UserApi.getInstance().setBVTCmdOnOff(false, false);
-                        }
-                        PackageManager pm = getActivity().getPackageManager();
-                        int state = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-                        pm.setComponentEnabledSetting(aging, state, PackageManager.DONT_KILL_APP);
-                        activity.startActivity(agingIntent);
-                        getActivity().finish();
-                    } else {
-                        Log.e(TAG, String.format("start %s fail, because not exist!", aging.getClassName()));
-                        Toast.makeText(activity, R.string.ch_function_not_support, Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(activity, R.string.ch_function_not_support, Toast.LENGTH_SHORT).show();
                 }
                 break;
             }
@@ -192,20 +173,11 @@ public class DesignModeFragment extends PreferenceFragment {
                         return;
                     }
                 }
-                ComponentName mode = ComponentName.unflattenFromString(ByteTransformUtils.asciiToString(PACKAGE_NAME_TT_TOOL_BVT) + "/." + ACTIVITY_MMODE);
-                Intent mMode = PackageUtils.getActivityIntentByComponentName(context, mode);
+                Intent mMode = PackageUtils.getIntentByActivityName(context, ACTIVITY_MMODE);
                 if (mMode != null) {
                     context.startActivity(mMode);
                 } else {
-                    Log.e(TAG, String.format("start %s fail, because not exist!", mode.getClassName()));
-                    mode = ComponentName.unflattenFromString(PACKAGE_NAME_AUTO_TEST + "/." + ACTIVITY_MMODE);
-                    mMode = PackageUtils.getActivityIntentByComponentName(context, mode);
-                    if (mMode != null) {
-                        context.startActivity(mMode);
-                    } else {
-                        Log.e(TAG, String.format("start %s fail, because not exist!", mode.getClassName()));
-                        Toast.makeText(context, R.string.ch_function_not_support, Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(context, R.string.ch_function_not_support, Toast.LENGTH_SHORT).show();
                 }
                 break;
             }

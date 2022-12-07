@@ -5,7 +5,6 @@ import static com.realtek.tvfactory.utils.Constants.ACTIVITY_MAIN;
 import static com.realtek.tvfactory.utils.Constants.IMPORT_EXPORT_PATH;
 import static com.realtek.tvfactory.utils.Constants.MSG_EXPORT_SETTINGS;
 import static com.realtek.tvfactory.utils.Constants.MSG_IMPORT_SETTINGS;
-import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_AUTO_TEST;
 import static com.realtek.tvfactory.utils.Constants.PACKAGE_NAME_TT_TOOL_BVT;
 import static com.realtek.tvfactory.utils.Constants.RECEIVER_GLOBAL_KEY;
 
@@ -278,43 +277,22 @@ public class UserApi implements Callback {
 
     public boolean setBVTCmdOnOff(boolean isEnable, boolean isManual) {
         if (isEnable) {
-            ComponentName name = ComponentName.unflattenFromString(ByteTransformUtils.asciiToString(PACKAGE_NAME_TT_TOOL_BVT) + "/." + ACTIVITY_MAIN);
-            Intent intent = PackageUtils.getActivityIntentByComponentName(mContext, name);
+            Intent intent = PackageUtils.getIntentByActivityName(mContext, ACTIVITY_MAIN);
             if (intent != null) {
                 mContext.startActivity(intent);
             } else {
-                Log.e(TAG, String.format("start %s fail, because not exist!", name.getClassName()));
-                name = ComponentName.unflattenFromString(PACKAGE_NAME_AUTO_TEST + "/." + ACTIVITY_MAIN);
-                intent = PackageUtils.getActivityIntentByComponentName(mContext, name);
-                if (intent != null) {
-                    mContext.startActivity(intent);
-                } else {
-                    Log.e(TAG, String.format("start %s fail, because not exist!", name.getClassName()));
-                    return false;
-                }
+                return false;
             }
             return true;
         } else {
-            ComponentName name = ComponentName.unflattenFromString(ByteTransformUtils.asciiToString(PACKAGE_NAME_TT_TOOL_BVT) + "/." + RECEIVER_GLOBAL_KEY);
-            Intent intent = PackageUtils.getActivityIntentByComponentName(mContext, name);
+            Intent intent = PackageUtils.getIntentByActivityName(mContext, RECEIVER_GLOBAL_KEY);
             if (intent != null) {
                 intent.putExtra("finish",true);
                 intent.putExtra("manual", isManual);
                 intent.setAction("android.intent.action.GLOBAL_BUTTON");
                 mContext.startActivity(intent);
             } else {
-                Log.e(TAG, String.format("start %s fail, because not exist!", name.getClassName()));
-                name = ComponentName.unflattenFromString(PACKAGE_NAME_AUTO_TEST + "/." + RECEIVER_GLOBAL_KEY);
-                intent = PackageUtils.getActivityIntentByComponentName(mContext, name);
-                if (intent != null) {
-                    intent.putExtra("finish",true);
-                    intent.putExtra("manual", isManual);
-                    intent.setAction("android.intent.action.GLOBAL_BUTTON");
-                    mContext.startActivity(intent);
-                } else {
-                    Log.e(TAG, String.format("start %s fail, because not exist!", name.getClassName()));
-                    return false;
-                }
+                return false;
             }
             return true;
         }
