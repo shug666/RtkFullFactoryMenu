@@ -55,7 +55,7 @@ public class InputMacActivity extends FragmentActivity {
 
         inputMac = findViewById(R.id.input_mac);
 
-        String macAddress = FactoryApplication.getInstance().getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_MAC_TYPE);
+        String macAddress = FactoryApplication.getInstance().getExtTv().extTv_tv001_GetTrustZoneKeysSerialNumber(KEYS_MAC_TYPE).toUpperCase();
 
         List<String> list = new ArrayList<>();
         for (String s : macAddress.split("")) {
