@@ -147,9 +147,9 @@ public class Tools {
 	public static boolean isKeyUpgradeForce(Context mContext){
 		int flag = SystemProperties.getInt("persist.sys.key_upgrade_force", 0);
 		if (flag != 0) return true;
-		String usbPath = getFisrtUsbStroagePath(mContext);
-		String filePath;
 		if (FactoryApplication.CUSTOMER_IS_CH){
+			String usbPath = getFisrtUsbStroagePath(mContext);
+			String filePath;
 			filePath = usbPath + "/CH_SYSTEM_KEYS/FORCE_UPGRADE_KEYS.txt";
 			File file = new File(filePath);
 			boolean exists = file.exists();

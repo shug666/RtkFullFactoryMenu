@@ -33,7 +33,6 @@ public class DesignModeLogic extends LogicInterface {
     private PictureApi mPictureApi;
     private StatePreference mTestPattern;
     private StatePreference mPowerMode;
-    private Preference mImportExport;
     private Preference mFactoryRemote;
     private StatePreference mFactoryTest;
     private StatePreference mDisplayLogo;
@@ -58,7 +57,6 @@ public class DesignModeLogic extends LogicInterface {
     public void init() {
         mPowerMode = (StatePreference) mContainer.findPreferenceById(R.id.item_power_mode);
         mTestPattern = (StatePreference) mContainer.findPreferenceById(R.id.test_pattern);
-        mImportExport = mContainer.findPreferenceById(R.id.import_export);
         mFactoryTest = (StatePreference) mContainer.findPreferenceById(R.id.factory_test);
         mDisplayLogo = (StatePreference) mContainer.findPreferenceById(R.id.display_logo);
         mBoeCmdEnable = (StatePreference) mContainer.findPreferenceById(R.id.BOE_cmd_enable);

@@ -20,8 +20,6 @@
         <entry name="@string/str_black" index="5"  enabled="true" />
     </StatePreference>
 
-    <Preference id="@+id/import_export" title="@string/str_import_export" />
-
     <Preference id="@+id/aging_mode" title="@string/str_AgingMode" />
 
     <StatePreference id="@+id/factory_test" title="@string/str_factory_test" cycleEnabled="true">

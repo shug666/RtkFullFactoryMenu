@@ -1,5 +1,19 @@
 package com.realtek.tvfactory.systemInfo;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.RemoteException;
+import android.text.TextUtils;
+import android.util.SparseArray;
+import android.widget.TextView;
+
 import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.R;
 import com.realtek.tvfactory.api.impl.UpgradeApi;
@@ -10,23 +24,6 @@ import com.realtek.tvfactory.preference.SeekBarPreference;
 import com.realtek.tvfactory.preference.StatePreference;
 import com.realtek.tvfactory.preference.SumaryPreference;
 import com.realtek.tvfactory.utils.Tools;
-
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.RemoteException;
-import android.os.SystemProperties;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.SparseArray;
-import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -237,6 +234,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 break;
             case CMD_UPGRADE_HDCP:
                 if (keyMessages("HDCP",msg.arg1,mHDCPUpgrade,bundle.getString("displayHDCP14"))) break;
+                if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_HDCP)) break;
 
                 if (msg.arg1 == 1) {
                     String displayHDCP14 = bundle.getString("displayHDCP14");
@@ -260,6 +258,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 break;
             case CMD_UPGRADE_HDCP22:
                 if (keyMessages("HDCP2",msg.arg1,mHDCPUpgrade2,bundle.getString("displayHDCP22"))) break;
+                if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_HDCP22)) break;
 
                 if (msg.arg1 == 1) {
                     String displayHDCP22 = bundle.getString("displayHDCP22");
@@ -301,6 +300,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 break;
             case CMD_UPGRADE_MAC:
                 if (keyMessages("MAC",msg.arg1,mMACUpgrade,bundle.getString("displayMacAddr"))) break;
+                if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_MAC)) break;
 
                 if (msg.arg1 == 1) {
                     String displayMacAddr = bundle.getString("displayMacAddr");
@@ -327,6 +327,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 break;
             case CMD_UPGRADE_WIDEVINE:
                 if (keyMessages("Widevine",msg.arg1,mWidevineUpgrade,bundle.getString("displayWvKey"))) break;
+                if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_WIDEVINE)) break;
 
                 if (msg.arg1 == 1) {
                     String displayWvKey = bundle.getString("displayWvKey");
@@ -350,6 +351,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 break;
             case CMD_UPGRADE_CI_KEY:
                 if (keyMessages("Ci",msg.arg1,mCiUpgrade,bundle.getString("displayCIKey"))) break;
+                if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_CI_KEY)) break;
 
                 if (msg.arg1 == 1) {
                     String displayCIKey = bundle.getString("displayCIKey");
@@ -383,6 +385,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 break;
             case CMD_UPGRADE_PLAYREADY:
                 if (keyMessages("Playready",msg.arg1,mPlayreadyUpgrade,bundle.getString("displayPrKey"))) break;
+                if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_PLAYREADY)) break;
 
                 if (msg.arg1 == 1) {
                     String displayPrKey = bundle.getString("displayPrKey");
@@ -406,6 +409,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 break;
             case CMD_UPGRADE_Attestation:
                 if (keyMessages("Attestation",msg.arg1,mAttestationUpgrade,bundle.getString("displayAttestationKey"))) break;
+                if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_Attestation)) break;
 
                 if (msg.arg1 == 1) {
                     String displayAttestationKey = bundle.getString("displayAttestationKey");
@@ -429,6 +433,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 break;
             case CMD_UPGRADE_Netflix_ESN:
                 if (keyMessages("Mgkid",msg.arg1,mNetflixEsnUpgrade,bundle.getString("displayNetflixESN"))) break;
+                if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_Netflix_ESN)) break;
 
                 if (msg.arg1 == 1) {
                     String esn = bundle.getString("displayNetflixESN");
@@ -452,6 +457,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 break;
             case CMD_UPGRADE_RMCA:
                 if (keyMessages("Rmca",msg.arg1,mRmcaUpgrade,bundle.getString("displayRMCA"))) break;
+                if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_RMCA)) break;
 
                 if (msg.arg1 == 1) {
                     String rmca = bundle.getString("displayRMCA");
@@ -484,6 +490,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 break;
             case CMD_UPGRADE_OEM:
                 if (keyMessages("Oem",msg.arg1,mOemUpgrade,bundle.getString("displayOEM"))) break;
+                if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_OEM)) break;
 
                 if (msg.arg1 == 1) {
                     String oem = bundle.getString("displayOEM");
@@ -554,7 +561,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                     public void onClick(DialogInterface dialogInterface, int i) {
                         allKeyUpgrade = false;
                     }
-                }).create();
+                }).setCancelable(false).create();
         mAlertDialog.show();
         mAlertDialog.getButton(DialogInterface.BUTTON_POSITIVE).requestFocus();
 
@@ -629,64 +636,74 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
         return bytes;
     }
 
-    private boolean forceUpgradeKeys(Map<Integer,String> keys){
-        int forceFlag = SystemProperties.getInt("persist.sys.key_upgrade_force", 0);
-        if (forceFlag == 1 ) return true;
-        if (Tools.isKeyUpgradeForce(mContext)) return true;
-        boolean[] upgradeArr = new boolean[10];
+    private boolean checkKeyUpgrade(int cmd){
+        boolean isUpgrade = false;
+        switch (cmd){
+            case CMD_UPGRADE_MAC:
+               isUpgrade = getKeyState(UpgradeApi.KEYS_MAC_TYPE);
+               break;
+            case CMD_UPGRADE_OEM:
+                String oemKey = FactoryApplication.getInstance().getFactory().getOEMKey();
+                if (oemKey != null && !oemKey.isEmpty()){
+                    isUpgrade = true;
+                }
+                break;
+            case CMD_UPGRADE_Netflix_ESN:
+                isUpgrade = getKeyState(UpgradeApi.KEYS_Netflix_ESN_TYPE);
+                break;
+            case CMD_UPGRADE_PLAYREADY:
+                isUpgrade = getKeyState(UpgradeApi.KEYS_PLAYREADY_TYPE);
+                break;
+            case CMD_UPGRADE_HDCP:
+                isUpgrade = getKeyState(UpgradeApi.KEYS_HDCP1_TYPE);
+                break;
+            case CMD_UPGRADE_HDCP22:
+                isUpgrade = getKeyState(UpgradeApi.KEYS_HDCP2_TYPE);
+                break;
+            case CMD_UPGRADE_WIDEVINE:
+                isUpgrade = getKeyState(UpgradeApi.KEYS_WIDEVINE_TYPE);
+                break;
+            case CMD_UPGRADE_CI_KEY:
+                isUpgrade = getKeyState(UpgradeApi.KEYS_CIKEY_TYPE);
+                break;
+            case CMD_UPGRADE_Attestation:
+                isUpgrade = getKeyState(UpgradeApi.KEYS_ATTESTATION_TYPE);
+                break;
+            case CMD_UPGRADE_RMCA:
+                byte[] bytesFromKey = getBytesFromKey("mnt/vendor/factory/RMCA", 0);
+                if (bytesFromKey != null && bytesFromKey.length != 0 ){
+                    isUpgrade = true;
+                }
+                break;
+            default:
+        }
+        if (isUpgrade && !allKeyUpgrade){
+            Tools.showDialog(mContext, mContext.getString(R.string.str_fail), "Key Already Upgrade!");
+        }
+        return isUpgrade;
+    }
 
-        if (getKeyState(UpgradeApi.KEYS_MAC_TYPE)){
-            alreadyKey.append("MAC, ");
-            upgradeArr[0] = false;
-        }
-        String oemKey = FactoryApplication.getInstance().getFactory().getOEMKey();
-        if (oemKey !=null && !oemKey.isEmpty()){
-            alreadyKey.append("Oem, ");
-            upgradeArr[1] = false;
-        }
-        if (getKeyState(UpgradeApi.KEYS_Netflix_ESN_TYPE)){
-            alreadyKey.append("Mgkid, ");
-            upgradeArr[2] = false;
-        }
-        if (getKeyState(UpgradeApi.KEYS_PLAYREADY_TYPE)){
-            alreadyKey.append("Playready, ");
-            upgradeArr[3] = false;
-        }
-        if (getKeyState(UpgradeApi.KEYS_HDCP1_TYPE)){
-            alreadyKey.append("HDCP, ");
-            upgradeArr[4] = false;
-        }
-        if (getKeyState(UpgradeApi.KEYS_HDCP2_TYPE)){
-            alreadyKey.append("HDCP2, ");
-            upgradeArr[5] = false;
-        }
-        if (getKeyState(UpgradeApi.KEYS_WIDEVINE_TYPE)){
-            alreadyKey.append("Widevine, ");
-            upgradeArr[6] = false;
-        }
-        if (getKeyState(UpgradeApi.KEYS_CIKEY_TYPE)){
-            alreadyKey.append("Ci, ");
-            upgradeArr[7] = false;
-        }
-        if (getKeyState(UpgradeApi.KEYS_ATTESTATION_TYPE)){
-            alreadyKey.append("Attestation, ");
-            upgradeArr[8] = false;
-        }
-        byte[] bytesFromKey = getBytesFromKey("mnt/vendor/factory/RMCA", 0);
-        if (bytesFromKey != null && bytesFromKey.length != 0 ){
-            alreadyKey.append("Rmca, ");
-            upgradeArr[9] = false;
-        }
+    private boolean forceUpgradeKeys(Map<Integer,String> keys){
+        SparseArray<String> sparseArray = new SparseArray<>();
+        sparseArray.put(CMD_UPGRADE_MAC, "MAC");
+        sparseArray.put(CMD_UPGRADE_OEM, "Oem");
+        sparseArray.put(CMD_UPGRADE_Netflix_ESN,"Mgkid");
+        sparseArray.put(CMD_UPGRADE_PLAYREADY,"Playready");
+        sparseArray.put(CMD_UPGRADE_HDCP, "HDCP");
+        sparseArray.put(CMD_UPGRADE_HDCP22, "HDCP2");
+        sparseArray.put(CMD_UPGRADE_WIDEVINE, "Widevine");
+        sparseArray.put(CMD_UPGRADE_CI_KEY, "Ci");
+        sparseArray.put(CMD_UPGRADE_Attestation, "Attestation");
+        sparseArray.put(CMD_UPGRADE_RMCA, "Rmca");
 
         Set<Integer> keyNames = keys.keySet();
-        int i = 0;
         for (Integer keyName : keyNames) {
-            if (!upgradeArr[i]){
+            if (checkKeyUpgrade(keyName)){
+                alreadyKey.append(sparseArray.get(keyName)).append(", ");
                 continue;
             }
             sendSyncCommand(keyName,keys.get(keyName));
         }
-
         mMessageView.setText(alreadyKey+"\n\n"+successfulKey + "\n\n" + failedKey);
         return false;
     }
@@ -710,7 +727,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
         keys.put(CMD_UPGRADE_Attestation, usbPath + SystemInfoFragment.PATH_ATTESTATION_KEY);
         keys.put(CMD_UPGRADE_RMCA, usbPath + SystemInfoFragment.PATH_RMCA);
 
-        if (FactoryApplication.CUSTOMER_IS_CH){
+        if (FactoryApplication.CUSTOMER_IS_CH && Tools.isKeyUpgradeForce(mContext)){
             forceFlag = forceUpgradeKeys(keys);
         }
         if (!forceFlag) return;
