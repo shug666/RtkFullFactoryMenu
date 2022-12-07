@@ -1,6 +1,27 @@
 package com.realtek.tvfactory.systemInfo;
 
-import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.*;
+import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_Attestation;
+import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_BOOTLOGO;
+import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_CI_KEY;
+import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_HDCP;
+import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_HDCP22;
+import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_MAC;
+import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_Netflix_ESN;
+import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_OEM;
+import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_PLAYREADY;
+import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_PQ;
+import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_RMCA;
+import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.CMD_UPGRADE_WIDEVINE;
+import static com.realtek.tvfactory.systemInfo.SystemInfoLogic.sendSyncCommand;
+
+import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.storage.StorageManager;
+import android.os.storage.VolumeInfo;
+import android.util.Log;
 
 import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.R;
@@ -9,18 +30,6 @@ import com.realtek.tvfactory.preference.PreferenceContainer;
 import com.realtek.tvfactory.preference.PreferenceFragment;
 import com.realtek.tvfactory.utils.PackageUtils;
 import com.realtek.tvfactory.utils.Tools;
-
-import android.app.AlertDialog;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
-import android.os.Bundle;
-import android.os.storage.StorageManager;
-import android.os.storage.VolumeInfo;
-import android.util.Log;
 
 import java.util.List;
 
@@ -85,7 +94,6 @@ public class SystemInfoFragment extends PreferenceFragment {
             Intent networkIntent = PackageUtils.getActivityIntentByComponentName(getActivity(), network);
             if (networkIntent != null) {
                 getActivity().startActivity(networkIntent);
-                getActivity().finish();
             } else {
                 Log.e(TAG, String.format("start %s fail, because not exist!", network.getClassName()));
             }
