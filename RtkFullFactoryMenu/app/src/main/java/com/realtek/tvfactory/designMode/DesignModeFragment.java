@@ -176,6 +176,9 @@ public class DesignModeFragment extends PreferenceFragment {
                 Intent mMode = PackageUtils.getIntentByActivityName(context, ACTIVITY_MMODE);
                 if (mMode != null) {
                     context.startActivity(mMode);
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
                 } else {
                     Toast.makeText(context, R.string.ch_function_not_support, Toast.LENGTH_SHORT).show();
                 }
