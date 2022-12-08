@@ -138,6 +138,12 @@ public class FactoryMainApi {
         return true;
     }
 
+    public boolean setAcPowerOnModeAndSave(int factoryPowerMode) {
+        Settings.Secure.putInt(mFactoryApplication.getContentResolver(), "default_power_on_mode", factoryPowerMode);
+        mFactoryApplication.getFactory().setPowerOnMode(factoryPowerMode);
+        return true;
+    }
+
     public int getIntegerValue(String key) {
         switch (key) {
             case TvCommonManager.USER_VOLUME_PRESCALE:
