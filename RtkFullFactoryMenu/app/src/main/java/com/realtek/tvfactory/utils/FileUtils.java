@@ -8,10 +8,13 @@ import android.system.Os;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import static android.os.FileUtils.copy;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public class FileUtils {
 
@@ -148,5 +151,68 @@ public class FileUtils {
             e.printStackTrace();
         }
         return true;
+    }
+
+    /**
+     * Get file context
+     * @return string
+     */
+    public static String getFileContext(String fileName) {
+        if (fileName == null || !(new File(fileName).exists())) {
+            Log.e(TAG, "fileName=" + fileName);
+            return "unknown";
+        }
+        return getFileContext(new File(fileName));
+    }
+
+    public static String getFileContext(File fileName) {
+        InputStreamReader inputStreamReader = null;
+        FileInputStream inputStream = null;
+        BufferedReader reader = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            inputStream = new FileInputStream(fileName);
+            inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+            reader = new BufferedReader(inputStreamReader);
+            String line;
+            try {
+                while ((line = reader.readLine()) != null) {
+                    stringBuilder.append(line).append("\n");
+                }
+                return stringBuilder.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e(TAG, "Error:" + e);
+            }
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+            Log.e(TAG, "Error:" + e1);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "Error:" + e);
+                }
+            }
+            if (inputStreamReader != null) {
+                try {
+                    inputStreamReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "Error:" + e);
+                }
+            }
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "Error:" + e);
+                }
+            }
+        }
+        return "unknown";
     }
 }

@@ -21,12 +21,14 @@ import com.realtek.tv.SystemControl;
 import com.realtek.tv.TVMediaTypeConstants;
 import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.api.manager.TvCommonManager;
+import com.realtek.tvfactory.utils.FileUtils;
 import com.realtek.tvfactory.utils.LogHelper;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class FactoryMainApi {
@@ -80,6 +82,46 @@ public class FactoryMainApi {
         String m_pPanelName = RtkProjectConfigs.getInstance().getConfig("[PANEL]", "m_pPanelName");
         File panelFile = new File(m_pPanelName.trim());
         return panelFile.getName();
+    }
+
+    public String getBootLogo() {
+        String bootLogoPath = RtkProjectConfigs.getInstance().getConfig("[PowerLogoMode]", "PowerLogoPath");
+        File bootLogoFile = new File(bootLogoPath.trim());
+        return bootLogoFile.getName();
+    }
+
+    public String getCountryLang() {
+        String countryLangPath = RtkProjectConfigs.getInstance().getConfig("[LiveTV]", "TvCountryLang");
+        File fileFile = new File(countryLangPath.trim());
+        if (fileFile.exists()) {
+            return FileUtils.getFileContext(fileFile);
+        } else {
+            Log.e(TAG, String.format("%s is not exists.", fileFile.getPath()));
+            return "unknown";
+        }
+    }
+
+    public String getInputSource() {
+        String sourceList =  RtkProjectConfigs.getInstance().getConfig("[LiveTV]", "inputSource");
+        if (sourceList != null && !TextUtils.isEmpty(sourceList)) {
+            String[] sources = sourceList.split(",");
+            StringBuilder sb = new StringBuilder();
+            for (String source : sources) {
+                String[] tmp = source.split(":");
+                if (tmp.length == 2 && !"NULL".equals(tmp[1].toUpperCase(Locale.ROOT))) {
+                    sb.append(tmp[1]).append(", ");
+                }
+            }
+            Log.e(TAG, "sb.toString()=" + sb);
+            if (sb.toString().trim().length() > 1) {
+                return sb.toString().trim().substring(0, sb.toString().trim().length() - 1);
+            } else {
+                Log.e(TAG, "sb.toString().trim().length()=0");
+            }
+        } else {
+            Log.e(TAG, "sourceList=" + sourceList);
+        }
+        return "unknown";
     }
 
     public int getAcPowerOnMode() {

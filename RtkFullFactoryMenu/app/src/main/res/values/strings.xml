@@ -665,6 +665,13 @@
     <string name="str_select_Panel_Sel">Panel Sel</string>
     <string name="str_select_panel_setting">Panel Setting</string>
     <string name="str_select_Project">Project Select</string>
+    <string name="str_click_to_view">Click to view</string>
+    <string name="str_select_country_lang">Country Lang</string>
+    <string name="str_select_boot_logo">Boot Logo</string>
+    <string name="str_select_boot_music">Boot Music</string>
+    <string name="str_select_boot_animation">Boot Animation</string>
+    <string name="str_select_key_map">Key Map</string>
+    <string name="str_select_input_source">Input Source</string>
     <!--Tuning Setting-->
     <string name="str_tuning_setting">Tuning Setting</string>
     <string name="str_tv_search">TV Search</string>

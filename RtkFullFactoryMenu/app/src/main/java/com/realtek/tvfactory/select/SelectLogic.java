@@ -10,18 +10,30 @@ import com.realtek.tvfactory.preference.SumaryPreference;
 
 public class SelectLogic extends LogicInterface {
 
-    private SumaryPreference panel_Sel;
-    private FactoryMainApi mFactoryMainApi;
-
     public SelectLogic(PreferenceContainer container) {
         super(container);
     }
 
     @Override
     public void init() {
-        mFactoryMainApi = FactoryMainApi.getInstance();
-        panel_Sel = (SumaryPreference) mContainer.findPreferenceById(R.id.panel_Sel);
+        FactoryMainApi mFactoryMainApi = FactoryMainApi.getInstance();
+        SumaryPreference panel_Sel = (SumaryPreference) mContainer.findPreferenceById(R.id.panel_Sel);
         panel_Sel.setSumary(mFactoryMainApi.getPanelType());
+        SumaryPreference panel_name = (SumaryPreference) mContainer.findPreferenceById(R.id.panel_name);
+        panel_name.setSumary(mFactoryMainApi.getPanelType());
+
+        SumaryPreference boot_logo = (SumaryPreference) mContainer.findPreferenceById(R.id.boot_logo);
+        boot_logo.setSumary(mFactoryMainApi.getBootLogo());
+
+        SumaryPreference boot_music = (SumaryPreference) mContainer.findPreferenceById(R.id.boot_music);
+        boot_music.setSumary(mFactoryMainApi.getPanelType());
+
+        SumaryPreference boot_animation = (SumaryPreference) mContainer.findPreferenceById(R.id.boot_animation);
+        boot_animation.setSumary(mFactoryMainApi.getPanelType());
+
+        ((SumaryPreference) mContainer.findPreferenceById(R.id.country_lang)).setSumary(mContext.getString(R.string.str_click_to_view));
+        ((SumaryPreference) mContainer.findPreferenceById(R.id.key_map)).setSumary(mContext.getString(R.string.str_click_to_view));
+        ((SumaryPreference) mContainer.findPreferenceById(R.id.input_source)).setSumary(mContext.getString(R.string.str_click_to_view));
     }
 
     @Override
