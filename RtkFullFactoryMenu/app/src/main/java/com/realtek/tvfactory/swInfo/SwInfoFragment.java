@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 import com.realtek.tvfactory.BaseFragment;
 import com.realtek.tvfactory.FactoryMenuFragment;
 import com.realtek.tvfactory.R;
-import com.realtek.tvfactory.oled.JBFragment;
-import com.realtek.tvfactory.oled.OffRSFragment;
 import com.realtek.tvfactory.preference.Preference;
 import com.realtek.tvfactory.preference.PreferenceContainer;
 import com.realtek.tvfactory.preference.PreferenceFragment;

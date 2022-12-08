@@ -1,7 +1,5 @@
 package com.realtek.tvfactory.swInfo;
 
-import static com.realtek.tvfactory.api.impl.UpgradeApi.KEYS_MAC_TYPE;
-
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.TimeZone;
 import android.os.Build;
@@ -11,6 +9,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.realtek.system.RtkProjectConfigs;
+import com.realtek.tv.Factory;
 import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.R;
 import com.realtek.tvfactory.api.impl.UpgradeApi;
@@ -21,8 +21,6 @@ import com.realtek.tvfactory.preference.StatePreference;
 import com.realtek.tvfactory.preference.SumaryPreference;
 import com.realtek.tvfactory.utils.TvInputUtils;
 import com.realtek.tvfactory.utils.Utils;
-import com.realtek.system.RtkProjectConfigs;
-import com.realtek.tv.Factory;
 
 import java.io.BufferedReader;
 import java.io.File;
