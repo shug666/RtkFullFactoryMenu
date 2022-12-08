@@ -117,9 +117,7 @@ public class SystemInfoFragment extends PreferenceFragment {
         switch (preference.getId()) {
         case R.id.upgrede_all_key:
             mSystemInfoLogic = (SystemInfoLogic) mPreferenceContainer.getPreferenceLogic(R.id.upgrede_all_key);
-//            mSystemInfoLogic.openDialog();
             mSystemInfoLogic.keyAllUpgrade();
-
             break;
         case R.id.upgrede_mac:
             sendSyncCommand(CMD_UPGRADE_MAC, initUsb + PATH_MAC);

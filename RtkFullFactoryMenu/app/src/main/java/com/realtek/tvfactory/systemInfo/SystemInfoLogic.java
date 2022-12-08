@@ -12,12 +12,20 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.SparseArray;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
+import com.android.internal.widget.LinearLayoutManager;
+import com.android.internal.widget.RecyclerView;
 import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.R;
 import com.realtek.tvfactory.api.impl.UpgradeApi;
 import com.realtek.tvfactory.api.listener.ICommandCallback;
+import com.realtek.tvfactory.dialog.CustomDialog;
 import com.realtek.tvfactory.logic.LogicInterface;
 import com.realtek.tvfactory.preference.PreferenceContainer;
 import com.realtek.tvfactory.preference.SeekBarPreference;
@@ -29,8 +37,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -123,12 +132,16 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
     private SumaryPreference mCiUpgrade;
     private SumaryPreference mAttestationUpgrade;
     private SumaryPreference mRmcaUpgrade;
-    private AlertDialog mAlertDialog;
     private boolean allKeyUpgrade = false;
-    private StringBuilder successfulKey;
-    private StringBuilder failedKey;
-    private StringBuilder alreadyKey;
-    private TextView mMessageView;
+    private int keysCount = 0;
+
+    RecyclerView mRecyclerView;
+    MyAdapter mMyAdapter ;
+    List<Keys> mKeysList = new ArrayList<>();
+    private String[] keyNames = new String[]{"MAC","Oem","Mgkid","Playready","HDCP","HDCP2","Widevine","Ci","Attestation","Rmca"};;
+    private SparseArray<Integer> sparseArray = new SparseArray<>();
+    private CustomDialog.Builder builder;
+
 
     public SystemInfoLogic(PreferenceContainer containter) {
         super(containter);
@@ -233,7 +246,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 }
                 break;
             case CMD_UPGRADE_HDCP:
-                if (keyMessages("HDCP",msg.arg1,mHDCPUpgrade,bundle.getString("displayHDCP14"))) break;
+                if (keyMessages(CMD_UPGRADE_HDCP,msg.arg1,mHDCPUpgrade,bundle.getString("displayHDCP14"))) break;
                 if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_HDCP)) break;
 
                 if (msg.arg1 == 1) {
@@ -257,7 +270,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 }
                 break;
             case CMD_UPGRADE_HDCP22:
-                if (keyMessages("HDCP2",msg.arg1,mHDCPUpgrade2,bundle.getString("displayHDCP22"))) break;
+                if (keyMessages(CMD_UPGRADE_HDCP22,msg.arg1,mHDCPUpgrade2,bundle.getString("displayHDCP22"))) break;
                 if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_HDCP22)) break;
 
                 if (msg.arg1 == 1) {
@@ -299,7 +312,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 }
                 break;
             case CMD_UPGRADE_MAC:
-                if (keyMessages("MAC",msg.arg1,mMACUpgrade,bundle.getString("displayMacAddr"))) break;
+                if (keyMessages(CMD_UPGRADE_MAC,msg.arg1,mMACUpgrade,bundle.getString("displayMacAddr"))) break;
                 if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_MAC)) break;
 
                 if (msg.arg1 == 1) {
@@ -326,7 +339,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 }
                 break;
             case CMD_UPGRADE_WIDEVINE:
-                if (keyMessages("Widevine",msg.arg1,mWidevineUpgrade,bundle.getString("displayWvKey"))) break;
+                if (keyMessages(CMD_UPGRADE_WIDEVINE,msg.arg1,mWidevineUpgrade,bundle.getString("displayWvKey"))) break;
                 if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_WIDEVINE)) break;
 
                 if (msg.arg1 == 1) {
@@ -350,7 +363,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 }
                 break;
             case CMD_UPGRADE_CI_KEY:
-                if (keyMessages("Ci",msg.arg1,mCiUpgrade,bundle.getString("displayCIKey"))) break;
+                if (keyMessages(CMD_UPGRADE_CI_KEY,msg.arg1,mCiUpgrade,bundle.getString("displayCIKey"))) break;
                 if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_CI_KEY)) break;
 
                 if (msg.arg1 == 1) {
@@ -384,7 +397,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 }
                 break;
             case CMD_UPGRADE_PLAYREADY:
-                if (keyMessages("Playready",msg.arg1,mPlayreadyUpgrade,bundle.getString("displayPrKey"))) break;
+                if (keyMessages(CMD_UPGRADE_PLAYREADY,msg.arg1,mPlayreadyUpgrade,bundle.getString("displayPrKey"))) break;
                 if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_PLAYREADY)) break;
 
                 if (msg.arg1 == 1) {
@@ -408,7 +421,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 }
                 break;
             case CMD_UPGRADE_Attestation:
-                if (keyMessages("Attestation",msg.arg1,mAttestationUpgrade,bundle.getString("displayAttestationKey"))) break;
+                if (keyMessages(CMD_UPGRADE_Attestation,msg.arg1,mAttestationUpgrade,bundle.getString("displayAttestationKey"))) break;
                 if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_Attestation)) break;
 
                 if (msg.arg1 == 1) {
@@ -432,7 +445,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 }
                 break;
             case CMD_UPGRADE_Netflix_ESN:
-                if (keyMessages("Mgkid",msg.arg1,mNetflixEsnUpgrade,bundle.getString("displayNetflixESN"))) break;
+                if (keyMessages(CMD_UPGRADE_Netflix_ESN,msg.arg1,mNetflixEsnUpgrade,bundle.getString("displayNetflixESN"))) break;
                 if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_Netflix_ESN)) break;
 
                 if (msg.arg1 == 1) {
@@ -456,7 +469,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 }
                 break;
             case CMD_UPGRADE_RMCA:
-                if (keyMessages("Rmca",msg.arg1,mRmcaUpgrade,bundle.getString("displayRMCA"))) break;
+                if (keyMessages(CMD_UPGRADE_RMCA,msg.arg1,mRmcaUpgrade,bundle.getString("displayRMCA"))) break;
                 if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_RMCA)) break;
 
                 if (msg.arg1 == 1) {
@@ -489,7 +502,7 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
                 }
                 break;
             case CMD_UPGRADE_OEM:
-                if (keyMessages("Oem",msg.arg1,mOemUpgrade,bundle.getString("displayOEM"))) break;
+                if (keyMessages(CMD_UPGRADE_OEM,msg.arg1,mOemUpgrade,bundle.getString("displayOEM"))) break;
                 if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext) && checkKeyUpgrade(CMD_UPGRADE_OEM)) break;
 
                 if (msg.arg1 == 1) {
@@ -555,56 +568,65 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
     }
 
     public void openDialog(){
-        mAlertDialog = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
-                .setTitle("Upgrade Keys State").setMessage("").setCancelable(true).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        allKeyUpgrade = false;
-                    }
-                }).setCancelable(false).create();
-        mAlertDialog.show();
-        mAlertDialog.getButton(DialogInterface.BUTTON_POSITIVE).requestFocus();
+        mKeysList.clear();
+        keysCount = 0;
+        allKeyUpgrade = true;
 
-        try {
-            Field mAlert = AlertDialog.class.getDeclaredField("mAlert");
-            mAlert.setAccessible(true);
-            Object mAlertController = mAlert.get(mAlertDialog);
-            //通过反射修改message字体大小和颜色
-            Field mMessage = mAlertController.getClass().getDeclaredField("mMessageView");
-            mMessage.setAccessible(true);
-            mMessageView = (TextView) mMessage.get(mAlertController);
-        } catch (IllegalAccessException e1) {
-            e1.printStackTrace();
-        } catch (NoSuchFieldException e2) {
-            e2.printStackTrace();
+        View inflate = View.inflate(mContext, R.layout.dialog_layout, null);
+        mRecyclerView = inflate.findViewById(R.id.recycler_view);
+
+        builder = new CustomDialog.Builder(mContext);
+        builder.setContentView(inflate);
+        builder.setTitle("Upgrade Keys State");
+        builder.setPositiveButton("Processing Information,please wait...",null);
+        builder.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
+                if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_BACK && keysCount == mKeysList.size()){
+                    return false;
+                }
+                return true;
+            }
+        });
+        builder.create().show();
+
+
+        int size = keyNames.length;
+        for (int i = 0; i < size; i++) {
+            Keys keys = new Keys();
+            keys.name = keyNames[i];
+            keys.flag = null;
+            mKeysList.add(keys);
         }
 
-        allKeyUpgrade = true;
-        successfulKey = new StringBuilder("Success: ");
-        failedKey = new StringBuilder("Failed: ");
-        alreadyKey = new StringBuilder("Already: ");
+        mMyAdapter = new MyAdapter();
+        mRecyclerView.setAdapter(mMyAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
     }
 
     @SuppressLint("SetTextI18n")
-    private boolean keyMessages(String keyStr, int msg1,SumaryPreference sumaryPreference,String result){
+    private boolean keyMessages(int cmd, int msg1,SumaryPreference sumaryPreference,String result){
         if (!allKeyUpgrade){
             return false;
         }
+        Integer index = sparseArray.get(cmd);
+        Keys key = mKeysList.get(index);
         if (msg1 == 1){
-            successfulKey.append(keyStr).append(", ");
             if (result != null) {
+                key.flag = mContext.getString(R.string.str_ok);
                 sumaryPreference.setSumary(result);
             }
         }else {
-            failedKey.append(keyStr).append(", ");
+            key.flag = mContext.getString(R.string.str_ng);
             sumaryPreference.setSumary(mContext.getString(R.string.str_ng));
         }
-
-        if (FactoryApplication.CUSTOMER_IS_CH){
-            mMessageView.setText(alreadyKey+"\n\n"+successfulKey + "\n\n" + failedKey);
-            return true;
+        keysCount ++;
+        if (keysCount == mKeysList.size()){
+            builder.changePositiveButton("Please press the Back key to exit!");
         }
-        mMessageView.setText(successfulKey + "\n\n" + failedKey);
+        mMyAdapter.notifyItemChanged(index);
         return true;
     }
 
@@ -684,27 +706,18 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
     }
 
     private boolean forceUpgradeKeys(Map<Integer,String> keys){
-        SparseArray<String> sparseArray = new SparseArray<>();
-        sparseArray.put(CMD_UPGRADE_MAC, "MAC");
-        sparseArray.put(CMD_UPGRADE_OEM, "Oem");
-        sparseArray.put(CMD_UPGRADE_Netflix_ESN,"Mgkid");
-        sparseArray.put(CMD_UPGRADE_PLAYREADY,"Playready");
-        sparseArray.put(CMD_UPGRADE_HDCP, "HDCP");
-        sparseArray.put(CMD_UPGRADE_HDCP22, "HDCP2");
-        sparseArray.put(CMD_UPGRADE_WIDEVINE, "Widevine");
-        sparseArray.put(CMD_UPGRADE_CI_KEY, "Ci");
-        sparseArray.put(CMD_UPGRADE_Attestation, "Attestation");
-        sparseArray.put(CMD_UPGRADE_RMCA, "Rmca");
-
+        int count = -1;
         Set<Integer> keyNames = keys.keySet();
         for (Integer keyName : keyNames) {
+            count++;
             if (checkKeyUpgrade(keyName)){
-                alreadyKey.append(sparseArray.get(keyName)).append(", ");
+                keysCount ++;
+                Keys key = mKeysList.get(count);
+                key.flag = mContext.getString(R.string.str_ng);
                 continue;
             }
             sendSyncCommand(keyName,keys.get(keyName));
         }
-        mMessageView.setText(alreadyKey+"\n\n"+successfulKey + "\n\n" + failedKey);
         return false;
     }
 
@@ -727,6 +740,18 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
         keys.put(CMD_UPGRADE_Attestation, usbPath + SystemInfoFragment.PATH_ATTESTATION_KEY);
         keys.put(CMD_UPGRADE_RMCA, usbPath + SystemInfoFragment.PATH_RMCA);
 
+        sparseArray.clear();
+        sparseArray.put(CMD_UPGRADE_MAC, 0);
+        sparseArray.put(CMD_UPGRADE_OEM, 1);
+        sparseArray.put(CMD_UPGRADE_Netflix_ESN, 2);
+        sparseArray.put(CMD_UPGRADE_PLAYREADY, 3);
+        sparseArray.put(CMD_UPGRADE_HDCP, 4);
+        sparseArray.put(CMD_UPGRADE_HDCP22, 5);
+        sparseArray.put(CMD_UPGRADE_WIDEVINE, 6);
+        sparseArray.put(CMD_UPGRADE_CI_KEY, 7);
+        sparseArray.put(CMD_UPGRADE_Attestation, 8);
+        sparseArray.put(CMD_UPGRADE_RMCA, 9);
+
         if (FactoryApplication.CUSTOMER_IS_CH && !Tools.isKeyUpgradeForce(mContext)){
             forceFlag = forceUpgradeKeys(keys);
         }
@@ -735,6 +760,46 @@ public class SystemInfoLogic extends LogicInterface implements Handler.Callback 
         Set<Integer> keyNames = keys.keySet();
         for (Integer keyName : keyNames) {
             sendSyncCommand(keyName,keys.get(keyName));
+        }
+    }
+
+    class Keys {
+        public String name;
+        public String flag;
+    }
+
+    class MyAdapter extends RecyclerView.Adapter<MyViewHoder> {
+
+        @NonNull
+        @Override
+        public MyViewHoder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = View.inflate(mContext, R.layout.item_list, null);
+            MyViewHoder myViewHoder = new MyViewHoder(view);
+            return myViewHoder;
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MyViewHoder holder, int position) {
+            Keys keys = mKeysList.get(position);
+            holder.mKeyName.setText(keys.name);
+            if (keys.flag == null) return;
+            holder.mKeyFlag.setText(keys.flag);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mKeysList.size();
+        }
+    }
+
+    class MyViewHoder extends RecyclerView.ViewHolder {
+        TextView mKeyName;
+        TextView mKeyFlag;
+
+        public MyViewHoder(@NonNull View itemView) {
+            super(itemView);
+            mKeyName = itemView.findViewById(R.id.tv_name);
+            mKeyFlag = itemView.findViewById(R.id.tv_flag);
         }
     }
 }
