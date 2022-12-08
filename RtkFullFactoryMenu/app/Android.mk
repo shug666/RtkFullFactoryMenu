@@ -15,7 +15,7 @@ LOCAL_SRC_FILES += $(call all-Iaidl-files-under, src/com/realtek/tvfactory/api/l
 
 LOCAL_MODULE_TAGS := optional
 
-LOCAL_PACKAGE_NAME := RtkFullFactoryMenu
+LOCAL_PACKAGE_NAME := TvFactoryGTV
 
 LOCAL_CERTIFICATE := platform
 
