@@ -1,5 +1,7 @@
 package com.realtek.tvfactory.utils;
 
+import static android.os.FileUtils.copy;
+
 import android.content.Context;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
