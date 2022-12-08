@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.R;
-import com.realtek.tvfactory.utils.Constants;
 import com.realtek.tvfactory.api.impl.PictureApi;
 import com.realtek.tvfactory.api.manager.TvCommonManager;
 import com.realtek.tvfactory.api.manager.TvPictureManager;
@@ -18,17 +17,11 @@ import com.realtek.tvfactory.preference.PreferenceContainer;
 import com.realtek.tvfactory.preference.SeekBarPreference;
 import com.realtek.tvfactory.preference.StatePreference;
 import com.realtek.tvfactory.preference.SumaryPreference;
+import com.realtek.tvfactory.utils.Constants;
 import com.realtek.tvfactory.utils.LogHelper;
 import com.realtek.tvfactory.utils.Predicate;
 import com.realtek.tvfactory.utils.TvInputUtils;
 import com.realtek.tvfactory.utils.Utils;
-import com.realtek.system.RtkProjectConfigs;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class PicturePageLogic extends LogicInterface {
 
@@ -37,10 +30,6 @@ public class PicturePageLogic extends LogicInterface {
     private PictureApi mPictureApi;
     private StatePreference mTestPattern;
     private SumaryPreference pic_backlight;
-    private SumaryPreference md5PQ;
-    private SumaryPreference md5PQHDR;
-    private SumaryPreference md5PQOSD;
-    private SumaryPreference md5DV;
 
     private int backlight_default;
 
@@ -66,66 +55,11 @@ public class PicturePageLogic extends LogicInterface {
         }
         SumaryPreference dream_time = (SumaryPreference) mContainer.findPreferenceById(R.id.dream_time);
         pic_backlight = (SumaryPreference) mContainer.findPreferenceById(R.id.pic_backlight);
-        md5PQ = (SumaryPreference) mContainer.findPreferenceById(R.id.md5_pq);
-        md5PQHDR = (SumaryPreference) mContainer.findPreferenceById(R.id.md5_pq_hdr);
-        md5PQOSD = (SumaryPreference) mContainer.findPreferenceById(R.id.md5_pq_osd);
-        md5DV = (SumaryPreference) mContainer.findPreferenceById(R.id.md5_dv);
-        initMD5();
+
         backlight_default = mPictureApi.getVideoItem(TvPictureManager.PICTURE_BACKLIGHT);
         int rtkDreamTime = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, Constants.DEFAULT_DREAM_TIME_MS);
         dream_time.setSumary(rtkDreamTime + " ms");
         pic_backlight.setSumary(mPictureApi.getVideoItem(TvPictureManager.PICTURE_BACKLIGHT)+"");
-    }
-
-    private void initMD5() {
-        MessageDigest messageDigest = null;
-        try {
-            messageDigest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        if (messageDigest == null) {
-            return;
-        }
-        RtkProjectConfigs instance = RtkProjectConfigs.getInstance();
-        String pq = instance.getConfig("[MISC_PQ_MAP_CFG]", "PQ");
-        String pq_hdr = instance.getConfig("[MISC_PQ_MAP_CFG]", "PQ_HDR");
-        String pq_osd = instance.getConfig("[MISC_PQ_MAP_CFG]", "PQ_OSD");
-        String dv = instance.getConfig("[MISC_PQ_MAP_CFG]", "DV");
-        StringBuilder builder = new StringBuilder();
-        md5PQ.setSumary(byteToString(builder, getMd5(messageDigest, pq)));
-        md5PQHDR.setSumary(byteToString(builder, getMd5(messageDigest, pq_hdr)));
-        md5PQOSD.setSumary(byteToString(builder, getMd5(messageDigest, pq_osd)));
-        md5DV.setSumary(byteToString(builder, getMd5(messageDigest, dv)));
-    }
-
-    private String byteToString(StringBuilder builder, byte[] data) {
-        if (data == null) {
-            return "File not exist or can not read.";
-        }
-        builder.setLength(0);
-        for (byte aByte : data) {
-            builder.append(String.format("%02X", aByte));
-        }
-        return builder.toString();
-    }
-
-    private byte[] getMd5(MessageDigest md5, String path) {
-        File file = new File(path);
-        if (!file.exists() || !file.canRead()) {
-            return null;
-        }
-        byte[] bytesFromKey = null;
-        try {
-            bytesFromKey = Files.readAllBytes(file.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (bytesFromKey == null || bytesFromKey.length == 0) {
-            return null;
-        }
-        md5.update(bytesFromKey);
-        return md5.digest();
     }
 
     @Override

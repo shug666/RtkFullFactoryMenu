@@ -106,9 +106,6 @@ public class PicturePageFragment extends PreferenceFragment {
                     AppToast.showToast(getActivity(), R.string.support_reminder, Toast.LENGTH_SHORT);
                 }
                 break;
-            case R.id.page_white_balance:
-                showPage(WhiteBalanceAdjustFragment.class, R.string.str_white_balance);
-                break;
             case R.id.page_over_scan:
                 showPage(OverScanFragment.class, R.string.str_over_scan);
                 break;
