@@ -8,11 +8,9 @@ import android.widget.Toast;
 import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.R;
 import com.realtek.tvfactory.api.impl.FactoryMainApi;
-import com.realtek.tvfactory.api.impl.PictureApi;
 import com.realtek.tvfactory.api.impl.UserApi;
 import com.realtek.tvfactory.api.manager.TvFactoryManager;
 import com.realtek.tvfactory.logic.LogicInterface;
-import com.realtek.tvfactory.preference.Preference;
 import com.realtek.tvfactory.preference.PreferenceContainer;
 import com.realtek.tvfactory.preference.SeekBarPreference;
 import com.realtek.tvfactory.preference.StatePreference;
@@ -23,9 +21,7 @@ public class DesignModeLogic extends LogicInterface {
     private final String TAG = "DesignModeLogic";
     private FactoryMainApi mFactoryMainApi;
     private UserApi mUserApi;
-    private PictureApi mPictureApi;
     private StatePreference mPowerMode;
-    private Preference mFactoryRemote;
     private StatePreference mFactoryTest;
     private StatePreference mDisplayLogo;
     private StatePreference mBoeCmdEnable;
@@ -40,7 +36,6 @@ public class DesignModeLogic extends LogicInterface {
         super(container);
         mFactoryMainApi = FactoryMainApi.getInstance();
         mUserApi = UserApi.getInstance();
-        mPictureApi = PictureApi.getInstance();
     }
 
     @Override
@@ -49,7 +44,6 @@ public class DesignModeLogic extends LogicInterface {
         mFactoryTest = (StatePreference) mContainer.findPreferenceById(R.id.factory_test);
         mDisplayLogo = (StatePreference) mContainer.findPreferenceById(R.id.display_logo);
         mBoeCmdEnable = (StatePreference) mContainer.findPreferenceById(R.id.BOE_cmd_enable);
-        mFactoryRemote = mContainer.findPreferenceById(R.id.factory_remote);
         mkeyUpgradeForce = (StatePreference) mContainer.findPreferenceById(R.id.key_upgrade_force);
         mUartLogcat = (StatePreference) mContainer.findPreferenceById(R.id.uart_logcat);
 

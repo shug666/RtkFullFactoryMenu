@@ -28,8 +28,6 @@
 
     <Preference id="@+id/m_mode" title="@string/str_manage_mode" />
 
-    <Preference id="@+id/factory_remote" title="@string/str_factory_remote" />
-
     <StatePreference id="@+id/key_upgrade_force" title="@string/str_key_upgrade_force" cycleEnabled="true">
         <entry name="@string/str_off" enabled="true" />
         <entry name="@string/str_on" enabled="true" />
