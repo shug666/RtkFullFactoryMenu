@@ -6,7 +6,7 @@
 
     <SumaryPreference id="@+id/panel_name" title="@string/str_panel" visible="false"/>
 
-    <SumaryPreference id="@+id/country_lang" title="@string/str_select_country_lang" visible="false"/>
+    <SumaryPreference id="@+id/country_lang" title="@string/str_select_country_lang" />
 
     <SumaryPreference id="@+id/boot_logo" title="@string/str_select_boot_logo" visible="false"/>
 
