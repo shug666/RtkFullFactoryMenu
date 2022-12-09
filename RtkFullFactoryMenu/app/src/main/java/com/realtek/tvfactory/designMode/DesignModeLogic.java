@@ -3,6 +3,7 @@ package com.realtek.tvfactory.designMode;
 import android.app.Activity;
 import android.os.SystemProperties;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.R;
@@ -96,7 +97,12 @@ public class DesignModeLogic extends LogicInterface {
     public void onPreferenceIndexChange(StatePreference preference, int previous, int current) {
         switch (preference.getId()) {
             case R.id.item_power_mode:
-                mFactoryMainApi.setAcPowerOnModeAndSave(current);
+                if (Settings.System.getInt(mContext.getContentResolver(), "MMode", 0) == 0) {
+                    mFactoryMainApi.setAcPowerOnModeAndSave(current);
+                } else {
+                    mPowerMode.init(mFactoryMainApi.getAcPowerOnMode());
+                    Toast.makeText(mContext, R.string.str_close_mmode_first, Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.test_pattern:
                 mPictureApi.setVideoTestPattern(current);

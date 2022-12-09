@@ -680,4 +680,5 @@
     <string name="str_mute_color">Mute Color</string>
     <string name="str_record_all">Record All</string>
     <string name="ch_function_not_support">This function is not supported yet.</string>
+    <string name="str_close_mmode_first">Please close M-MODE in DEFAULT first.</string>
 </resources>
