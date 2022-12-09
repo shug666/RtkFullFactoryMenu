@@ -262,6 +262,7 @@
     <string name="str_pvr_record_all">Pvr Record All</string>
     <string name="str_uart_enable">Uart Enable</string>
     <string name="str_uart_cmd_enable">Command Enable</string>
+    <string name="str_manage_mode">Manage mode(CKD Key Burn)</string>
     <string name="str_mmode">MMode</string>
     <string name="str_remote_control_enable">Factory Remote Control Enable</string>
     <string name="str_teletext_enable">Teletext Enable</string>

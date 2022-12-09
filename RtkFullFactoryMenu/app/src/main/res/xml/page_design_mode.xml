@@ -37,7 +37,7 @@
         <entry name="@string/str_on" enabled="true" />
     </StatePreference>
 
-    <Preference id="@+id/m_mode" title="@string/str_mmode" />
+    <Preference id="@+id/m_mode" title="@string/str_manage_mode" />
 
     <Preference id="@+id/factory_remote" title="@string/str_factory_remote" />
 
