@@ -13,6 +13,9 @@ LOCAL_AIDL_INCLUDES += $(LOCAL_PATH)/src/
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
 LOCAL_SRC_FILES += $(call all-Iaidl-files-under, src/com/realtek/tvfactory/api/listener)
 
+LOCAL_RESOURCE_DIR := \
+    $(LOCAL_PATH)/res
+
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_PACKAGE_NAME := TvFactoryGTV
