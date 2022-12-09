@@ -9,7 +9,6 @@ import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.R;
 import com.realtek.tvfactory.api.impl.FactoryMainApi;
 import com.realtek.tvfactory.api.impl.PictureApi;
-import com.realtek.tvfactory.api.impl.UpgradeApi;
 import com.realtek.tvfactory.api.impl.UserApi;
 import com.realtek.tvfactory.api.manager.TvFactoryManager;
 import com.realtek.tvfactory.logic.LogicInterface;
@@ -22,7 +21,6 @@ import com.realtek.tvfactory.utils.Tools;
 public class DesignModeLogic extends LogicInterface {
 
     private final String TAG = "DesignModeLogic";
-    private final UpgradeApi mUpgradeApi;
     private FactoryMainApi mFactoryMainApi;
     private UserApi mUserApi;
     private PictureApi mPictureApi;
@@ -33,7 +31,6 @@ public class DesignModeLogic extends LogicInterface {
     private StatePreference mDisplayLogo;
     private StatePreference mBoeCmdEnable;
     private StatePreference mkeyUpgradeForce;
-    private StatePreference mWbSwitch;
     private StatePreference mUartLogcat;
 
     private static final String DEFAULT_SWITCH = "LogOnOff";
@@ -45,7 +42,6 @@ public class DesignModeLogic extends LogicInterface {
         mFactoryMainApi = FactoryMainApi.getInstance();
         mUserApi = UserApi.getInstance();
         mPictureApi = PictureApi.getInstance();
-        mUpgradeApi = UpgradeApi.getInstance();
     }
 
     @Override
@@ -57,7 +53,6 @@ public class DesignModeLogic extends LogicInterface {
         mBoeCmdEnable = (StatePreference) mContainer.findPreferenceById(R.id.BOE_cmd_enable);
         mFactoryRemote = mContainer.findPreferenceById(R.id.factory_remote);
         mkeyUpgradeForce = (StatePreference) mContainer.findPreferenceById(R.id.key_upgrade_force);
-        mWbSwitch = (StatePreference) mContainer.findPreferenceById(R.id.wb_switch);
         mUartLogcat = (StatePreference) mContainer.findPreferenceById(R.id.uart_logcat);
 
 
@@ -122,9 +117,6 @@ public class DesignModeLogic extends LogicInterface {
                 if (0 != current) {
                     ((Activity)mContext).finish();
                 }
-                break;
-            case R.id.wb_switch:
-
                 break;
             case R.id.key_upgrade_force:
                 SystemProperties.set("persist.sys.key_upgrade_force",String.valueOf(current));

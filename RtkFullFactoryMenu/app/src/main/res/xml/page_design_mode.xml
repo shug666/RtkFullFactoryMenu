@@ -48,11 +48,6 @@
 
     <Preference id="@+id/wb_adjust" title="@string/str_wb_adjust" />
 
-    <StatePreference id="@+id/wb_switch" title="@string/str_wb_switch" cycleEnabled="true">
-        <entry name="@string/str_off" enabled="true" />
-        <entry name="@string/str_on" enabled="true" />
-    </StatePreference>
-
     <StatePreference id="@+id/uart_logcat" title="@string/str_uart" cycleEnabled="true">
         <entry name="@string/str_on" enabled="true" />
         <entry name="@string/str_off" enabled="true" />
