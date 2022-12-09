@@ -9,17 +9,6 @@
         <entry name="@string/power_memory" enabled="true" />
     </StatePreference>
 
-    <StatePreference id="@+id/test_pattern" title="@string/str_test_pattern" index="0" cycleEnabled="true" >
-        <entry name="@string/str_off" index="0" enabled="true" >
-            <boolean name="off" value="true" />
-        </entry>
-        <entry name="@string/str_white" index="1"  enabled="true" />
-        <entry name="@string/str_red" index="2"  enabled="true" />
-        <entry name="@string/str_green" index="3"  enabled="true" />
-        <entry name="@string/str_blue" index="4"  enabled="true" />
-        <entry name="@string/str_black" index="5"  enabled="true" />
-    </StatePreference>
-
     <Preference id="@+id/aging_mode" title="@string/str_AgingMode" />
 
     <StatePreference id="@+id/factory_test" title="@string/str_factory_test" cycleEnabled="true">
@@ -54,8 +43,6 @@
     </StatePreference>
 
     <Preference id="@+id/white_pattern" title="@string/str_white_pattern" />
-
-    <Preference id="@+id/cancel_pattern" title="@string/str_cancel_pattern" />
 
     <Preference id="@+id/clear_app" title="@string/str_clear_app" />
 

@@ -190,9 +190,6 @@ public class DesignModeFragment extends PreferenceFragment {
             case R.id.white_pattern:
 
                 break;
-            case R.id.cancel_pattern:
-
-                break;
             case R.id.clear_app:
                 List<String> apps = getNotSystemApps(getContext());
                 if (apps.isEmpty()){

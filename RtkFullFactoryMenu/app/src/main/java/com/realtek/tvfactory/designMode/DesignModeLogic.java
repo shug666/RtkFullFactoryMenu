@@ -24,7 +24,6 @@ public class DesignModeLogic extends LogicInterface {
     private FactoryMainApi mFactoryMainApi;
     private UserApi mUserApi;
     private PictureApi mPictureApi;
-    private StatePreference mTestPattern;
     private StatePreference mPowerMode;
     private Preference mFactoryRemote;
     private StatePreference mFactoryTest;
@@ -47,14 +46,12 @@ public class DesignModeLogic extends LogicInterface {
     @Override
     public void init() {
         mPowerMode = (StatePreference) mContainer.findPreferenceById(R.id.item_power_mode);
-        mTestPattern = (StatePreference) mContainer.findPreferenceById(R.id.test_pattern);
         mFactoryTest = (StatePreference) mContainer.findPreferenceById(R.id.factory_test);
         mDisplayLogo = (StatePreference) mContainer.findPreferenceById(R.id.display_logo);
         mBoeCmdEnable = (StatePreference) mContainer.findPreferenceById(R.id.BOE_cmd_enable);
         mFactoryRemote = mContainer.findPreferenceById(R.id.factory_remote);
         mkeyUpgradeForce = (StatePreference) mContainer.findPreferenceById(R.id.key_upgrade_force);
         mUartLogcat = (StatePreference) mContainer.findPreferenceById(R.id.uart_logcat);
-
 
         mPowerMode.init(mFactoryMainApi.getAcPowerOnMode());
         int factoryMode = Settings.Secure.getInt(FactoryApplication.getInstance().getContentResolver(), "factory_test", 0);
@@ -75,9 +72,6 @@ public class DesignModeLogic extends LogicInterface {
 
     @Override
     public void deinit() {
-        if (!mContext.getResources().getString(R.string.str_off).equals(mTestPattern.getCurrentEntryName())) {
-            mPictureApi.setVideoTestPattern(0);
-        }
         if (Tools.getFisrtUsbStroagePath(mContext) == null) {
             Settings.Secure.putInt(mContext.getContentResolver(), DEFAULT_SWITCH, SWITCH_OFF);
         }
@@ -98,9 +92,6 @@ public class DesignModeLogic extends LogicInterface {
                     mPowerMode.init(mFactoryMainApi.getAcPowerOnMode());
                     Toast.makeText(mContext, R.string.str_close_mmode_first, Toast.LENGTH_SHORT).show();
                 }
-                break;
-            case R.id.test_pattern:
-                mPictureApi.setVideoTestPattern(current);
                 break;
             case R.id.factory_test:
                 Settings.Secure.putInt(FactoryApplication.getInstance().getContentResolver(), "factory_test", current);
