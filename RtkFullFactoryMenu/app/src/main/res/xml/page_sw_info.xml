@@ -2,6 +2,8 @@
 <PreferenceContainer logic="com.realtek.tvfactory.swInfo.SwInfoLogic">
     <SumaryPreference id="@+id/display_project_id" title="@string/str_project_id" />
     <SumaryPreference id="@+id/display_panel" title="@string/str_panel_info" />
+    <SumaryPreference id="@+id/key_map" title="@string/str_select_key_map" visible="false"/>
+    <SumaryPreference id="@+id/input_source" title="@string/str_select_input_source"/>
     <SumaryPreference id="@+id/display_mac_address" title="@string/str_max_address" />
     <SumaryPreference id="@+id/display_device_id" title="@string/str_device_id" />
     <SumaryPreference id="@+id/display_hdcp_key1" title="@string/str_hdcp_key1" />

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.IPackageDataObserver;
 import android.media.AudioManager;
+import android.media.tv.TvInputInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.RemoteException;
@@ -120,6 +121,18 @@ public class FactoryMainApi {
             }
         } else {
             Log.e(TAG, "sourceList=" + sourceList);
+        }
+        ArrayList<TvInputInfo> inputs = new ArrayList<TvInputInfo>();
+        mFactoryApplication.getInputList(inputs);
+        if (inputs.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            for (TvInputInfo tvInputInfo : inputs) {
+                sb.append(tvInputInfo.loadLabel(mContext).toString()).append(", ");
+            }
+            Log.e(TAG, "sb.toString()=" + sb);
+            if (sb.toString().trim().length() > 1) {
+                return sb.toString().trim().substring(0, sb.toString().trim().length() - 1);
+            }
         }
         return "unknown";
     }

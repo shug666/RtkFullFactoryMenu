@@ -1,5 +1,7 @@
 package com.realtek.tvfactory.swInfo;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -30,6 +32,23 @@ public class SwInfoFragment extends PreferenceFragment {
     public void onPreferenceItemClick(Preference preference) {
 
         switch (preference.getId()){
+            case R.id.input_source:
+                //openDialog(preference.getTitle().toString(), FactoryMainApi.getInstance().getInputSource());
+                break;
+            default:
+                break;
         }
+    }
+
+    private void openDialog(String title, String msg){
+        AlertDialog dialog = new AlertDialog.Builder(getContext(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
+                .setTitle(title).setMessage(msg).setCancelable(true).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                }).setCancelable(false).create();
+        dialog.show();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).requestFocus();
+
     }
 }

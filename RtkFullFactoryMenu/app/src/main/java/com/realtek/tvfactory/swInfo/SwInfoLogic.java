@@ -13,6 +13,7 @@ import com.realtek.system.RtkProjectConfigs;
 import com.realtek.tv.Factory;
 import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.R;
+import com.realtek.tvfactory.api.impl.FactoryMainApi;
 import com.realtek.tvfactory.api.impl.UpgradeApi;
 import com.realtek.tvfactory.logic.LogicInterface;
 import com.realtek.tvfactory.preference.PreferenceContainer;
@@ -64,6 +65,7 @@ public class SwInfoLogic extends LogicInterface {
     public void init() {
         SumaryPreference project = (SumaryPreference) mContainer.findPreferenceById(R.id.display_project_id);
         SumaryPreference panel = (SumaryPreference) mContainer.findPreferenceById(R.id.display_panel);
+        SumaryPreference input_source = ((SumaryPreference) mContainer.findPreferenceById(R.id.input_source));
         SumaryPreference macAddress = (SumaryPreference) mContainer.findPreferenceById(R.id.display_mac_address);
         SumaryPreference deviceId = (SumaryPreference) mContainer.findPreferenceById(R.id.display_device_id);
         SumaryPreference hdcpKey1 = (SumaryPreference) mContainer.findPreferenceById(R.id.display_hdcp_key1);
@@ -94,6 +96,7 @@ public class SwInfoLogic extends LogicInterface {
 
         project.setSumary(getProjectId());
         panel.setSumary(getPanelType());
+        input_source.setSumary(FactoryMainApi.getInstance().getInputSource());
 //        panel.setSumary(getPanel());
         String eth0Address = Utils.getMACAddress("eth0");
         macAddress.setSumary(eth0Address.equals("") ? "NG" : eth0Address);

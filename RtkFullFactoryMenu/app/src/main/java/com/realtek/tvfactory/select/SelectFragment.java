@@ -45,15 +45,12 @@ public class SelectFragment extends PreferenceFragment {
             case R.id.country_lang:
                 openDialog(preference.getTitle().toString(), FactoryMainApi.getInstance().getCountryLang());
                 break;
-            case R.id.input_source:
-                openDialog(preference.getTitle().toString(), FactoryMainApi.getInstance().getInputSource());
-                break;
             default:
                 break;
         }
     }
 
-    public void openDialog(String title, String msg){
+    private void openDialog(String title, String msg){
         AlertDialog dialog = new AlertDialog.Builder(getContext(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
                 .setTitle(title).setMessage(msg).setCancelable(true).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override

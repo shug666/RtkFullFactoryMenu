@@ -13,8 +13,4 @@
     <SumaryPreference id="@+id/boot_music" title="@string/str_select_boot_music" visible="false"/>
 
     <SumaryPreference id="@+id/boot_animation" title="@string/str_select_boot_animation" visible="false"/>
-
-    <SumaryPreference id="@+id/key_map" title="@string/str_select_key_map" visible="false"/>
-
-    <SumaryPreference id="@+id/input_source" title="@string/str_select_input_source" visible="false"/>
 </PreferenceContainer>

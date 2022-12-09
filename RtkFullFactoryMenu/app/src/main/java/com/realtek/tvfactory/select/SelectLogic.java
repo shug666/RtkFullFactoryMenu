@@ -32,8 +32,6 @@ public class SelectLogic extends LogicInterface {
         boot_animation.setSumary(mFactoryMainApi.getPanelType());
 
         ((SumaryPreference) mContainer.findPreferenceById(R.id.country_lang)).setSumary(mContext.getString(R.string.str_click_to_view));
-        ((SumaryPreference) mContainer.findPreferenceById(R.id.key_map)).setSumary(mContext.getString(R.string.str_click_to_view));
-        ((SumaryPreference) mContainer.findPreferenceById(R.id.input_source)).setSumary(mContext.getString(R.string.str_click_to_view));
     }
 
     @Override
