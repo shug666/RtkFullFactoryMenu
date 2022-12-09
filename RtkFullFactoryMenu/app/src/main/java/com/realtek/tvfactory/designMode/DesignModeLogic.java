@@ -24,7 +24,7 @@ public class DesignModeLogic extends LogicInterface {
     private StatePreference mPowerMode;
     private StatePreference mFactoryTest;
     private StatePreference mDisplayLogo;
-    private StatePreference mBoeCmdEnable;
+    private StatePreference mBvtCmdEnable;
     private StatePreference mkeyUpgradeForce;
     private StatePreference mUartLogcat;
 
@@ -43,7 +43,7 @@ public class DesignModeLogic extends LogicInterface {
         mPowerMode = (StatePreference) mContainer.findPreferenceById(R.id.item_power_mode);
         mFactoryTest = (StatePreference) mContainer.findPreferenceById(R.id.factory_test);
         mDisplayLogo = (StatePreference) mContainer.findPreferenceById(R.id.display_logo);
-        mBoeCmdEnable = (StatePreference) mContainer.findPreferenceById(R.id.BOE_cmd_enable);
+        mBvtCmdEnable = (StatePreference) mContainer.findPreferenceById(R.id.bvt_cmd_enable);
         mkeyUpgradeForce = (StatePreference) mContainer.findPreferenceById(R.id.key_upgrade_force);
         mUartLogcat = (StatePreference) mContainer.findPreferenceById(R.id.uart_logcat);
 
@@ -51,7 +51,7 @@ public class DesignModeLogic extends LogicInterface {
         int factoryMode = Settings.Secure.getInt(FactoryApplication.getInstance().getContentResolver(), "factory_test", 0);
         mFactoryTest.init(factoryMode);
         initDisplayLogo();
-        mBoeCmdEnable.init(mUserApi.getBVTOnOff() ? 1 : 0);
+        mBvtCmdEnable.init(mUserApi.getBVTOnOff() ? 1 : 0);
         mkeyUpgradeForce.init(Tools.isKeyUpgradeForce(mContext) ? 1 : 0);
         mUartLogcat.init(mUserApi.getUartOnOff() ? 1 : 0);
     }
@@ -97,7 +97,7 @@ public class DesignModeLogic extends LogicInterface {
             case R.id.display_logo:
                 mUserApi.setEnvironment(TvFactoryManager.DISPLAY_LOGO, ((0 == current) ? "on" : "off"));
                 break;
-            case R.id.BOE_cmd_enable:
+            case R.id.bvt_cmd_enable:
                 mUserApi.setBVTCmdOnOff(0 != current, true);
                 if (0 != current) {
                     ((Activity)mContext).finish();
