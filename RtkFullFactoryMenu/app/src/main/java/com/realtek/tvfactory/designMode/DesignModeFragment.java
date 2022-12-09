@@ -198,7 +198,7 @@ public class DesignModeFragment extends PreferenceFragment {
                 }
                 showProgressDialog("Clear APP","Processing Information,please wait...");
                 clearApplicationUserData(apps);
-                Log.d("shugan","apps = "+ apps.toString());
+                Log.d(TAG,"apps = "+ apps.toString());
                 break;
             case R.id.logcat_tools:
                 showPage(LogPageFragment.class, R.string.str_log_tool);

@@ -107,7 +107,7 @@ public class DesignModeLogic extends LogicInterface {
                 SystemProperties.set("persist.sys.key_upgrade_force",String.valueOf(current));
                 break;
             case R.id.uart_logcat:
-                mUserApi.setUartOnOff((0 == current) ? false : true);
+                mUserApi.setUartOnOff(0 != current);
                 break;
             default:
         }

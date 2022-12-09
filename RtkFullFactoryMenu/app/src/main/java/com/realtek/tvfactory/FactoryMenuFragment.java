@@ -164,7 +164,7 @@ public class FactoryMenuFragment extends BaseFragment {
         }
         MessageDigest digest = null;
         FileInputStream in = null;
-        byte buffer[] = new byte[8192];
+        byte[] buffer = new byte[8192];
         int len;
 
         try {
