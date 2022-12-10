@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Process;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -146,23 +145,37 @@ public class DesignModeFragment extends PreferenceFragment {
     public void onPreferenceItemClick(Preference preference) {
         switch (preference.getId()) {
             case R.id.aging_mode: {
-                FragmentActivity activity = getActivity();
-                if (activity == null) {
-                    Log.e(TAG, "getActivity() = null!");
-                    return;
+                Context context = getActivity();
+                if (context == null) {
+                    context = getContext();
+                    if (context == null) {
+                        Log.e(TAG, "getActivity() and getContext() are null!");
+                        return;
+                    }
                 }
-                Intent agingIntent = PackageUtils.getIntentByActivityName(activity, ACTIVITY_AGING);
+                ComponentName name = new ComponentName(context.getPackageName(), AgingActivity.class.getName());
+                Intent intent = PackageUtils.getActivityIntentByComponentName(context, name);
+                if (intent != null) {
+                    Log.i(TAG, String.format("start %s !", name.getClassName()));
+                    context.startActivity(intent);
+                    return;
+                } else {
+                    Log.e(TAG, String.format("start %s fail, because not exist!", name.getClassName()));
+                }
+                Intent agingIntent = PackageUtils.getIntentByActivityName(context, ACTIVITY_AGING);
                 if (agingIntent != null) {
                     if (UserApi.getInstance().getBVTOnOff()) {
                         UserApi.getInstance().setBVTCmdOnOff(false, false);
                     }
-                    PackageManager pm = getActivity().getPackageManager();
+                    PackageManager pm = context.getPackageManager();
                     int state = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
                     pm.setComponentEnabledSetting(agingIntent.getComponent(), state, PackageManager.DONT_KILL_APP);
-                    activity.startActivity(agingIntent);
-                    getActivity().finish();
+                    context.startActivity(agingIntent);
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
                 } else {
-                    Toast.makeText(activity, R.string.ch_function_not_support, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.ch_function_not_support, Toast.LENGTH_SHORT).show();
                 }
                 break;
             }

@@ -2,10 +2,12 @@ package com.realtek.tvfactory.utils;
 
 import static com.realtek.tvfactory.utils.Constants.MANUFACTURER_TT;
 
+import android.content.Context;
 import android.hardware.input.InputManager;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -234,5 +236,13 @@ public class TvUtils {
         int mode = InputManager.INJECT_INPUT_EVENT_MODE_ASYNC;
         InputManager.getInstance().injectInputEvent(down, mode);
         InputManager.getInstance().injectInputEvent(up, mode);
+    }
+
+    public static void setCurrentAgingTime(Context context, int time) {
+        Settings.Global.putInt(context.getContentResolver(), "aging_time", time);
+    }
+
+    public static int getCurrentAgingTime(Context context) {
+        return Settings.Global.getInt(context.getContentResolver(), "aging_time", 0);
     }
 }

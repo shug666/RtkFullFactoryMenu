@@ -316,6 +316,11 @@ public final class Constants {
     public static final int MSG_ACTION_STOP_CH_MMODE = 0x02;
 
     /**
+     * SharedPreferences Config
+     */
+    public static final String SHARE_PREFERENCE_FILE = "share_preference_file";
+
+    /**
      * Import Channel and Export Channel MSG
      */
     public static final int REQUEST_IMPORT_SETTINGS = 1;

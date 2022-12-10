@@ -50,10 +50,28 @@
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
         </activity>
 
+        <activity
+            android:name=".designMode.AgingActivity"
+            android:label="@string/str_AgingMode"
+            android:launchMode="singleTask"
+            android:directBootAware="true"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
         <service
             android:name=".user.LogCatService"
             android:exported="true"
             android:process=":LogCatServer"/>
+        <receiver
+            android:name=".BootCompletedReceiver"
+            android:enabled="true"
+            android:directBootAware="true"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <!--.接收启动完成的广播-->
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
