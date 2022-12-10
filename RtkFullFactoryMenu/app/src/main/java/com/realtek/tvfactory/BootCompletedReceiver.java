@@ -32,7 +32,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
                 case Intent.ACTION_LOCKED_BOOT_COMPLETED:
                     int anInt = SystemProperties.getInt(BootMode, -1);
                     Log.d(TAG, String.format("onReceive %s bootMode:%d, aging:%s", intent.getAction(), anInt, SystemProperties.getBoolean("persist.sys.aging", false)));
-                    if (SystemProperties.getBoolean("persist.sys.aging", false) || anInt == BOOT_COMPILE_TO_FACTORY_AGING) {
+                    if (SystemProperties.getBoolean("persist.sys.aging", false) && anInt == BOOT_COMPILE_TO_FACTORY_AGING) {
                         Log.d(TAG, "start AgingActivity");
                         ComponentName name = new ComponentName(context.getPackageName(), AgingActivity.class.getName());
                         intent = PackageUtils.getActivityIntentByComponentName(context, name);
