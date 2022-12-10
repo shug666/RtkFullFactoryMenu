@@ -67,7 +67,21 @@ public class UpgradeApi implements Callback {
     public static final int KEYS_Netflix_ESN_TYPE = 8;
     public static final int KEYS_CIKEY_TYPE = 9;
     public static final int KEYS_MAC_TYPE = 12;
+    public static final int KEYS_OEM_KEY = 13;
     public static final int KEYS_RMCA = 16;
+
+    public static final int[] NEED_TO_BURN_CKD_KEYS = new int[]{
+            KEYS_WIDEVINE_TYPE,
+            KEYS_PLAYREADY_TYPE,
+            KEYS_ATTESTATION_TYPE,
+            KEYS_Netflix_ESN_TYPE,
+            KEYS_CIKEY_TYPE,
+            KEYS_MAC_TYPE,
+            KEYS_OEM_KEY,
+            KEYS_HDCP1_TYPE, //HDCP1.4
+            KEYS_HDCP2_TYPE, //HDCP2.2
+            KEYS_RMCA
+    };
 
     @Override
     public boolean handleMessage(@NonNull Message msg) {
@@ -1318,28 +1332,28 @@ public class UpgradeApi implements Callback {
      * @param keyType KEY TYPE
      * @return CKD Position
      */
-    private int getCKDKeyIndex(int keyType) {
+    public int getCKDKeyIndex(int keyType) {
         switch (keyType) {
-        case KEYS_WIDEVINE_TYPE:
-            return 2;
-        case KEYS_PLAYREADY_TYPE:
-            return 4;
-        case KEYS_ATTESTATION_TYPE:
-            return 5;
-        case KEYS_Netflix_ESN_TYPE:
-            return 3;
-        case KEYS_CIKEY_TYPE:
-            return 7;
-        case KEYS_MAC_TYPE :
-            return 8;
-        // case KEYS_OEM_KEY :
-        //     return 9;
-        case KEYS_HDCP1_TYPE :
-            return 0;
-        case KEYS_HDCP2_TYPE :
-            return 1;
-        case KEYS_RMCA :
-            return 6;
+            case KEYS_WIDEVINE_TYPE:
+                return 2;
+            case KEYS_PLAYREADY_TYPE:
+                return 4;
+            case KEYS_ATTESTATION_TYPE:
+                return 5;
+            case KEYS_Netflix_ESN_TYPE:
+                return 3;
+            case KEYS_CIKEY_TYPE:
+                return 7;
+            case KEYS_MAC_TYPE :
+                return 8;
+            case KEYS_OEM_KEY :
+                return 9;
+            case KEYS_HDCP1_TYPE :
+                return 0;
+            case KEYS_HDCP2_TYPE :
+                return 1;
+            case KEYS_RMCA :
+                return 6;
         }
         throw new IllegalArgumentException("Unknown Key Type:" + keyType);
     }
@@ -1348,6 +1362,72 @@ public class UpgradeApi implements Callback {
         Factory factory = mFactoryApplication.getFactory();
         int ckdKeyIndex = getCKDKeyIndex(type);
         return factory.isCkdKeyBurned(ckdKeyIndex);
+    }
+
+    /**
+     * CKD Burn Key
+     * haveCKDKey
+     */
+    public boolean haveCKDKey() {
+        Factory factory = mFactoryApplication.getFactory();
+        boolean have = false;
+        for (int index: NEED_TO_BURN_CKD_KEYS) {
+            if (factory.loadCkdKey(getCKDKeyIndex(index))) {
+                //have CKD Key
+                have = true;
+                break;
+            }
+        }
+        return have;
+    }
+
+    /**
+     * CKD Burn Key
+     * isAllCkdKeyBurned
+     */
+    public boolean isAllCkdKeyBurned() {
+        Factory factory = mFactoryApplication.getFactory();
+        boolean isBurned = true;
+        for (int index: NEED_TO_BURN_CKD_KEYS) {
+            if (!factory.isCkdKeyBurned(getCKDKeyIndex(index))) {
+                isBurned = false;
+                break;
+            }
+        }
+        return isBurned;
+    }
+
+    /**
+     * CKD Burn Key
+     * autoCKDKeyDetectAndBurn
+     */
+    public boolean autoCKDKeyDetectAndBurn(final int type) {
+        Factory factory = mFactoryApplication.getFactory();
+        int index = getCKDKeyIndex(type);
+        if (factory.isCkdKeyBurned(index)) {
+            Log.d(TAG, "CKDKey is burned : " + index);
+            return true;
+        }
+        if (factory.loadCkdKey(index)) {
+            if (factory.writeCkdKey(index)) {
+                boolean ret = factory.isCkdKeyBurned(index);
+                if (ret) {
+                    //final boolean erase = factory.eraseCkdKey(index);
+                    Log.d(TAG, "ckd key burned success!");
+                } else {
+                    Log.e(TAG, "ckd key burned failed!");
+                }
+                if (type == KEYS_OEM_KEY) {
+                    String serialNumber = getSerialNumber(KEYS_OEM_KEY);
+                    Log.d(TAG, "KEYS_OEM_KEY:" + serialNumber);
+                }
+                return ret;
+            } else {
+                Log.e(TAG, "CKD key exist, but burn fail, index:"+ index);
+            }
+        }
+        Log.e(TAG, "CKD key not exist, index:"+ index);
+        return false;
     }
 
     public String readBootParamFile(String path, String key) {

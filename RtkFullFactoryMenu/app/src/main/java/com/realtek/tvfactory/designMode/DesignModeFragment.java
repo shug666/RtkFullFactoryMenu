@@ -6,6 +6,7 @@ import static com.realtek.tvfactory.utils.Constants.ACTIVITY_MMODE;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.realtek.tvfactory.BaseFragment;
+import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.FactoryMenuFragment;
 import com.realtek.tvfactory.R;
 import com.realtek.tvfactory.api.impl.UserApi;
@@ -171,6 +173,17 @@ public class DesignModeFragment extends PreferenceFragment {
                     if (context == null) {
                         Log.e(TAG, "getActivity() and getContext() are null!");
                         return;
+                    }
+                }
+                if (!FactoryApplication.CUSTOMER_IS_KK) {
+                    ComponentName name = new ComponentName(context.getPackageName(), MModeActivity.class.getName());
+                    Intent intent = PackageUtils.getActivityIntentByComponentName(context, name);
+                    if (intent != null) {
+                        Log.i(TAG, String.format("start %s !", name.getClassName()));
+                        context.startActivity(intent);
+                        return;
+                    } else {
+                        Log.e(TAG, String.format("start %s fail, because not exist!", name.getClassName()));
                     }
                 }
                 Intent mMode = PackageUtils.getIntentByActivityName(context, ACTIVITY_MMODE);

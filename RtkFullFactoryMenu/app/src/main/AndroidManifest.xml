@@ -45,6 +45,11 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".designMode.MModeActivity"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        </activity>
+
         <service
             android:name=".user.LogCatService"
             android:exported="true"
