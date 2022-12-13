@@ -21,8 +21,8 @@ android {
         applicationId "com.realtek.tvfactory"
         minSdkVersion 28
         targetSdkVersion 30
-        versionCode 31
-        versionName new Date().format("yyMMdd", TimeZone.getTimeZone("GMT+08:00"))
+        versionCode 2
+        versionName "2.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
