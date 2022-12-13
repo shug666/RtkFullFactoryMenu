@@ -387,7 +387,9 @@ public class FactoryMainApi {
     public void setStringValue(String key, String value) {
         switch (key) {
             case TvCommonManager.USER_VOLUME_SOURCE:
-                mFactoryApplication.getSysCtrl().setValueString("Audio_VolumeTable_source", value);
+                if (value != null) {
+                    mFactoryApplication.getSysCtrl().setValueString("Audio_VolumeTable_source", value);
+                }
                 break;
         }
     }
