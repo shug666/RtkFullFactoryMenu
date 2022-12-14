@@ -13,6 +13,9 @@ LOCAL_AIDL_INCLUDES += $(LOCAL_PATH)/src/
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
 LOCAL_SRC_FILES += $(call all-Iaidl-files-under, src/com/realtek/tvfactory/api/listener)
 
+LOCAL_RESOURCE_DIR := \
+    $(LOCAL_PATH)/res
+
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_PACKAGE_NAME := TvFactoryGTV
@@ -22,6 +25,8 @@ LOCAL_CERTIFICATE := platform
 LOCAL_OVERRIDES_PACKAGES := platform
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 LOCAL_PROGUARD_ENABLED := full
+LOCAL_MODULE_PATH := $(PRODUCT_OUT)/system_ext/app
+LOCAL_SYSTEM_EXT_MODULE := true
 
 LOCAL_DEX_PREOPT := false
 
