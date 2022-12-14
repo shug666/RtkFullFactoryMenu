@@ -13,9 +13,6 @@ LOCAL_AIDL_INCLUDES += $(LOCAL_PATH)/src/
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
 LOCAL_SRC_FILES += $(call all-Iaidl-files-under, src/com/realtek/tvfactory/api/listener)
 
-LOCAL_RESOURCE_DIR := \
-    $(LOCAL_PATH)/res
-
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_PACKAGE_NAME := TvFactoryGTV
@@ -38,10 +35,18 @@ LOCAL_AAPT_FLAGS := --auto-add-overlay
 LOCAL_MULTILIB := 32
 
 LOCAL_STATIC_JAVA_LIBRARIES += \
+    androidx.leanback_leanback \
     rtk-framework \
-    exttv-framework
+    exttv-framework \
+    javalib
 
 LOCAL_JAVA_LIBRARIES := \
     android-support-v4 \
 
 include $(BUILD_PACKAGE)
+
+include $(CLEAR_VARS)
+LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := javalib:libs/javalib.jar
+include $(BUILD_MULTI_PREBUILT)
+
+include $(call all-makefiles-under,$(LOCAL_PATH))
