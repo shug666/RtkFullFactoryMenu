@@ -26,12 +26,36 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Locale;
 
 import static com.realtek.tv.RtkSettingProviderHelper.getSignalType;
 
 public class TvInputUtils {
 
     public static final String TAG = "TvInputUtils";
+    /**
+     * Source Label
+     */
+    public static final String LABEL_ATV = "ATV";
+    public static final String LABEL_DTV = "DTV";
+    public static final String LABEL_DVBC = "DVBC";
+    public static final String LABEL_DVBT = "DVBT";
+    public static final String LABEL_DVBS = "DVBS";
+    public static final String LABEL_CABLE = "CABLE";
+    public static final String LABEL_ANTENNA = "ANTENNA";
+    public static final String LABEL_SATELLITE = "SATELLITE";
+    public static final String LABEL_TV = "TV";
+    public static final String LABEL_AV = "AV";
+    public static final String LABEL_VGA = "VGA";
+    public static final String LABEL_SCART = "SCART";
+    public static final String LABEL_YPP = "YPP";
+    public static final String LABEL_YPBPR = "YPBPR";
+    public static final String LABEL_HDMI = "HDMI";
+    public static final String LABEL_HDMI1 = "HDMI1";
+    public static final String LABEL_HDMI2 = "HDMI2";
+    public static final String LABEL_HDMI3 = "HDMI3";
+    public static final String LABEL_HDMI4 = "HDMI4";
+    public static final String LABEL_SV = "SV";
 
     public static final String PREFIX_HARDWARE_DEVICE = "HW";
 
@@ -365,5 +389,28 @@ public class TvInputUtils {
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isTvSource(String source_name) {
+        if (!TextUtils.isEmpty(source_name)) {
+            source_name = source_name.trim().toUpperCase(Locale.ROOT);
+            return source_name.contains(LABEL_ATV)
+                    ||source_name.contains(LABEL_DTV)
+                    ||source_name.contains(LABEL_DVBC)
+                    ||source_name.contains(LABEL_DVBT)
+                    ||source_name.contains(LABEL_DVBS)
+                    ||source_name.contains(LABEL_CABLE)
+                    ||source_name.contains(LABEL_ANTENNA)
+                    ||source_name.contains(LABEL_SATELLITE)
+                    ||source_name.contains(LABEL_TV)
+                    ||source_name.contains(LABEL_AV)
+                    ||source_name.contains(LABEL_VGA)
+                    ||source_name.contains(LABEL_SCART)
+                    ||source_name.contains(LABEL_YPP)
+                    ||source_name.contains(LABEL_YPBPR)
+                    ||source_name.contains(LABEL_HDMI)
+                    ||source_name.contains(LABEL_SV);
+        }
+        return false;
     }
 }

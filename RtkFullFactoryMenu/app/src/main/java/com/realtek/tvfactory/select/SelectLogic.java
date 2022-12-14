@@ -42,12 +42,6 @@ public class SelectLogic extends LogicInterface {
         SumaryPreference boot_logo = (SumaryPreference) mContainer.findPreferenceById(R.id.boot_logo);
         boot_logo.setSumary(mFactoryMainApi.getBootLogo());
 
-        SumaryPreference boot_music = (SumaryPreference) mContainer.findPreferenceById(R.id.boot_music);
-        boot_music.setSumary(mFactoryMainApi.getPanelType());
-
-        SumaryPreference boot_animation = (SumaryPreference) mContainer.findPreferenceById(R.id.boot_animation);
-        boot_animation.setSumary(mFactoryMainApi.getPanelType());
-
         String countryName;
         Country country = Country.getCountry(getCurCountryIndex(mContext));
         if (country != null) {

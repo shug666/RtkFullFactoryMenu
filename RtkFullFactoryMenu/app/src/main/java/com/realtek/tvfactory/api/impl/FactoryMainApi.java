@@ -24,10 +24,13 @@ import com.realtek.tvfactory.FactoryApplication;
 import com.realtek.tvfactory.api.manager.TvCommonManager;
 import com.realtek.tvfactory.utils.FileUtils;
 import com.realtek.tvfactory.utils.LogHelper;
+import com.realtek.tvfactory.utils.TvInputUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -103,33 +106,21 @@ public class FactoryMainApi {
     }
 
     public String getInputSource() {
-        String sourceList =  RtkProjectConfigs.getInstance().getConfig("[LiveTV]", "inputSource");
-        if (sourceList != null && !TextUtils.isEmpty(sourceList)) {
-            String[] sources = sourceList.split(",");
-            StringBuilder sb = new StringBuilder();
-            for (String source : sources) {
-                String[] tmp = source.split(":");
-                if (tmp.length == 2 && !"NULL".equals(tmp[1].toUpperCase(Locale.ROOT))) {
-                    sb.append(tmp[1]).append(", ");
-                }
-            }
-            Log.e(TAG, "sb.toString()=" + sb);
-            if (sb.toString().trim().length() > 1) {
-                return sb.toString().trim().substring(0, sb.toString().trim().length() - 1);
-            } else {
-                Log.e(TAG, "sb.toString().trim().length()=0");
-            }
-        } else {
-            Log.e(TAG, "sourceList=" + sourceList);
-        }
         ArrayList<TvInputInfo> inputs = new ArrayList<TvInputInfo>();
         mFactoryApplication.getInputList(inputs);
         if (inputs.size() > 0) {
+            inputs.sort(new Comparator<TvInputInfo>() {
+                @Override
+                public int compare(TvInputInfo tvInputInfo, TvInputInfo t1) {
+                    return Collator.getInstance(Locale.ROOT).compare(tvInputInfo.loadLabel(mFactoryApplication).toString(), t1.loadLabel(mFactoryApplication).toString());
+                }
+            });
             StringBuilder sb = new StringBuilder();
             for (TvInputInfo tvInputInfo : inputs) {
-                sb.append(tvInputInfo.loadLabel(mContext).toString()).append(", ");
+                if (TvInputUtils.isTvSource(tvInputInfo.loadLabel(mContext).toString())) {
+                    sb.append(tvInputInfo.loadLabel(mContext).toString()).append(", ");
+                }
             }
-            Log.e(TAG, "sb.toString()=" + sb);
             if (sb.toString().trim().length() > 1) {
                 return sb.toString().trim().substring(0, sb.toString().trim().length() - 1);
             }
